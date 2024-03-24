@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
@@ -11,11 +12,12 @@ class StackingConePrototype extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    FlexScheme deepBlue = FlexScheme.deepBlue;
+
     return MaterialApp(
       title: 'Stacking Cone',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+      theme: FlexThemeData.light(
+        scheme: deepBlue,
       ),
       home: const GameSelectScreen(),
     );
