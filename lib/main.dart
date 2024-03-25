@@ -1,13 +1,26 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
+import 'package:stacking_cone_prototype/features/game_select/repos/game_config_repo.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
+import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final preferences = await SharedPreferences.getInstance();
+
+  final repository = GameConfigRepository(preferences);
+
   runApp(
-    const ProviderScope(
-      child: StackingConePrototype(),
+    ProviderScope(
+      overrides: [
+        gameConfigProvider.overrideWith(
+          () => GameConfigViewModel(repository),
+        )
+      ],
+      child: const StackingConePrototype(),
     ),
   );
 }
@@ -28,7 +41,7 @@ class StackingConePrototype extends ConsumerWidget {
           titleLarge: TextStyle(
             color: Color(0xFF223A5E),
             fontFamily: 'NotosansKR-Bold',
-            fontSize: Sizes.size48,
+            fontSize: Sizes.size40,
           ),
           titleMedium: TextStyle(
             color: Color(0xFF223A5E),
@@ -45,7 +58,7 @@ class StackingConePrototype extends ConsumerWidget {
           labelMedium: TextStyle(
             color: Color(0xFFF8F9FA),
             fontFamily: 'NotosansKR-Medium',
-            fontSize: Sizes.size16,
+            fontSize: Sizes.size24,
           ),
           labelSmall: TextStyle(
             color: Colors.black,

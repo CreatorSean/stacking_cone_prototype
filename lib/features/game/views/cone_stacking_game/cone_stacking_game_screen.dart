@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
@@ -16,8 +17,9 @@ class _ConeStackingGameScreenState
     extends ConsumerState<ConeStackingGameScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    // `const` 키워드를 제거하여 SingleChildScrollView가 제대로 작동하도록 합니다.
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: MainAppBar(
           isSelectScreen: false,

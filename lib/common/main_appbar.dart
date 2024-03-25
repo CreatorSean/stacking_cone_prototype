@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:stacking_cone_prototype/common/constants/gaps.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game_select/widgets/toggle_button.dart';
 
-class MainAppBar extends StatelessWidget {
+class MainAppBar extends ConsumerStatefulWidget {
   final bool isSelectScreen;
 
   const MainAppBar({
@@ -13,12 +12,17 @@ class MainAppBar extends StatelessWidget {
   });
 
   @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _MainAppBarState();
+}
+
+class _MainAppBarState extends ConsumerState<MainAppBar> {
+  @override
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
       centerTitle: true,
-      leading: isSelectScreen
+      leading: widget.isSelectScreen
           ? null
           : IconButton(
               icon: const Icon(
@@ -31,7 +35,7 @@ class MainAppBar extends StatelessWidget {
               },
             ),
       actions: [
-        if (isSelectScreen) const ToggleButton(),
+        if (widget.isSelectScreen) const ToggleButton(),
       ],
     );
   }
