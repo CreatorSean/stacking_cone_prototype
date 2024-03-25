@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 
 class MultipleLedGameScreen extends ConsumerStatefulWidget {
   const MultipleLedGameScreen({super.key});
@@ -20,6 +21,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
           isSelectScreen: false,
         ),
       ),
+      body: ConContainerWidget(),
     );
   }
 }
