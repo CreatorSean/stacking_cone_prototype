@@ -53,9 +53,7 @@ class _CommonButtonState extends State<CommonButton> {
             child: Text(
               widget.buttonName,
               textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: Sizes.size28,
-              ),
+              style: Theme.of(context).textTheme.labelMedium,
             ),
           ),
         ),

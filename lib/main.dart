@@ -45,6 +45,7 @@ class StackingConePrototype extends ConsumerWidget {
           labelMedium: TextStyle(
             color: Color(0xFFF8F9FA),
             fontFamily: 'NotosansKR-Medium',
+            fontSize: Sizes.size16,
           ),
           labelSmall: TextStyle(
             color: Colors.black,
