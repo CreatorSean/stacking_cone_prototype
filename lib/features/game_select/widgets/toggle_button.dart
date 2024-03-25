@@ -1,24 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
+import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 
-class ToggleButton extends StatefulWidget {
+class ToggleButton extends ConsumerStatefulWidget {
   const ToggleButton({super.key});
 
   @override
-  State<ToggleButton> createState() => _ToggleButtonState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ToggleButtonState();
 }
 
-class _ToggleButtonState extends State<ToggleButton> {
-  bool _isChecked = false;
-
+class _ToggleButtonState extends ConsumerState<ToggleButton> {
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Text(
-          _isChecked ? "평가형" : "훈련형",
+          ref.read(gameConfigProvider).isTest ? "평가형" : "훈련형",
           style: const TextStyle(
             fontSize: Sizes.size20,
             fontWeight: FontWeight.w600,
@@ -28,13 +28,16 @@ class _ToggleButtonState extends State<ToggleButton> {
         ),
         Gaps.h4,
         CupertinoSwitch(
+          //active가 true이고 track이 false임
           trackColor: const Color(0xff4079E8),
           activeColor: const Color(0xff7DDD5C),
-          value: _isChecked,
-          onChanged: (bool? value) {
-            setState(() {
-              _isChecked = value ?? false;
-            });
+          value: ref.read(gameConfigProvider).isTest,
+          onChanged: (bool value) {
+            setState(
+              () {
+                ref.read(gameConfigProvider.notifier).setTest(value);
+              },
+            );
           },
         ),
         Gaps.h20,
