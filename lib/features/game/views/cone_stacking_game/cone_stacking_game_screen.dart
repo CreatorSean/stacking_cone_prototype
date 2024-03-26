@@ -45,15 +45,17 @@ class _ConeStackingGameScreenState
                 left: 30,
               ),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   StopButton(),
                   TimerContainer(
                     maxTime: 60,
-                    currentTime: 0,
+                    currentTime: 60,
+                    isTimerShow: true,
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

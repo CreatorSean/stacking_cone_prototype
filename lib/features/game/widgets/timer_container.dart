@@ -72,7 +72,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
             child: Transform.scale(
               scale: 2.2,
               child: Lottie.asset(
-                "assets/animations/hourglass.json",
+                "assets/lottie/hourglass.json",
                 width: 100,
                 height: 100,
                 controller: _controller,

@@ -4,6 +4,7 @@ import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 
 class MultipleLedGameScreen extends ConsumerStatefulWidget {
   const MultipleLedGameScreen({super.key});
@@ -30,8 +31,21 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
           ),
           Gaps.v20,
           Padding(
-            padding: EdgeInsets.only(right: 200),
-            child: StopButton(),
+            padding: EdgeInsets.only(
+              right: 30,
+              left: 30,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                StopButton(),
+                TimerContainer(
+                  maxTime: 60,
+                  currentTime: 60,
+                  isTimerShow: true,
+                ),
+              ],
+            ),
           ),
         ],
       ),
