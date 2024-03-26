@@ -58,10 +58,6 @@ class _ConeStackingGameScreenState
               child: ConContainerWidget(),
             ),
             Gaps.v20,
-            // Padding(
-            //   padding: EdgeInsets.only(right: 200),
-            //   child: StopButton(),
-            // ),
             const Padding(
               padding: EdgeInsets.only(
                 right: 30,

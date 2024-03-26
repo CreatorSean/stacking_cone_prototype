@@ -24,53 +24,58 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
           isSelectScreen: false,
         ),
       ),
-      body: Column(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "이중 모드",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "LED MODE",
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          const Expanded(
-            child: ConContainerWidget(),
-          ),
-          Gaps.v20,
-          const Padding(
-            padding: EdgeInsets.only(
-              right: 30,
-              left: 30,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: Padding(
+        padding: const EdgeInsets.only(
+          bottom: 40,
+        ),
+        child: Column(
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                StopButton(),
-                TimerContainer(
-                  maxTime: 60,
-                  currentTime: 60,
-                  isTimerShow: true,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "이중 모드",
+                      style: Theme.of(context).textTheme.titleMedium,
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "LED MODE",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ],
                 ),
               ],
             ),
-          ),
-        ],
+            const Expanded(
+              child: ConContainerWidget(),
+            ),
+            Gaps.v20,
+            const Padding(
+              padding: EdgeInsets.only(
+                right: 30,
+                left: 30,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  StopButton(),
+                  TimerContainer(
+                    maxTime: 60,
+                    currentTime: 60,
+                    isTimerShow: true,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
