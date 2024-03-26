@@ -4,6 +4,7 @@ import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
   const ConeStackingGameScreen({super.key});
@@ -17,27 +18,44 @@ class _ConeStackingGameScreenState
     extends ConsumerState<ConeStackingGameScreen> {
   @override
   Widget build(BuildContext context) {
-    // `const` 키워드를 제거하여 SingleChildScrollView가 제대로 작동하도록 합니다.
-    return Scaffold(
-      appBar: const PreferredSize(
+    return const Scaffold(
+      appBar: PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: MainAppBar(
           isSelectScreen: false,
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ConContainerWidget(),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 200),
-            child: StopButton(),
-          ),
-        ],
+      body: Padding(
+        padding: EdgeInsets.only(
+          bottom: 40,
+        ),
+        child: Column(
+          children: [
+            Expanded(
+              child: ConContainerWidget(),
+            ),
+            Gaps.v20,
+            // Padding(
+            //   padding: EdgeInsets.only(right: 200),
+            //   child: StopButton(),
+            // ),
+            Padding(
+              padding: EdgeInsets.only(
+                right: 30,
+                left: 30,
+              ),
+              child: Row(
+                children: [
+                  StopButton(),
+                  TimerContainer(
+                    maxTime: 60,
+                    currentTime: 0,
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

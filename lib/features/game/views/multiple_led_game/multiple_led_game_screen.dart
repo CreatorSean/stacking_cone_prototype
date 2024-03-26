@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
@@ -27,9 +28,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
           Expanded(
             child: ConContainerWidget(),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          Gaps.v20,
           Padding(
             padding: EdgeInsets.only(right: 200),
             child: StopButton(),
