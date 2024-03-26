@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
+import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 
 class StopButton extends StatelessWidget {
   const StopButton({Key? key}) : super(key: key);
@@ -12,7 +13,8 @@ class StopButton extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return ResultDialog(
-              score: 100, // 가상의 점수
+              totalCone: 10,
+              answer: 8,
               timeElapsed: '10:00', // 가상의 시간
               onHomePressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기

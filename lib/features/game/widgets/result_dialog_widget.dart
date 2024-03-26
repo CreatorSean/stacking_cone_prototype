@@ -1,26 +1,30 @@
 import 'package:flutter/material.dart';
 
 class ResultDialog extends StatelessWidget {
-  final int score;
+  final int answer;
+  final int totalCone;
   final String timeElapsed;
   final VoidCallback onHomePressed;
   final VoidCallback onContinuePressed;
 
   const ResultDialog({
     Key? key,
-    required this.score,
     required this.timeElapsed,
+    required this.answer,
+    required this.totalCone,
     required this.onHomePressed,
     required this.onContinuePressed,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    int score = (totalCone / answer * 100).toInt();
+
     return AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: Color(0xff332F23), width: 5.0),
+        side: const BorderSide(color: Color(0xff332F23), width: 5.0),
       ),
       title: const Text(
         '게임 결과',
@@ -31,39 +35,40 @@ class ResultDialog extends StatelessWidget {
           fontSize: 28,
         ),
       ),
-      contentPadding: EdgeInsets.only(top: 20, left: 50, right: 50, bottom: 30),
-      content: const Column(
+      contentPadding:
+          const EdgeInsets.only(top: 20, left: 50, right: 50, bottom: 30),
+      content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            '전체 점수 : 80점',
+            '전체 점수 : $score점',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xff332F23),
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
-            '전체 콘 개수 : 10개',
+            '전체 콘 개수 : $totalCone개',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xff332F23),
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
-            '맞게 올린 콘 : 8개',
+            '맞게 올린 콘 : $answer개',
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: Color(0xff332F23),
               fontWeight: FontWeight.bold,
               fontSize: 24,
@@ -78,7 +83,7 @@ class ResultDialog extends StatelessWidget {
             TextButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  Color(0xffF0E5C8),
+                  const Color(0xffF0E5C8),
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -90,7 +95,7 @@ class ResultDialog extends StatelessWidget {
                   ),
                 ),
                 minimumSize: MaterialStateProperty.all(
-                  Size(110, 20),
+                  const Size(110, 20),
                 ),
               ),
               onPressed: onHomePressed,
@@ -99,13 +104,13 @@ class ResultDialog extends StatelessWidget {
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               width: 20,
             ),
             TextButton(
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(
-                  Color(0xffF0E5C8),
+                  const Color(0xffF0E5C8),
                 ),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -117,7 +122,7 @@ class ResultDialog extends StatelessWidget {
                   ),
                 ),
                 minimumSize: MaterialStateProperty.all(
-                  Size(110, 20),
+                  const Size(110, 20),
                 ),
               ),
               onPressed: onContinuePressed,

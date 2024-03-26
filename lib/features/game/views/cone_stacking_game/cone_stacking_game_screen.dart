@@ -5,6 +5,7 @@ import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
+import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
   const ConeStackingGameScreen({super.key});
@@ -58,19 +59,19 @@ class _ConeStackingGameScreenState
               child: ConContainerWidget(),
             ),
             Gaps.v20,
-            const Padding(
-              padding: EdgeInsets.only(
+            Padding(
+              padding: const EdgeInsets.only(
                 right: 30,
                 left: 30,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  StopButton(),
+                  const StopButton(),
                   TimerContainer(
                     maxTime: 60,
                     currentTime: 60,
-                    isTimerShow: true,
+                    isTimerShow: ref.read(gameConfigProvider).isTest,
                   ),
                 ],
               ),
