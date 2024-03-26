@@ -67,7 +67,9 @@ class _ConeStackingGameScreenState
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const StopButton(),
+                  const StopButton(
+                    gameType: GameType.coneStacking,
+                  ),
                   TimerContainer(
                     maxTime: 60,
                     currentTime: 60,
