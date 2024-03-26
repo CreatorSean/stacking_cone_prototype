@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 
 class StopButton extends StatelessWidget {
   const StopButton({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -20,6 +20,10 @@ class StopButton extends StatelessWidget {
               },
               onContinuePressed: () {
                 Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.of(context).pop(); // 게임 화면 닫기
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ConeStackingGameScreen()));
+                const ConeStackingGameScreen();
               },
             );
           },
