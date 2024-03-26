@@ -17,8 +17,8 @@ class MultipleLedGameScreen extends ConsumerStatefulWidget {
 class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: MainAppBar(
           isSelectScreen: false,
@@ -26,11 +26,34 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
       ),
       body: Column(
         children: [
-          Expanded(
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "이중 모드",
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "LED MODE",
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const Expanded(
             child: ConContainerWidget(),
           ),
           Gaps.v20,
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(
               right: 30,
               left: 30,

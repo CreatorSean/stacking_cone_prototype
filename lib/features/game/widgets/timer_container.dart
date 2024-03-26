@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 
 class TimerContainer extends ConsumerStatefulWidget {
   final int maxTime;
@@ -60,26 +59,6 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Transform.translate(
-          offset: const Offset(-20, 0),
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.white,
-            ),
-            child: Transform.scale(
-              scale: 2.2,
-              child: Lottie.asset(
-                "assets/lottie/hourglass.json",
-                width: 100,
-                height: 100,
-                controller: _controller,
-              )..controller,
-            ),
-          ),
-        ),
         Stack(
           alignment: Alignment.center,
           children: [
@@ -100,7 +79,8 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
               ),
               child: Center(
                 child: Text(
-                  widget.currentTime.toString(),
+                  //widget.currentTime.toString(),
+                  currentTime.toInt().toString(),
                   style: const TextStyle(
                     fontSize: 50,
                     fontWeight: FontWeight.bold,

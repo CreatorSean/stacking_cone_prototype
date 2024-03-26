@@ -46,6 +46,7 @@ class StackingConePrototype extends ConsumerWidget {
           titleMedium: TextStyle(
             color: Color(0xFF223A5E),
             fontFamily: 'NotosansKR-Medium',
+            fontSize: Sizes.size28,
           ),
           titleSmall: TextStyle(
             color: Color(0xFF223A5E),
