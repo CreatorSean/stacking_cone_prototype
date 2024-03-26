@@ -26,14 +26,16 @@ class _BluetoothState extends ConsumerState<BluetoothDialog> {
     final displayHeight = MediaQuery.of(context).size.height;
 
     return Dialog(
-      backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(50),
+      ),
       clipBehavior: Clip.antiAlias,
       child: Container(
         height: displayHeight * 0.55,
         width: displayHeight * 0.8,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
-          color: const Color(0xff322D3F),
+          color: Theme.of(context).primaryColor,
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.5),
