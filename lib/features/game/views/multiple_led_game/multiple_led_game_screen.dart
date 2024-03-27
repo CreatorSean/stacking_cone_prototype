@@ -66,7 +66,9 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const StopButton(),
+                  const StopButton(
+                    screenName: MultipleLedGameScreen(),
+                  ),
                   TimerContainer(
                     maxTime: 60,
                     currentTime: 60,
