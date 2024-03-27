@@ -17,9 +17,22 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
       _ConeStackingGameScreenState();
 }
 
-class _ConeStackingGameScreenState
-    extends ConsumerState<ConeStackingGameScreen> {
+class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
+    with TickerProviderStateMixin {
   bool _isDialogShown = false;
+  late final AnimationController _lottieController;
+  @override
+  void initState() {
+    _lottieController = AnimationController(vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _lottieController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentTime = ref.watch(currentTimeProvider);
@@ -42,59 +55,63 @@ class _ConeStackingGameScreenState
           isSelectScreen: false,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 40,
-        ),
-        child: Column(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 40,
+            ),
+            child: Column(
               children: [
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "단일 모드",
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "단일 모드",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "콘 쌓기 MODE",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "콘 쌓기 MODE",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ],
+                const Expanded(
+                  child: ConContainerWidget(),
+                ),
+                Gaps.v20,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 30,
+                    left: 30,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const StopButton(
+                        screenName: ConeStackingGameScreen(),
+                      ),
+                      TimerContainer(
+                        maxTime: 60,
+                        isTimerShow: ref.read(gameConfigProvider).isTest,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            const Expanded(
-              child: ConContainerWidget(),
-            ),
-            Gaps.v20,
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 30,
-                left: 30,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const StopButton(
-                    screenName: ConeStackingGameScreen(),
-                  ),
-                  TimerContainer(
-                    maxTime: 5,
-                    isTimerShow: ref.read(gameConfigProvider).isTest,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
