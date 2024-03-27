@@ -42,8 +42,8 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
 
   @override
   void initState() {
-    _lottieController = AnimationController(vsync: this);
     super.initState();
+    _lottieController = AnimationController(vsync: this);
   }
 
   @override
@@ -54,6 +54,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
 
   @override
   Widget build(BuildContext context) {
+    currentTime = ref.watch(timeProvider);
     showGameResult(currentTime);
     return Scaffold(
       appBar: const PreferredSize(
