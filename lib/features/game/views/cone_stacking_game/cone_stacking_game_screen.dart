@@ -19,6 +19,8 @@ class _ConeStackingGameScreenState
     extends ConsumerState<ConeStackingGameScreen> {
   @override
   Widget build(BuildContext context) {
+    bool isSuccess = false;
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -26,60 +28,79 @@ class _ConeStackingGameScreenState
           isSelectScreen: false,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 40,
-        ),
-        child: Column(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        children: [
+          Positioned.fill(
+            child: Image.asset(
+              'assets/confetti.gif',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 40,
+            ),
+            child: Column(
               children: [
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "단일 모드",
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "단일 모드",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "콘 쌓기 MODE",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "잘했어요!",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "콘 쌓기 MODE",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ],
+                const Expanded(
+                  child: ConContainerWidget(),
+                ),
+                Gaps.v20,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 30,
+                    left: 30,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const StopButton(
+                        screenName: ConeStackingGameScreen(),
+                      ),
+                      TimerContainer(
+                        maxTime: 60,
+                        currentTime: 60,
+                        isTimerShow: ref.read(gameConfigProvider).isTest,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            const Expanded(
-              child: ConContainerWidget(),
-            ),
-            Gaps.v20,
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 30,
-                left: 30,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const StopButton(
-                    screenName: ConeStackingGameScreen(),
-                  ),
-                  TimerContainer(
-                    maxTime: 60,
-                    currentTime: 60,
-                    isTimerShow: ref.read(gameConfigProvider).isTest,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
