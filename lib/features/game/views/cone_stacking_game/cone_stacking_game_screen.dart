@@ -92,13 +92,17 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                         ),
                       ],
                     ),
+                    Gaps.v28,
                     if (_isConeSuccess)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "잘했어요!",
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.pink),
                           ),
                         ],
                       ),
@@ -108,12 +112,16 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                         children: [
                           Text(
                             "다시 한 번 해보세요!",
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.pink),
                           ),
                         ],
                       ),
                   ],
                 ),
+                Gaps.v28,
                 const Expanded(
                   child: ConContainerWidget(),
                 ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
+import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
@@ -92,13 +93,17 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                         ),
                       ],
                     ),
+                    Gaps.v28,
                     if (_isConeSuccess)
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             "잘했어요!",
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.pink),
                           ),
                         ],
                       ),
@@ -108,7 +113,11 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                         children: [
                           Text(
                             "다시 한 번 해보세요!",
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(
+                                    color: Colors.pink), // 텍스트 색상을 핑크색으로 변경
                           ),
                         ],
                       ),
