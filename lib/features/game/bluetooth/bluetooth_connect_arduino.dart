@@ -1,3 +1,4 @@
+//아두이노와 통신하기 위한 임의의 코드입니다.
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
