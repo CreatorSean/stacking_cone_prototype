@@ -62,21 +62,9 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
         Stack(
           alignment: Alignment.center,
           children: [
-            Container(
+            SizedBox(
               width: 90,
               height: 90,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Theme.of(context).cardColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 3,
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
               child: Center(
                 child: Text(
                   //widget.currentTime.toString(),
@@ -92,27 +80,8 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
                 },
               ).scaleXY(
                 begin: 1,
-                end: 1.2,
+                end: 1,
                 duration: 250.ms,
-                curve: Curves.easeInOutCubic,
-              ),
-            ),
-            SizedBox(
-              width: 90,
-              height: 90,
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor.withOpacity(0.3),
-                strokeWidth: 10,
-                value: 1.0,
-              ),
-            ),
-            SizedBox(
-              width: 90,
-              height: 90,
-              child: CircularProgressIndicator(
-                color: Theme.of(context).primaryColor,
-                strokeWidth: 10,
-                value: currentTime / widget.maxTime,
               ),
             ),
           ],
