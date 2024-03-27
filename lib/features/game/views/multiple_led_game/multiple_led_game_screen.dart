@@ -41,14 +41,12 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     final currentTime = ref.watch(currentTimeProvider);
     if (currentTime == 0 && !_isDialogShown) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        _isDialogShown = true; // 대화 상자가 표시됨을 표시
+        _isDialogShown = true;
         ResultDialogWidget(
           answer: 8,
           totalCone: 10,
           screenName: const MultipleLedGameScreen(),
-        )
-            .resultDialog(context)
-            .then((value) => _isDialogShown = false); // 대화 상자가 닫히면 플래그를 재설정
+        ).resultDialog(context).then((value) => _isDialogShown = false);
       });
     }
     return Scaffold(
@@ -141,7 +139,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                 'assets/lottie/confetti.json',
                 fit: BoxFit.cover,
                 width: 600,
-                height: 1000,
+                height: 400,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;

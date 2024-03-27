@@ -140,7 +140,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                 'assets/lottie/confetti.json',
                 fit: BoxFit.cover,
                 width: 600,
-                height: 1000,
+                height: 500,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
