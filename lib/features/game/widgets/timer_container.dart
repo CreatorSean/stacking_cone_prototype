@@ -82,7 +82,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          ref.read(gameConfigProvider).isTest ? "남은 시간" : "훈련 시간",
+          ref.read(gameConfigProvider).isTest ? "남은 시간: " : "훈련 시간: ",
           style: Theme.of(context).textTheme.labelSmall,
         ),
         Stack(
