@@ -30,13 +30,14 @@ class _CommonButtonState extends State<CommonButton> {
     return GestureDetector(
       onTap: _onNextTap,
       child: FractionallySizedBox(
-        widthFactor: 0.5,
+        widthFactor: 0.6,
         child: AnimatedContainer(
+          height: 70,
           padding: const EdgeInsets.symmetric(
             vertical: Sizes.size16,
           ),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Sizes.size5),
+            borderRadius: BorderRadius.circular(Sizes.size20),
             color: Theme.of(context).primaryColor,
           ),
           duration: const Duration(

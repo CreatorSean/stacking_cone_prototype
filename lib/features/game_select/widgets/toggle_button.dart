@@ -27,7 +27,7 @@ class _ToggleButtonState extends ConsumerState<ToggleButton> {
             color: Colors.black,
           ),
         ),
-        Gaps.h4,
+        Gaps.h10,
         CupertinoSwitch(
           //active가 true이고 track이 false임
           trackColor: const Color(0xff4079E8),
