@@ -29,8 +29,8 @@ class ResultDialogWidget {
     );
   }
 
-  Future resultDialog(BuildContext context) {
-    score = (totalCone / answer * 100).toInt();
+  resultDialog(BuildContext context) {
+    score = (answer / totalCone * 100).toInt();
     return showDialog(
       context: context,
       builder: (context) {
