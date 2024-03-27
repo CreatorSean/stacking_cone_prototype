@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
-import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 
 class TimerContainer extends ConsumerStatefulWidget {
   final double maxTime;
@@ -23,15 +20,11 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
   late final AnimationController _controller;
   late final AnimationController _circleController;
   late double currentTime;
-  late double time;
-  Timer? _timer;
-
+  int time = 0;
   @override
   void initState() {
     super.initState();
     currentTime = widget.maxTime.toDouble();
-    time = 0;
-
     _controller = AnimationController(
       duration: (1.25).seconds,
       vsync: this,
@@ -46,30 +39,16 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
     )
       ..addListener(() {
         setState(() {
-          if (ref.read(gameConfigProvider).isTest) {
-            ref.read(currentTimeProvider.notifier).state =
-                widget.maxTime - _circleController.value * widget.maxTime;
-          }
+          time++;
         });
       })
       ..forward();
-
-    if (!ref.read(gameConfigProvider).isTest) {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (mounted) {
-          setState(() {
-            time++;
-          });
-        }
-      });
-    }
   }
 
   @override
   void dispose() {
     _controller.dispose();
     _circleController.dispose();
-    _timer?.cancel();
     super.dispose();
   }
 
@@ -79,7 +58,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
-          ref.read(gameConfigProvider).isTest ? "남은 시간" : "훈련 시간",
+          "훈련 시간 :",
           style: Theme.of(context).textTheme.labelSmall,
         ),
         Stack(
@@ -90,9 +69,8 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
               height: 90,
               child: Center(
                 child: Text(
-                  ref.read(gameConfigProvider).isTest
-                      ? ref.watch(currentTimeProvider).toInt().toString()
-                      : time.toInt().toString(),
+                  //widget.currentTime.toString(),
+                  time.toString(),
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

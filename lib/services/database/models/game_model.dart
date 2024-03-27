@@ -1,7 +1,9 @@
-class GameModel {
-  int time;
+class GameTimeModel {
+  double currentTime;
+  double maxTime;
 
-  GameModel({
-    required this.time,
+  GameTimeModel({
+    required this.currentTime,
+    required this.maxTime,
   });
 }
