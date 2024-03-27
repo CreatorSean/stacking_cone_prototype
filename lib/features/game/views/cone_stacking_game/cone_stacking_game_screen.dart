@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
@@ -17,8 +19,22 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
 
 class _ConeStackingGameScreenState
     extends ConsumerState<ConeStackingGameScreen> {
+  bool _isDialogShown = false;
   @override
   Widget build(BuildContext context) {
+    final currentTime = ref.watch(currentTimeProvider);
+    if (currentTime == 0 && !_isDialogShown) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _isDialogShown = true; // 대화 상자가 표시됨을 표시
+        ResultDialogWidget(
+          answer: 8,
+          totalCone: 10,
+          screenName: const ConeStackingGameScreen(),
+        )
+            .resultDialog(context)
+            .then((value) => _isDialogShown = false); // 대화 상자가 닫히면 플래그를 재설정
+      });
+    }
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -71,8 +87,7 @@ class _ConeStackingGameScreenState
                     screenName: ConeStackingGameScreen(),
                   ),
                   TimerContainer(
-                    maxTime: 60,
-                    currentTime: 60,
+                    maxTime: 5,
                     isTimerShow: ref.read(gameConfigProvider).isTest,
                   ),
                 ],

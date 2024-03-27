@@ -71,7 +71,6 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
                   ),
                   TimerContainer(
                     maxTime: 60,
-                    currentTime: 60,
                     isTimerShow: ref.read(gameConfigProvider).isTest,
                   ),
                 ],

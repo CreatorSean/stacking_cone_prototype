@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 
 class TimerContainer extends ConsumerStatefulWidget {
-  final int maxTime;
-  final int currentTime;
+  final double maxTime;
   final bool isTimerShow;
   const TimerContainer({
     super.key,
     required this.maxTime,
-    required this.currentTime,
     this.isTimerShow = false,
   });
   @override
@@ -39,7 +38,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
     )
       ..addListener(() {
         setState(() {
-          currentTime =
+          ref.read(currentTimeProvider.notifier).state =
               widget.maxTime - _circleController.value * widget.maxTime;
         });
       })
@@ -55,7 +54,6 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
 
   @override
   Widget build(BuildContext context) {
-    final isTimerShow = widget.isTimerShow;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -68,9 +66,9 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
               child: Center(
                 child: Text(
                   //widget.currentTime.toString(),
-                  currentTime.toInt().toString(),
+                  ref.watch(currentTimeProvider).toInt().toString(),
                   style: const TextStyle(
-                    fontSize: 50,
+                    fontSize: 30,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -87,16 +85,6 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
           ],
         ),
       ],
-    )
-        .animate(target: isTimerShow ? 1 : 0)
-        .fadeIn(
-          begin: 0,
-          duration: 500.ms,
-          curve: Curves.easeInOut,
-        )
-        .slideY(
-          begin: 1,
-          end: 0,
-        );
+    );
   }
 }
