@@ -21,8 +21,9 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
 class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     with TickerProviderStateMixin {
   bool _isDialogShown = false;
-  final bool _isConeSuccess = false; //콘 꽂았을 때 효과
+  final bool _isConeSuccess = true; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
+
   @override
   void initState() {
     _lottieController = AnimationController(vsync: this);
@@ -48,6 +49,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
         ).resultDialog(context).then((value) => _isDialogShown = false);
       });
     }
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),

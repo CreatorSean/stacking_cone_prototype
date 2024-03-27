@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
@@ -17,8 +18,24 @@ class MultipleLedGameScreen extends ConsumerStatefulWidget {
       _MultipleLedGameScreenState();
 }
 
-class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
+class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
+    with TickerProviderStateMixin {
   bool _isDialogShown = false;
+  final bool _isConeSuccess = false; //콘 꽂았을 때 효과
+  late final AnimationController _lottieController;
+
+  @override
+  void initState() {
+    _lottieController = AnimationController(vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _lottieController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentTime = ref.watch(currentTimeProvider);
@@ -41,59 +58,113 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen> {
           isSelectScreen: false,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(
-          bottom: 40,
-        ),
-        child: Column(
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              bottom: 40,
+            ),
+            child: Column(
               children: [
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      "이중 모드",
-                      style: Theme.of(context).textTheme.titleMedium,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "이중 모드",
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ],
                     ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "LED MODE",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ],
+                    ),
+                    if (_isConeSuccess)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "잘했어요!",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
+                    if (!_isConeSuccess)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "다시 한 번 해보세요!",
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                        ],
+                      ),
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "LED MODE",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                  ],
+                const Expanded(
+                  child: ConContainerWidget(),
+                ),
+                Gaps.v20,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: 30,
+                    left: 30,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      const StopButton(
+                        screenName: MultipleLedGameScreen(),
+                      ),
+                      TimerContainer(
+                        maxTime: 60,
+                        isTimerShow: ref.read(gameConfigProvider).isTest,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
-            const Expanded(
-              child: ConContainerWidget(),
-            ),
-            Gaps.v20,
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 30,
-                left: 30,
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  const StopButton(
-                    screenName: MultipleLedGameScreen(),
-                  ),
-                  TimerContainer(
-                    maxTime: 60,
-                    isTimerShow: ref.read(gameConfigProvider).isTest,
-                  ),
-                ],
+          ),
+          if (_isConeSuccess)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Lottie.asset(
+                'assets/lottie/confetti.json',
+                fit: BoxFit.cover,
+                width: 600,
+                height: 1000,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0);
+                },
               ),
             ),
-          ],
-        ),
+          if (!_isConeSuccess)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Lottie.asset(
+                'assets/lottie/okay.json',
+                fit: BoxFit.cover,
+                width: 400,
+                height: 400,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0);
+                },
+              ),
+            ),
+        ],
       ),
     );
   }
