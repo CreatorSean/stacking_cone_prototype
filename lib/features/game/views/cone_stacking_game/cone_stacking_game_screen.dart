@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
@@ -15,12 +16,23 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
       _ConeStackingGameScreenState();
 }
 
-class _ConeStackingGameScreenState
-    extends ConsumerState<ConeStackingGameScreen> {
+class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
+    with TickerProviderStateMixin {
+  late final AnimationController _lottieController;
+  @override
+  void initState() {
+    _lottieController = AnimationController(vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _lottieController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool isSuccess = false;
-
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -30,12 +42,17 @@ class _ConeStackingGameScreenState
       ),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Image.asset(
-              'assets/confetti.gif',
-              fit: BoxFit.cover,
-            ),
-          ),
+          // Positioned.fill(
+          //   child: Lottie.asset(
+          //     'assets/lottie/confetti.json',
+          //     fit: BoxFit.cover,
+          //     controller: _lottieController,
+          //     onLoaded: (composition) {
+          //       _lottieController.duration = composition.duration;
+          //       _lottieController.forward(from: 0.5);
+          //     },
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.only(
               bottom: 40,
