@@ -123,7 +123,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                         screenName: MultipleLedGameScreen(),
                       ),
                       TimerContainer(
-                        maxTime: 60,
+                        maxTime: 10,
                         isTimerShow: ref.read(gameConfigProvider).isTest,
                       ),
                     ],

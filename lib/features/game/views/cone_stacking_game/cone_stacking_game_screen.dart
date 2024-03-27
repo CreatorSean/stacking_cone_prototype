@@ -24,6 +24,19 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   final bool _isConeSuccess = true; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
 
+  void showGameResult(double currentTime) {
+    if (currentTime == 0 && !_isDialogShown) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _isDialogShown = true;
+        ResultDialogWidget(
+          answer: 8,
+          totalCone: 10,
+          screenName: const ConeStackingGameScreen(),
+        ).resultDialog(context).then((value) => _isDialogShown = false);
+      });
+    }
+  }
+
   @override
   void initState() {
     _lottieController = AnimationController(vsync: this);
@@ -39,17 +52,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   @override
   Widget build(BuildContext context) {
     final currentTime = ref.watch(currentTimeProvider);
-    if (currentTime == 0 && !_isDialogShown) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _isDialogShown = true;
-        ResultDialogWidget(
-          answer: 8,
-          totalCone: 10,
-          screenName: const ConeStackingGameScreen(),
-        ).resultDialog(context).then((value) => _isDialogShown = false);
-      });
-    }
-
+    showGameResult(currentTime);
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -124,7 +127,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                         screenName: ConeStackingGameScreen(),
                       ),
                       TimerContainer(
-                        maxTime: 60,
+                        maxTime: 5,
                         isTimerShow: ref.read(gameConfigProvider).isTest,
                       ),
                     ],
