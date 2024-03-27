@@ -21,7 +21,6 @@ class ConContainerWidget extends StatelessWidget {
           children: List.generate(6, (index) {
             Widget childWidget;
             if (index == 1) {
-              // For index 1, display image over white background
               childWidget = Stack(
                 children: [
                   Container(
