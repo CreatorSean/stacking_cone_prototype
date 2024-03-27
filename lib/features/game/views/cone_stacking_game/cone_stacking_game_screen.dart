@@ -28,19 +28,22 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     if (currentTime == 0 && !_isDialogShown) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _isDialogShown = true;
-        ResultDialogWidget(
-          answer: 8,
-          totalCone: 10,
-          screenName: const ConeStackingGameScreen(),
-        ).resultDialog(context).then((value) => _isDialogShown = false);
+        showDialog(
+          context: context,
+          builder: (context) => const ResultDialog(
+            screenName: ConeStackingGameScreen(),
+            answer: 8,
+            totalCone: 10,
+          ),
+        ).then((value) => _isDialogShown = false);
       });
     }
   }
 
   @override
   void initState() {
-    _lottieController = AnimationController(vsync: this);
     super.initState();
+    _lottieController = AnimationController(vsync: this);
   }
 
   @override
@@ -51,7 +54,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
 
   @override
   Widget build(BuildContext context) {
-    final currentTime = ref.watch(currentTimeProvider);
+    currentTime = ref.watch(timeProvider);
     showGameResult(currentTime);
     return Scaffold(
       appBar: const PreferredSize(

@@ -24,6 +24,22 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   final bool _isConeSuccess = false; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
 
+  void showGameResult(double currentTime) {
+    if (currentTime == 0 && !_isDialogShown) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _isDialogShown = true;
+        showDialog(
+          context: context,
+          builder: (context) => const ResultDialog(
+            screenName: MultipleLedGameScreen(),
+            answer: 8,
+            totalCone: 10,
+          ),
+        ).then((value) => _isDialogShown = false);
+      });
+    }
+  }
+
   @override
   void initState() {
     _lottieController = AnimationController(vsync: this);
@@ -38,17 +54,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
 
   @override
   Widget build(BuildContext context) {
-    final currentTime = ref.watch(currentTimeProvider);
-    if (currentTime == 0 && !_isDialogShown) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _isDialogShown = true;
-        ResultDialogWidget(
-          answer: 8,
-          totalCone: 10,
-          screenName: const MultipleLedGameScreen(),
-        ).resultDialog(context).then((value) => _isDialogShown = false);
-      });
-    }
+    showGameResult(currentTime);
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -123,7 +129,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                         screenName: MultipleLedGameScreen(),
                       ),
                       TimerContainer(
-                        maxTime: 10,
+                        maxTime: 5,
                         isTimerShow: ref.read(gameConfigProvider).isTest,
                       ),
                     ],

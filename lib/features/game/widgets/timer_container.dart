@@ -25,11 +25,11 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
   late double currentTime;
   late double time;
   Timer? _timer;
-
   @override
   void initState() {
     super.initState();
     currentTime = widget.maxTime.toDouble();
+    ref.read(timeProvider.notifier).state = currentTime;
     time = 0;
 
     _controller = AnimationController(
@@ -47,8 +47,11 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
       ..addListener(() {
         setState(() {
           if (ref.read(gameConfigProvider).isTest) {
-            ref.read(currentTimeProvider.notifier).state =
+            currentTime =
                 widget.maxTime - _circleController.value * widget.maxTime;
+            if (currentTime == 0) {
+              ref.read(timeProvider.notifier).state = 0;
+            }
           }
         });
       })
@@ -91,7 +94,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
               child: Center(
                 child: Text(
                   ref.read(gameConfigProvider).isTest
-                      ? ref.watch(currentTimeProvider).toInt().toString()
+                      ? currentTime.toInt().toString()
                       : time.toInt().toString(),
                   style: const TextStyle(
                     fontSize: 30,

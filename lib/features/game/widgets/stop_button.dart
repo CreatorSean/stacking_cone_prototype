@@ -16,11 +16,11 @@ class StopButton extends ConsumerWidget {
       visible: !ref.read(gameConfigProvider).isTest,
       child: ElevatedButton(
         onPressed: () {
-          ResultDialogWidget(
+          ResultDialog(
             screenName: screenName,
             answer: 8,
             totalCone: 10,
-          ).resultDialog(context);
+          );
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(
