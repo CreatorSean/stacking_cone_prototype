@@ -38,12 +38,12 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
               ),
             ],
           ),
-          Gaps.v80,
+          Gaps.v150,
           const CommonButton(
             screenName: ConeStackingGameScreen(),
             buttonName: "콘 쌓기 Mode",
           ),
-          Gaps.v60,
+          Gaps.v40,
           const CommonButton(
             screenName: MultipleLedGameScreen(),
             buttonName: "이중 LED Mode",
