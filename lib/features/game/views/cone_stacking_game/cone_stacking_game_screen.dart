@@ -9,6 +9,7 @@ import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widg
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
   const ConeStackingGameScreen({super.key});
@@ -30,10 +31,17 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
         _isDialogShown = true;
         showDialog(
           context: context,
-          builder: (context) => const ResultDialog(
-            screenName: ConeStackingGameScreen(),
+          builder: (context) => ResultDialog(
+            screenName: const ConeStackingGameScreen(),
             answer: 8,
             totalCone: 10,
+            record: GameRecordModel(
+              id: null,
+              totalCone: 10,
+              answerCone: 8,
+              wrongCong: 2,
+              totalTime: 60,
+            ),
           ),
         ).then((value) => _isDialogShown = false);
       });
@@ -134,8 +142,8 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const StopButton(
-                        screenName: ConeStackingGameScreen(),
+                      StopButton(
+                        screenName: const ConeStackingGameScreen(),
                       ),
                       TimerContainer(
                         maxTime: 5,

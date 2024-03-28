@@ -16,12 +16,12 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'HonestBalance.db');
 
     //리셋하고 싶을때 주석 지우고 다시시작
-    // await deleteDatabase(path);
+    //await deleteDatabase(path);
 
     //db가 존재하지 않으면 onCreate 함수 실행되어 table 생성
     return await openDatabase(path, version: 1, onCreate: (db, version) async {
       await db.execute(
-          "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, totalCone INTEGER, answerCone INTEGER, totalTime INTEGER)");
+          "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, totalCone INTEGER, answerCone INTEGER, wrongCone INTEGER, totalTime INTEGER)");
     }, onUpgrade: (db, oldVersion, newVersion) {});
   }
 
@@ -49,12 +49,12 @@ class DatabaseService {
     );
   }
 
-  // ========================= update DB ==============================
-  static Future<void> updateUserDB(GameRecordModel record) async {
+  // ========================= update Train Record DB ==============================
+  static Future<void> updatenRecordDB(GameRecordModel record) async {
     final db = await database;
     Logger().i('Update DB: ${record.id}');
     await db!.update(
-      "Users",
+      "GameRecords",
       record.toMap(),
       where: "id = ?",
       whereArgs: [record.id],
@@ -62,17 +62,18 @@ class DatabaseService {
   }
 
   ///DB에서 모든 데이터를 불러와서 하나씩 모델 생성하고, 모두 List로 반환
-  static Future<List<GameRecordModel>> getUserListDB() async {
+  static Future<List<GameRecordModel>> getGameRecordsListDB() async {
     final db = await database;
-    Logger().i('Get UserList DB');
+    Logger().i('Get GameRecordsList DB');
 
-    final List<Map<String, dynamic>> maps = await db!.query('Users');
+    final List<Map<String, dynamic>> maps = await db!.query('GameRecords');
 
     return List.generate(maps.length, (index) {
       return GameRecordModel(
         id: maps[index]["id"],
         totalCone: maps[index]["totalCone"],
         answerCone: maps[index]["answerCone"],
+        wrongCong: maps[index]["wrongCone"],
         totalTime: maps[index]["totalTime"],
       );
     });

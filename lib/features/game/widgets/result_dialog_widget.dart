@@ -1,22 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/game_test_record_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
+import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
 class ResultDialog extends ConsumerWidget {
   final Widget screenName;
   final int totalCone;
   final int answer;
+  GameRecordModel record;
 
-  const ResultDialog({
+  ResultDialog({
     Key? key,
     required this.answer,
     required this.totalCone,
     required this.screenName,
+    required this.record,
   }) : super(key: key);
+
+  void getTrainGameRecore() {
+    record = GameRecordModel(
+      id: null,
+      totalCone: totalCone,
+      answerCone: answer,
+      wrongCong: totalCone - answer,
+      totalTime: 60,
+    );
+  }
+
+  void getTestGameRecore() {
+    record = GameRecordModel(
+      id: null,
+      totalCone: totalCone,
+      answerCone: answer,
+      wrongCong: totalCone - answer,
+      totalTime: 60,
+    );
+  }
 
   void onHomePressed(BuildContext context, WidgetRef ref) {
     ref.read(timeProvider.notifier).state = 5;
+    if (ref.read(gameConfigProvider).isTest) {
+      getTestGameRecore();
+      ref.watch(gameRecordProvider.notifier).insertRecord(record);
+    } else {
+      getTrainGameRecore();
+      ref.watch(gameRecordProvider.notifier).insertRecord(record);
+    }
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(

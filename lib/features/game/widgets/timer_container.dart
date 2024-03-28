@@ -76,6 +76,10 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
     super.dispose();
   }
 
+  void stopTimer() {
+    _timer?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
