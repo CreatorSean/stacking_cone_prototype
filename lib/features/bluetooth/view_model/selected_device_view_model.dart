@@ -47,7 +47,7 @@ class SelectedDeviceViewModel extends AsyncNotifier<SelectedDeviceModel> {
     for (BluetoothService service in bluetoothService) {
       for (BluetoothCharacteristic characteristic in service.characteristics) {
         if (characteristic.uuid ==
-            Guid("00002a26-0000-1000-8888-00805f9b34fb")) {
+            Guid("0000ffe0-0000-1000-8000-00805f9b34fb")) {
           if (!reading) {
             reading = true;
             List<int> value = await characteristic.read();
