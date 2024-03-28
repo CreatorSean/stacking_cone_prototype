@@ -1,17 +1,19 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class TimerContainer extends ConsumerStatefulWidget {
   final double maxTime;
   final bool isTimerShow;
+  final bool isGameStop;
   const TimerContainer({
     super.key,
     required this.maxTime,
+    this.isGameStop = false,
     this.isTimerShow = false,
   });
   @override
@@ -50,22 +52,14 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
             currentTime =
                 widget.maxTime - _circleController.value * widget.maxTime;
             if (currentTime == 0) {
-              ref.read(timeProvider.notifier).state = 0;
+              // ref.read(timeProvider.notifier).state = 0;
             }
           }
         });
       })
       ..forward();
 
-    if (!ref.read(gameConfigProvider).isTest) {
-      _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-        if (mounted) {
-          setState(() {
-            time++;
-          });
-        }
-      });
-    }
+    ref.read(timerControllerProvider.notifier).startTimer();
   }
 
   @override
@@ -82,6 +76,9 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isGameStop) {
+      stopTimer();
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -99,7 +96,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
                 child: Text(
                   ref.read(gameConfigProvider).isTest
                       ? currentTime.toInt().toString()
-                      : time.toInt().toString(),
+                      : ref.watch(timerControllerProvider).time.toString(),
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

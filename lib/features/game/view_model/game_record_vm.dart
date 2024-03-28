@@ -1,9 +1,20 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/services/database/database_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
 class GameReocrdViewModel extends AsyncNotifier<List<GameRecordModel>> {
   List<GameRecordModel> recordList = [];
+  late Timer? timer;
+
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) {});
+  }
+
+  void stopTimer() {
+    timer?.cancel();
+  }
 
   Future<void> getRecordList() async {
     state = const AsyncValue.loading();

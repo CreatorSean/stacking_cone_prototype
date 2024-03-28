@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/game_test_record_vm.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
+import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class ResultDialog extends ConsumerWidget {
   final Widget screenName;
@@ -20,13 +21,13 @@ class ResultDialog extends ConsumerWidget {
     required this.record,
   }) : super(key: key);
 
-  void getTrainGameRecore() {
+  void getTrainGameRecore(WidgetRef ref) {
     record = GameRecordModel(
       id: null,
       totalCone: totalCone,
       answerCone: answer,
       wrongCong: totalCone - answer,
-      totalTime: 60,
+      totalTime: 50,
     );
   }
 
@@ -46,7 +47,7 @@ class ResultDialog extends ConsumerWidget {
       getTestGameRecore();
       ref.watch(gameRecordProvider.notifier).insertRecord(record);
     } else {
-      getTrainGameRecore();
+      getTrainGameRecore(ref);
       ref.watch(gameRecordProvider.notifier).insertRecord(record);
     }
     Navigator.pushAndRemoveUntil(

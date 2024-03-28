@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
+import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class StopButton extends ConsumerWidget {
   final Widget screenName;
-  int answer = 9;
-  int totalCone = 10;
-  StopButton({
+  final int answer = 9;
+  final int totalCone = 10;
+  const StopButton({
     Key? key,
     required this.screenName,
   }) : super(key: key);
@@ -19,6 +21,7 @@ class StopButton extends ConsumerWidget {
       visible: !ref.read(gameConfigProvider).isTest,
       child: ElevatedButton(
         onPressed: () {
+          ref.read(timerControllerProvider.notifier).stopTimer();
           showDialog(
             context: context,
             builder: (context) => ResultDialog(

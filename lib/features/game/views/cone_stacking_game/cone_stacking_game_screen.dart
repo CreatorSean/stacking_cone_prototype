@@ -142,8 +142,8 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      StopButton(
-                        screenName: const ConeStackingGameScreen(),
+                      const StopButton(
+                        screenName: ConeStackingGameScreen(),
                       ),
                       TimerContainer(
                         maxTime: 5,
