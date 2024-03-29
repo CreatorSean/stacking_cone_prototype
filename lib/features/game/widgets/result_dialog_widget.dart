@@ -94,7 +94,7 @@ class ResultDialog extends ConsumerWidget {
           const EdgeInsets.only(top: 20, left: 50, right: 50, bottom: 30),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           Text(
             '전체 점수 : $score점',
@@ -107,17 +107,7 @@ class ResultDialog extends ConsumerWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            '전체 콘 개수 : $totalCone개',
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Color(0xff332F23),
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            '맞게 올린 콘 : $answer개',
+            '$answer / $totalCone',
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Color(0xff332F23),
