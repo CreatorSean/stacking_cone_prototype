@@ -8,6 +8,7 @@ import 'package:stacking_cone_prototype/features/bluetooth/view_model/selected_d
 import 'package:stacking_cone_prototype/features/bluetooth/views/bluetooth_dialog.dart';
 
 import 'package:stacking_cone_prototype/features/game_select/widgets/toggle_button.dart';
+import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class MainAppBar extends ConsumerStatefulWidget {
   final bool isSelectScreen;
@@ -82,6 +83,7 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                ref.read(timerControllerProvider.notifier).stopTimer();
               },
             ),
       actions: [
