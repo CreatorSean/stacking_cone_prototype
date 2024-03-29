@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -21,6 +23,7 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
 
 class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     with TickerProviderStateMixin {
+  int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
   final bool _isConeSuccess = true; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
@@ -141,7 +144,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
               ],
             ),
           ),
-          if (_isConeSuccess)
+          if (_isConeSuccess && randomIndex == 0)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
@@ -156,7 +159,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                 },
               ),
             ),
-          if (!_isConeSuccess)
+          if (_isConeSuccess && randomIndex == 1)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
@@ -164,6 +167,36 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                 fit: BoxFit.cover,
                 width: 400,
                 height: 400,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0);
+                },
+              ),
+            ),
+          if (!_isConeSuccess && randomIndex == 0)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Lottie.asset(
+                'assets/lottie/clap.json',
+                fit: BoxFit.cover,
+                width: 200,
+                height: 200,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0);
+                },
+              ),
+            ),
+          if (!_isConeSuccess && randomIndex == 1)
+            Align(
+              alignment: Alignment.center,
+              child: Lottie.asset(
+                'assets/lottie/normal.json',
+                fit: BoxFit.cover,
+                width: 200,
+                height: 200,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
