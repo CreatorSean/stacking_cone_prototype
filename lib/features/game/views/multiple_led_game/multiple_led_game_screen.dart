@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
@@ -6,6 +8,7 @@ import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
@@ -22,6 +25,7 @@ class MultipleLedGameScreen extends ConsumerStatefulWidget {
 
 class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     with TickerProviderStateMixin {
+  int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
   final bool _isConeSuccess = false; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
@@ -132,7 +136,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                   ],
                 ),
                 const Expanded(
-                  child: ConContainerWidget(),
+                  child: MultiConContainerWidget(),
                 ),
                 Gaps.v20,
                 Padding(
@@ -156,13 +160,28 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
               ],
             ),
           ),
-          if (_isConeSuccess)
+          if (_isConeSuccess && randomIndex == 0)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
                 'assets/lottie/confetti.json',
                 fit: BoxFit.cover,
                 width: 600,
+                height: 500,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0);
+                },
+              ),
+            ),
+          if (_isConeSuccess && randomIndex == 1)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Lottie.asset(
+                'assets/lottie/okay.json',
+                fit: BoxFit.cover,
+                width: 400,
                 height: 400,
                 controller: _lottieController,
                 onLoaded: (composition) {
@@ -171,14 +190,29 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                 },
               ),
             ),
-          if (!_isConeSuccess)
+          if (!_isConeSuccess && randomIndex == 0)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
-                'assets/lottie/okay.json',
+                'assets/lottie/clap.json',
                 fit: BoxFit.cover,
-                width: 400,
-                height: 400,
+                width: 200,
+                height: 200,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0);
+                },
+              ),
+            ),
+          if (!_isConeSuccess && randomIndex == 1)
+            Align(
+              alignment: Alignment.center,
+              child: Lottie.asset(
+                'assets/lottie/normal.json',
+                fit: BoxFit.cover,
+                width: 200,
+                height: 200,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;

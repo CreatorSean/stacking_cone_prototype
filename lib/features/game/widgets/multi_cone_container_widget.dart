@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class ConContainerWidget extends StatelessWidget {
-  const ConContainerWidget({Key? key}) : super(key: key);
+class MultiConContainerWidget extends StatelessWidget {
+  const MultiConContainerWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    int randomIndex = Random().nextInt(6);
+    Set<int> randomIndexes = {};
+    while (randomIndexes.length < 2) {
+      randomIndexes.add(Random().nextInt(6));
+    }
 
     return Center(
       child: Container(
@@ -22,7 +25,7 @@ class ConContainerWidget extends StatelessWidget {
           crossAxisCount: 3,
           childAspectRatio: 0.8,
           children: List.generate(6, (index) {
-            return index == randomIndex
+            return randomIndexes.contains(index)
                 ? _coneLocation(context, index)
                 : _normalLocation(context, index);
           }),
