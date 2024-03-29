@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/bluetooth/view_model/selected_device_view_model.dart';
 import 'package:stacking_cone_prototype/features/bluetooth/views/bluetooth_dialog.dart';
+
 import 'package:stacking_cone_prototype/features/game_select/widgets/toggle_button.dart';
 
 class MainAppBar extends ConsumerStatefulWidget {
@@ -20,25 +21,25 @@ class MainAppBar extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MainAppBarState();
 }
 
-class _MainAppBarState extends ConsumerState<MainAppBar> {
-  void onBluetooth(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return const BluetoothDialog()
-            .animate()
-            .fadeIn(
-              duration: 200.ms,
-              curve: Curves.easeInOut,
-            )
-            .scaleXY(
-              begin: 0.0,
-              end: 1,
-            );
-      },
-    );
-  }
+void onBluetooth(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      return const BluetoothDialog()
+          .animate()
+          .fadeIn(
+            duration: 200.ms,
+            curve: Curves.easeInOut,
+          )
+          .scaleXY(
+            begin: 0.0,
+            end: 1,
+          );
+    },
+  );
+}
 
+class _MainAppBarState extends ConsumerState<MainAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
