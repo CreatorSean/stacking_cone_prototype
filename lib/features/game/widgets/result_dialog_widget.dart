@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
@@ -130,17 +131,64 @@ class ResultDialog extends ConsumerWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            TextButton(
-              onPressed: () => onHomePressed(context, ref),
-              child: const Text('나가기'),
+            const SizedBox(width: 10),
+            SizedBox(
+              width: 110,
+              height: 40,
+              child: TextButton(
+                onPressed: () => onHomePressed(context, ref),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.grey.shade400; // 눌렸을 때의 배경색
+                      }
+                      return const Color(0xfff0e5c8); // 기본 배경색
+                    },
+                  ),
+                ),
+                child: const Text(
+                  '나가기',
+                ),
+              ),
             ),
             const SizedBox(width: 20),
-            TextButton(
-              onPressed: () => onContinuePressed(context, ref),
-              child: const Text('다시하기'),
+            SizedBox(
+              width: 110,
+              height: 40,
+              child: TextButton(
+                onPressed: () => onHomePressed(context, ref),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      side: const BorderSide(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.resolveWith<Color?>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.pressed)) {
+                        return Colors.grey.shade400; // 눌렸을 때의 배경색
+                      }
+                      return const Color(0xfff0e5c8); // 기본 배경색
+                    },
+                  ),
+                ),
+                child: const Text(
+                  '다시하기',
+                ),
+              ),
             ),
+            const SizedBox(width: 10),
           ],
         ),
+        const SizedBox(height: 15),
       ],
     );
   }
