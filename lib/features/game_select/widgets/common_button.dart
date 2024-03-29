@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
+import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
-class CommonButton extends StatefulWidget {
+class CommonButton extends ConsumerStatefulWidget {
   final Widget screenName;
   final String buttonName;
 
@@ -12,10 +16,10 @@ class CommonButton extends StatefulWidget {
   });
 
   @override
-  State<CommonButton> createState() => _CommonButtonState();
+  ConsumerState<CommonButton> createState() => _CommonButtonState();
 }
 
-class _CommonButtonState extends State<CommonButton> {
+class _CommonButtonState extends ConsumerState<CommonButton> {
   void _onNextTap() {
     Navigator.push(
       context,
@@ -28,7 +32,14 @@ class _CommonButtonState extends State<CommonButton> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: _onNextTap,
+      onTap: () {
+        if (ref.read(gameConfigProvider).isTest) {
+          ref.read(timeProvider.notifier).state = 60;
+        } else {
+          ref.read(timerControllerProvider.notifier).startTimer();
+        }
+        _onNextTap();
+      },
       child: FractionallySizedBox(
         widthFactor: 0.6,
         child: AnimatedContainer(

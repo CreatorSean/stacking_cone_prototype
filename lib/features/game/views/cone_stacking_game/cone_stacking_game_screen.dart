@@ -146,7 +146,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                         screenName: ConeStackingGameScreen(),
                       ),
                       TimerContainer(
-                        maxTime: 5,
+                        maxTime: 60,
                         isTimerShow: ref.read(gameConfigProvider).isTest,
                       ),
                     ],

@@ -31,7 +31,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
   void initState() {
     super.initState();
     currentTime = widget.maxTime.toDouble();
-    ref.read(timeProvider.notifier).state = currentTime;
+    // ref.read(timeProvider.notifier).state = currentTime;
     time = 0;
 
     _controller = AnimationController(
@@ -51,15 +51,15 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
           if (ref.read(gameConfigProvider).isTest) {
             currentTime =
                 widget.maxTime - _circleController.value * widget.maxTime;
-            if (currentTime == 0) {
-              // ref.read(timeProvider.notifier).state = 0;
-            }
+            // if (currentTime == 0) {
+            //   ref.read(timeProvider.notifier).state = 0;
+            // }
           }
         });
       })
       ..forward();
 
-    ref.read(timerControllerProvider.notifier).startTimer();
+    // ref.read(timerControllerProvider.notifier).startTimer();
   }
 
   @override
@@ -70,15 +70,8 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
     super.dispose();
   }
 
-  void stopTimer() {
-    _timer?.cancel();
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (widget.isGameStop) {
-      stopTimer();
-    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
