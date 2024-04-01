@@ -153,7 +153,7 @@ class ResultDialog extends ConsumerWidget {
               width: 110,
               height: 40,
               child: TextButton(
-                onPressed: () => onHomePressed(context, ref),
+                onPressed: () => onContinuePressed(context, ref),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
