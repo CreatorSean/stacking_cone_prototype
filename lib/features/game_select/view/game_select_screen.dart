@@ -6,6 +6,7 @@ import 'package:stacking_cone_prototype/common/main_appbar.dart';
 
 import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
+import 'package:stacking_cone_prototype/features/game/views/single_led_game/single_led_game_screen.dart';
 
 import 'package:stacking_cone_prototype/features/game_select/widgets/common_button.dart';
 
@@ -44,7 +45,12 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
             screenName: ConeStackingGameScreen(),
             buttonName: "콘 쌓기 MODE",
           ),
-          Gaps.v40,
+          Gaps.v32,
+          const CommonButton(
+            screenName: SingleLedGameScreen(),
+            buttonName: "단일 LED MODE",
+          ),
+          Gaps.v32,
           const CommonButton(
             screenName: MultipleLedGameScreen(),
             buttonName: "이중 LED MODE",
