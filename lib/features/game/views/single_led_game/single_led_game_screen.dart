@@ -27,7 +27,8 @@ class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
-  bool _isVisible = true;
+  bool _showLottieAnimation = true;
+  final bool _isVisible = true;
   final double _opacity = 1.0;
   final bool _isConeSuccess = false; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
@@ -161,82 +162,53 @@ class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
               ],
             ),
           ),
-          if (_isConeSuccess && randomIndex == 0)
+          //긍정 로띠
+          if (_isConeSuccess && _showLottieAnimation)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
-                'assets/lottie/confetti.json',
-                fit: BoxFit.cover,
-                width: 600,
-                height: 500,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 0);
-                },
-              ),
-            ),
-          if (_isConeSuccess && randomIndex == 1)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Lottie.asset(
-                'assets/lottie/okay.json',
+                randomIndex == 1
+                    ? 'assets/lottie/okay.json'
+                    : 'assets/lottie/confetti.json',
                 fit: BoxFit.cover,
                 width: 400,
                 height: 400,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 0);
+                  _lottieController.forward(from: 0).then((_) {
+                    Future.delayed(const Duration(seconds: 0), () {
+                      setState(() {
+                        _showLottieAnimation = false;
+                      });
+                    });
+                  });
                 },
               ),
             ),
-          if (!_isConeSuccess && randomIndex == 0)
-            Visibility(
-              visible: _isVisible,
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Lottie.asset(
-                  'assets/lottie/clap.json',
-                  fit: BoxFit.cover,
-                  width: 200,
-                  height: 200,
-                  controller: _lottieController,
-                  onLoaded: (composition) {
-                    _lottieController.duration = composition.duration;
-                    _lottieController.forward(from: 0);
-                    // 3초 후에 _isVisible을 false로 설정하여 위젯을 숨김
-                    Future.delayed(const Duration(seconds: 2), () {
+
+          //부정 로띠
+          if (!_isConeSuccess && _showLottieAnimation)
+            Align(
+              alignment: Alignment.center,
+              child: Lottie.asset(
+                randomIndex == 1
+                    ? 'assets/lottie/normal.json'
+                    : 'assets/lottie/clap.json',
+                fit: BoxFit.cover,
+                width: 200,
+                height: 200,
+                controller: _lottieController,
+                onLoaded: (composition) {
+                  _lottieController.duration = composition.duration;
+                  _lottieController.forward(from: 0).then((_) {
+                    Future.delayed(const Duration(seconds: 0), () {
                       setState(() {
-                        _isVisible = false;
+                        _showLottieAnimation = false;
                       });
                     });
-                  },
-                ),
-              ),
-            ),
-          if (!_isConeSuccess && randomIndex == 1)
-            Visibility(
-              visible: _isVisible,
-              child: Align(
-                alignment: Alignment.center,
-                child: Lottie.asset(
-                  'assets/lottie/normal.json',
-                  fit: BoxFit.cover,
-                  width: 200,
-                  height: 200,
-                  controller: _lottieController,
-                  onLoaded: (composition) {
-                    _lottieController.duration = composition.duration;
-                    _lottieController.forward(from: 0);
-                    // 3초 후에 _isVisible을 false로 설정하여 위젯을 숨김
-                    Future.delayed(const Duration(seconds: 2), () {
-                      setState(() {
-                        _isVisible = false;
-                      });
-                    });
-                  },
-                ),
+                  });
+                },
               ),
             ),
         ],

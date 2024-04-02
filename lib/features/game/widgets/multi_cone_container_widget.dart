@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 
 class MultiConContainerWidget extends StatefulWidget {
-  const MultiConContainerWidget({Key? key}) : super(key: key);
+  final Function() trueLottie;
+  final Function() falseLottie;
+  const MultiConContainerWidget(
+      {Key? key, required this.trueLottie, required this.falseLottie})
+      : super(key: key);
 
   @override
   State<MultiConContainerWidget> createState() =>
@@ -46,6 +50,13 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
               onTap: () {
                 setState(() {
                   clickedIndex = index;
+                  if (randomIndexes.contains(index)) {
+                    print("true");
+                    widget.trueLottie;
+                  } else {
+                    print("false");
+                    widget.falseLottie;
+                  }
                 });
               },
               child: Stack(
