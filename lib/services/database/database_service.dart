@@ -15,7 +15,7 @@ class DatabaseService {
     Logger().i(await getDatabasesPath());
     String path = join(await getDatabasesPath(), 'HonestBalance.db');
 
-    //리셋하고 싶을때 주석 지우고 다시시작
+    //데이터 베이스를 리셋하고 싶을때 주석 지우고 다시시작
     //await deleteDatabase(path);
 
     //db가 존재하지 않으면 onCreate 함수 실행되어 table 생성
