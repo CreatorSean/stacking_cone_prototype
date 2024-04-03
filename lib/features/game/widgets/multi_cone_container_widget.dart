@@ -52,10 +52,10 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
                   clickedIndex = index;
                   if (randomIndexes.contains(index)) {
                     print("true");
-                    widget.trueLottie;
+                    widget.trueLottie();
                   } else {
                     print("false");
-                    widget.falseLottie;
+                    widget.falseLottie();
                   }
                 });
               },

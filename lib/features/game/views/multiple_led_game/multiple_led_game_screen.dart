@@ -29,6 +29,8 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   bool _isDialogShown = false;
   bool _showLottieAnimation = true;
   bool _isConeSuccess = true; //콘 꽂았을 때 효과
+  int positiveNum = 0;
+  int negativeNum = 0;
   late final AnimationController _lottieController;
 
   void showGameResult(double currentTime) {
@@ -58,12 +60,15 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     _isConeSuccess = true;
     _showLottieAnimation = true;
     print("isTrue");
+    ++positiveNum;
     setState(() {});
   }
 
   void isFalse() {
     _isConeSuccess = false;
     _showLottieAnimation = true;
+    print("isFalse");
+    ++negativeNum;
     setState(() {});
   }
 
@@ -91,7 +96,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         ),
       ),
       body: Stack(
-        children: [
+        children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
               bottom: 40,
@@ -164,7 +169,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           ),
 
           //긍정 로띠
-          if (_isConeSuccess && _showLottieAnimation)
+          if (positiveNum != 0 && _isConeSuccess && _showLottieAnimation)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
@@ -177,8 +182,8 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 1).then((_) {
-                    Future.delayed(const Duration(seconds: 0), () {
+                  _lottieController.forward(from: 0).then((_) {
+                    Future.delayed(const Duration(seconds: 1), () {
                       setState(() {
                         _showLottieAnimation = false;
                       });
@@ -189,7 +194,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
             ),
 
           //부정 로띠
-          if (!_isConeSuccess && _showLottieAnimation)
+          if (negativeNum != 0 && !_isConeSuccess && _showLottieAnimation)
             Align(
               alignment: Alignment.center,
               child: Lottie.asset(
@@ -197,13 +202,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                     ? 'assets/lottie/normal.json'
                     : 'assets/lottie/clap.json',
                 fit: BoxFit.cover,
-                width: 200,
-                height: 200,
+                width: 400,
+                height: 400,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
                   _lottieController.forward(from: 1).then((_) {
-                    Future.delayed(const Duration(seconds: 0), () {
+                    Future.delayed(const Duration(seconds: 1), () {
                       setState(() {
                         _showLottieAnimation = false;
                       });
