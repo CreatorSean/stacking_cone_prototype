@@ -1,12 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacking_cone_prototype/common/bluetooth_dialog.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game_select/widgets/toggle_button.dart';
-import 'package:stacking_cone_prototype/services/bluetooth_service/utils/bluetooth_device_entry.dart';
+
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
@@ -67,6 +67,20 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
               },
             ),
       actions: [
+        if (widget.isSelectScreen)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: IconButton(
+              icon: const Icon(
+                FontAwesomeIcons.plugCircleExclamation,
+                color: Colors.black,
+                size: Sizes.size36,
+              ),
+              onPressed: () {
+                ref.read(bluetoothServiceProvider.notifier).dispose();
+              },
+            ),
+          ),
         if (widget.isSelectScreen) const ToggleButton(),
       ],
     );
