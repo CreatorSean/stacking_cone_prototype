@@ -46,7 +46,10 @@ class _BluetoothDialogState extends ConsumerState<BluetoothDialog> {
                           device: device,
                           rssi: rssi,
                           onTap: () {
-                            print("Tapped");
+                            ref
+                                .read(bluetoothServiceProvider.notifier)
+                                .connectToDevice(device: device);
+                            Navigator.of(context).pop();
                           },
                           onLongPress: () async {
                             try {
@@ -92,18 +95,10 @@ class _BluetoothDialogState extends ConsumerState<BluetoothDialog> {
                               );
                             }
                           },
-                        )
-                            .animate()
-                            .fadeIn(
+                        ).animate().fadeIn(
                               begin: 0,
                               curve: Curves.easeInCubic,
-                              duration: const Duration(milliseconds: 300),
-                            )
-                            .slideX(
-                              begin: 0.1,
-                              end: 0,
-                              curve: Curves.easeInCubic,
-                              duration: const Duration(milliseconds: 300),
+                              duration: const Duration(milliseconds: 400),
                             );
                       },
                       separatorBuilder: (context, index) {
