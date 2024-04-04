@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/cone_container.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
@@ -139,7 +140,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                 ),
                 Gaps.v28,
                 const Expanded(
-                  child: ConContainerWidget(),
+                  child: ConeContainer(),
                 ),
                 Gaps.v20,
                 Padding(
