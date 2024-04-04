@@ -59,7 +59,6 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   void isTrue() {
     _isConeSuccess = true;
     _showLottieAnimation = true;
-    print("isTrue");
     ++positiveNum;
     setState(() {});
   }
@@ -67,7 +66,6 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   void isFalse() {
     _isConeSuccess = false;
     _showLottieAnimation = true;
-    print("isFalse");
     ++negativeNum;
     setState(() {});
   }
