@@ -118,7 +118,10 @@ class _ConContainerWidgetState extends State<ConContainerWidget> {
         child: Stack(
           children: [
             if (_selectedGridIndex == index && _coneCount > 0)
-              Positioned.fill(
+              Container(
+                decoration: const BoxDecoration(
+                  color: Color(0xffEB1138),
+                ),
                 child: Center(
                   child: Image.asset(
                     'assets/images/redcone.png', // 이미지 경로를 설정하세요.
