@@ -4,8 +4,8 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/view_model/selected_device_view_model.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/views/bluetooth_dialog.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/view_model/selected_device_view_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/views/bluetooth_dialog.dart';
 
 import 'package:stacking_cone_prototype/features/game_select/widgets/toggle_button.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';

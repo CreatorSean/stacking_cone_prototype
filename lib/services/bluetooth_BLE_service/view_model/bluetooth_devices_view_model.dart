@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:stacking_cone_prototype/features/bluetooth/model/bluetooth_devices_model.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/view_model/selected_device_view_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/model/bluetooth_devices_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/view_model/selected_device_view_model.dart';
 
 class BluetoothDevicesViewModel extends AsyncNotifier<BluetoothDevicesModel> {
   BluetoothDevicesModel model = BluetoothDevicesModel();
@@ -24,6 +24,7 @@ class BluetoothDevicesViewModel extends AsyncNotifier<BluetoothDevicesModel> {
         .where((r) =>
             r.advertisementData.localName.isNotEmpty && r.device.name.isEmpty)
         .toList());
+
     final noNames = result
         .where((r) =>
             r.device.name.isEmpty && r.advertisementData.localName.isEmpty)

@@ -4,8 +4,8 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/view_model/bluetooth_devices_view_model.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/views/widgets/bluetooth_list_tile.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/view_model/bluetooth_devices_view_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/views/widgets/bluetooth_list_tile.dart';
 
 class BluetoothDialog extends ConsumerStatefulWidget {
   const BluetoothDialog({super.key});

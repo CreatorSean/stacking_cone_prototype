@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/model/selected_device_model.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/view_model/bluetooth_devices_view_model.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/view_model/selected_device_view_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/model/selected_device_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/view_model/bluetooth_devices_view_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/view_model/selected_device_view_model.dart';
 
 class BluetoothListTile extends ConsumerStatefulWidget {
   final ScanResult r;
@@ -118,18 +118,18 @@ class _BluetoothListTileState extends ConsumerState<BluetoothListTile> {
                 subtitle:
                     deviceMacAddress(r: widget.r, model: selectedDeviceModel),
                 trailing: deviceSignal(r: widget.r, model: selectedDeviceModel),
-              )
-                  .animate()
-                  .then(
-                    delay: (widget.index * 50).ms,
-                  )
-                  .flipV(
-                    begin: -1,
-                    end: 0,
-                    duration: 500.ms,
-                    curve: Curves.easeOutCubic,
-                  )
-                  .fadeIn();
+              );
+              // .animate()
+              // .then(
+              //   delay: (widget.index * 50).ms,
+              // )
+              // .flipV(
+              //   begin: -1,
+              //   end: 0,
+              //   duration: 500.ms,
+              //   curve: Curves.easeOutCubic,
+              // )
+              // .fadeIn();
             },
             loading: () => const Center(
               child: CircularProgressIndicator(),
@@ -145,18 +145,18 @@ class _BluetoothListTileState extends ConsumerState<BluetoothListTile> {
         title: deviceName(r: widget.r),
         subtitle: deviceMacAddress(r: widget.r),
         trailing: deviceSignal(r: widget.r),
-      )
-          .animate()
-          .then(
-            delay: (widget.index * 50).ms,
-          )
-          .flipV(
-            begin: -1,
-            end: 0,
-            duration: 500.ms,
-            curve: Curves.easeOutCubic,
-          )
-          .fadeIn();
+      );
+      // .animate()
+      // .then(
+      //   delay: (widget.index * 50).ms,
+      // )
+      // .flipV(
+      //   begin: -1,
+      //   end: 0,
+      //   duration: 500.ms,
+      //   curve: Curves.easeOutCubic,
+      // )
+      // .fadeIn();
     }
   }
 }

@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/bluetooth/model/selected_device_model.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_BLE_service/model/selected_device_model.dart';
 
 class SelectedDeviceViewModel extends AsyncNotifier<SelectedDeviceModel> {
   SelectedDeviceModel model = SelectedDeviceModel();
