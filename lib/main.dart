@@ -72,6 +72,7 @@ class StackingConePrototype extends ConsumerWidget {
         scheme: deepBlue,
         appBarElevation: 2,
       ),
+      themeMode: ThemeMode.light,
       home: const GameSelectScreen(),
     );
   }

@@ -22,6 +22,7 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: MainAppBar(

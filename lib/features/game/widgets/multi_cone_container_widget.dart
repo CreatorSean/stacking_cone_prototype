@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
-class MultiConContainerWidget extends StatelessWidget {
-  const MultiConContainerWidget({Key? key}) : super(key: key);
+class MultiConContainerWidget extends StatefulWidget {
+  final Function() trueLottie;
+  final Function() falseLottie;
+  const MultiConContainerWidget(
+      {Key? key, required this.trueLottie, required this.falseLottie})
+      : super(key: key);
+
+  @override
+  State<MultiConContainerWidget> createState() =>
+      _MultiConContainerWidgetState();
+}
+
+class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
+  int? clickedIndex; // 사용자가 클릭한 인덱스
+  Set<int> randomIndexes = {}; //랜덤으로 흰색 배경 띄워주는 인덱스
+
+  Positioned viewRedCone() {
+    return Positioned.fill(
+      child: Image.asset(
+        'assets/images/redcone.png',
+        fit: BoxFit.cover,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    Set<int> randomIndexes = {};
     while (randomIndexes.length < 2) {
       randomIndexes.add(Random().nextInt(6));
     }
@@ -25,35 +46,43 @@ class MultiConContainerWidget extends StatelessWidget {
           crossAxisCount: 3,
           childAspectRatio: 0.8,
           children: List.generate(6, (index) {
-            return randomIndexes.contains(index)
-                ? _coneLocation(context, index)
-                : _normalLocation(context, index);
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  clickedIndex = index;
+                  if (randomIndexes.contains(index)) {
+                    print("true");
+                    widget.trueLottie();
+                  } else {
+                    print("false");
+                    widget.falseLottie();
+                  }
+                });
+              },
+              child: Stack(
+                children: [
+                  randomIndexes.contains(index)
+                      ? _coneLocation(context, index)
+                      : _normalLocation(context, index),
+                  if (clickedIndex == index) viewRedCone(),
+                ],
+              ),
+            );
           }),
         ),
       ),
     );
   }
 
-  //랜덤 위치에 콘 나타나는 곳
   Widget _coneLocation(BuildContext context, int index) {
-    return Stack(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(
-              color: const Color(0xFF332F23),
-              width: 1.5,
-            ),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(
+          color: const Color(0xFF332F23),
+          width: 1.5,
         ),
-        Positioned.fill(
-          child: Image.asset(
-            'assets/images/redcone.png',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ],
+      ),
     );
   }
 
