@@ -15,22 +15,22 @@ import 'package:stacking_cone_prototype/features/game/widgets/timer_container.da
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
-class MultipleLedGameScreen extends ConsumerStatefulWidget {
-  const MultipleLedGameScreen({super.key});
+class SingleLedGameScreen extends ConsumerStatefulWidget {
+  const SingleLedGameScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
       _MultipleLedGameScreenState();
 }
 
-class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
+class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
   bool _showLottieAnimation = true;
-  bool _isConeSuccess = true; //콘 꽂았을 때 효과
-  int positiveNum = 0;
-  int negativeNum = 0;
+  final bool _isVisible = true;
+  final double _opacity = 1.0;
+  final bool _isConeSuccess = false; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
 
   void showGameResult(double currentTime) {
@@ -40,7 +40,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         showDialog(
           context: context,
           builder: (context) => ResultDialog(
-            screenName: const MultipleLedGameScreen(),
+            screenName: const SingleLedGameScreen(),
             answer: 8,
             totalCone: 10,
             record: GameRecordModel(
@@ -54,22 +54,6 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         ).then((value) => _isDialogShown = false);
       });
     }
-  }
-
-  void isTrue() {
-    _isConeSuccess = true;
-    _showLottieAnimation = true;
-    print("isTrue");
-    ++positiveNum;
-    setState(() {});
-  }
-
-  void isFalse() {
-    _isConeSuccess = false;
-    _showLottieAnimation = true;
-    print("isFalse");
-    ++negativeNum;
-    setState(() {});
   }
 
   @override
@@ -96,7 +80,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         ),
       ),
       body: Stack(
-        children: <Widget>[
+        children: [
           Padding(
             padding: const EdgeInsets.only(
               bottom: 40,
@@ -110,7 +94,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          "이중 모드",
+                          "단일 모드",
                           style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
@@ -125,25 +109,36 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                       ],
                     ),
                     Gaps.v28,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: Colors.pink),
-                        ),
-                      ],
-                    ),
+                    if (_isConeSuccess)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "잘했어요!",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.pink),
+                          ),
+                        ],
+                      ),
+                    if (!_isConeSuccess)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "다시 한 번 해보세요!",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.pink),
+                          ),
+                        ],
+                      ),
                   ],
                 ),
-                Expanded(
-                  child: MultiConContainerWidget(
-                    trueLottie: () => isTrue(),
-                    falseLottie: () => isFalse(),
-                  ),
+                const Expanded(
+                  child: ConContainerWidget(),
                 ),
                 Gaps.v20,
                 Padding(
@@ -155,7 +150,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       const StopButton(
-                        screenName: MultipleLedGameScreen(),
+                        screenName: SingleLedGameScreen(),
                       ),
                       TimerContainer(
                         maxTime: 60,
@@ -167,9 +162,8 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
               ],
             ),
           ),
-
           //긍정 로띠
-          if (positiveNum != 0 && _isConeSuccess && _showLottieAnimation)
+          if (_isConeSuccess && _showLottieAnimation)
             Align(
               alignment: Alignment.centerLeft,
               child: Lottie.asset(
@@ -183,7 +177,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
                   _lottieController.forward(from: 0).then((_) {
-                    Future.delayed(const Duration(seconds: 1), () {
+                    Future.delayed(const Duration(seconds: 0), () {
                       setState(() {
                         _showLottieAnimation = false;
                       });
@@ -194,7 +188,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
             ),
 
           //부정 로띠
-          if (negativeNum != 0 && !_isConeSuccess && _showLottieAnimation)
+          if (!_isConeSuccess && _showLottieAnimation)
             Align(
               alignment: Alignment.center,
               child: Lottie.asset(
@@ -202,13 +196,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                     ? 'assets/lottie/normal.json'
                     : 'assets/lottie/clap.json',
                 fit: BoxFit.cover,
-                width: 400,
-                height: 400,
+                width: 200,
+                height: 200,
                 controller: _lottieController,
                 onLoaded: (composition) {
                   _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 1).then((_) {
-                    Future.delayed(const Duration(seconds: 1), () {
+                  _lottieController.forward(from: 0).then((_) {
+                    Future.delayed(const Duration(seconds: 0), () {
                       setState(() {
                         _showLottieAnimation = false;
                       });
