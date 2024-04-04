@@ -22,9 +22,7 @@ class BluetoothService extends AsyncNotifier<List<BluetoothDiscoveryResult>> {
     if (rawMsg.contains('<') && rawMsg.contains('>')) {
       String temp =
           rawMsg.substring(rawMsg.indexOf('<') + 1, rawMsg.indexOf('>'));
-
       refinedMsg = temp;
-
       print(refinedMsg);
       rawMsg = '';
     }
