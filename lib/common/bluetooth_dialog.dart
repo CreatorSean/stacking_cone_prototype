@@ -16,7 +16,8 @@ class _BluetoothDialogState extends ConsumerState<BluetoothDialog> {
   @override
   Widget build(BuildContext context) {
     return ref.watch(bluetoothServiceProvider).when(
-          data: (results) {
+          data: (btModel) {
+            final results = btModel.results;
             results.sort((a, b) => a.device.isBonded ? -1 : 1);
 
             return Dialog(

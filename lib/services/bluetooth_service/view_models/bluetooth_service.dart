@@ -3,8 +3,10 @@ import 'dart:typed_data';
 
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/models/bluetooth_model.dart';
 
-class BluetoothService extends AsyncNotifier<List<BluetoothDiscoveryResult>> {
+class BluetoothService extends AsyncNotifier<BluetoothModel> {
+  late BluetoothModel btModel;
   StreamSubscription<BluetoothDiscoveryResult>? _streamSubscription;
   List<BluetoothDiscoveryResult> results =
       List<BluetoothDiscoveryResult>.empty(growable: true);
@@ -20,11 +22,28 @@ class BluetoothService extends AsyncNotifier<List<BluetoothDiscoveryResult>> {
     final dataString = String.fromCharCodes(data);
     rawMsg += dataString;
     if (rawMsg.contains('<') && rawMsg.contains('>')) {
-      String temp =
-          rawMsg.substring(rawMsg.indexOf('<') + 1, rawMsg.indexOf('>'));
-      refinedMsg = temp;
-      print(refinedMsg);
-      rawMsg = '';
+      // 데이터 스트림을 받는 중 오류로
+      // <, >가 반대로 들어오는 경우를 방지
+      if (rawMsg.indexOf('<') > rawMsg.indexOf('>')) {
+        rawMsg = "";
+      } else {
+        String temp =
+            rawMsg.substring(rawMsg.indexOf('<') + 1, rawMsg.indexOf('>'));
+        refinedMsg = temp;
+        print(refinedMsg);
+
+        List<int> coneMatrixMsg = refinedMsg
+            .split(',')
+            .map((e) => int.parse(e))
+            .toList(); // [0, 0, 0]
+
+        print(coneMatrixMsg);
+
+        btModel =
+            BluetoothModel(results: results, coneMatrixMsg: coneMatrixMsg);
+        state = AsyncValue.data(btModel);
+        rawMsg = '';
+      }
     }
   }
 
@@ -56,24 +75,28 @@ class BluetoothService extends AsyncNotifier<List<BluetoothDiscoveryResult>> {
         results[existingIndex] = r;
       } else {
         results.add(r);
-        state = AsyncValue.data(results);
+        btModel = BluetoothModel(results: results, coneMatrixMsg: [0, 0, 0]);
+
+        state = AsyncValue.data(btModel);
       }
     });
 
     _streamSubscription!.onDone(() {
       isDiscovering = false;
-      state = AsyncValue.data(results);
+      btModel = BluetoothModel(results: results, coneMatrixMsg: [0, 0, 0]);
+      state = AsyncValue.data(btModel);
     });
   }
 
   @override
-  FutureOr<List<BluetoothDiscoveryResult>> build() {
+  FutureOr<BluetoothModel> build() {
+    btModel = BluetoothModel(results: results, coneMatrixMsg: [0, 0, 0]);
     startDiscovery();
 
-    return results;
+    return btModel;
   }
 }
 
 final bluetoothServiceProvider =
-    AsyncNotifierProvider<BluetoothService, List<BluetoothDiscoveryResult>>(
+    AsyncNotifierProvider<BluetoothService, BluetoothModel>(
         () => BluetoothService());

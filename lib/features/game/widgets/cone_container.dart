@@ -1,15 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
-class ConeContainer extends StatefulWidget {
+class ConeContainer extends ConsumerStatefulWidget {
   const ConeContainer({super.key});
 
   @override
-  State<ConeContainer> createState() => _ConeContainerState();
+  ConsumerState<ConeContainer> createState() => _ConeContainerState();
 }
 
-class _ConeContainerState extends State<ConeContainer> {
+class _ConeContainerState extends ConsumerState<ConeContainer> {
   late int _targetIndex;
 
   List<int> coneMatrix = [0, 0, 0];
@@ -44,14 +46,23 @@ class _ConeContainerState extends State<ConeContainer> {
             width: 1.5,
           ),
         ),
-        child: GridView.count(
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 3,
-          childAspectRatio: 0.8,
-          children: List.generate(3, (index) {
-            return _buildGridItem(context, index);
-          }),
-        ),
+        child: ref.watch(bluetoothServiceProvider).when(
+            data: (btModel) {
+              coneMatrix = btModel.coneMatrixMsg;
+              return GridView.count(
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 3,
+                childAspectRatio: 0.8,
+                children: List.generate(
+                  3,
+                  (index) {
+                    return _buildGridItem(context, index);
+                  },
+                ),
+              );
+            },
+            error: (error, stackTrace) => const Text('Error'),
+            loading: () => const CircularProgressIndicator()),
       ),
     );
   }

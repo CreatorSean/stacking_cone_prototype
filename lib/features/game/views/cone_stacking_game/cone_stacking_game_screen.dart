@@ -87,6 +87,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   Widget build(BuildContext context) {
     currentTime = ref.watch(timeProvider);
     showGameResult(currentTime);
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
