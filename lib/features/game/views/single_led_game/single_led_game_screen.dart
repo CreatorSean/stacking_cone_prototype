@@ -10,6 +10,7 @@ import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/single_cone_container_widget%20.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
@@ -28,10 +29,10 @@ class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
   bool _showLottieAnimation = true;
-  final bool _isVisible = true;
-  final double _opacity = 1.0;
-  final bool _isConeSuccess = false; //콘 꽂았을 때 효과
+  bool _isConeSuccess = false; //콘 꽂았을 때 효과
   late final AnimationController _lottieController;
+  int positiveNum = 0;
+  int negativeNum = 0;
 
   void showGameResult(double currentTime) {
     if (currentTime == 0 && !_isDialogShown) {
@@ -66,6 +67,20 @@ class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
   void dispose() {
     _lottieController.dispose();
     super.dispose();
+  }
+
+  void isTrue() {
+    _isConeSuccess = true;
+    _showLottieAnimation = true;
+    ++positiveNum;
+    setState(() {});
+  }
+
+  void isFalse() {
+    _isConeSuccess = false;
+    _showLottieAnimation = true;
+    ++negativeNum;
+    setState(() {});
   }
 
   @override
@@ -137,8 +152,11 @@ class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
                       ),
                   ],
                 ),
-                const Expanded(
-                  child: ConContainerWidget(),
+                Expanded(
+                  child: SingleConContainerWidget(
+                    trueLottie: () => isTrue(),
+                    falseLottie: () => isFalse(),
+                  ),
                 ),
                 Gaps.v20,
                 Padding(
