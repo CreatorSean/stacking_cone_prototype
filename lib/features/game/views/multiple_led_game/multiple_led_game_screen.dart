@@ -9,6 +9,8 @@ import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container_widget.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/negative_lottie.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/positive_lottie.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
@@ -27,8 +29,8 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
-  bool _showLottieAnimation = true;
-  bool _isConeSuccess = true; //콘 꽂았을 때 효과
+  bool showLottieAnimation = true;
+  bool? _isConeSuccess = null; //콘 꽂았을 때 효과
   int positiveNum = 0;
   int negativeNum = 0;
   late final AnimationController _lottieController;
@@ -58,14 +60,14 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
 
   void isTrue() {
     _isConeSuccess = true;
-    _showLottieAnimation = true;
+    showLottieAnimation = true;
     ++positiveNum;
     setState(() {});
   }
 
   void isFalse() {
     _isConeSuccess = false;
-    _showLottieAnimation = true;
+    showLottieAnimation = true;
     ++negativeNum;
     setState(() {});
   }
@@ -126,13 +128,14 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: Colors.pink),
-                        ),
+                        if (_isConeSuccess != null)
+                          Text(
+                            _isConeSuccess == true ? "잘했어요!" : "다시 한 번 해보세요!",
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(color: Colors.pink),
+                          ),
                       ],
                     ),
                   ],
@@ -167,53 +170,28 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           ),
 
           //긍정 로띠
-          if (positiveNum != 0 && _isConeSuccess && _showLottieAnimation)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Lottie.asset(
-                randomIndex == 1
-                    ? 'assets/lottie/okay.json'
-                    : 'assets/lottie/confetti.json',
-                fit: BoxFit.cover,
-                width: 400,
-                height: 400,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 0).then((_) {
-                    Future.delayed(const Duration(seconds: 1), () {
-                      setState(() {
-                        _showLottieAnimation = false;
-                      });
-                    });
-                  });
-                },
-              ),
+          if (positiveNum != 0 && _isConeSuccess == true)
+            PositiveLottie(
+              controller: _lottieController,
+              randomIndex: randomIndex,
+              showLottieAnimation: showLottieAnimation,
+              onAnimationComplete: () {
+                setState(() {
+                  showLottieAnimation = false;
+                });
+              },
             ),
-
           //부정 로띠
-          if (negativeNum != 0 && !_isConeSuccess && _showLottieAnimation)
-            Align(
-              alignment: Alignment.center,
-              child: Lottie.asset(
-                randomIndex == 1
-                    ? 'assets/lottie/normal.json'
-                    : 'assets/lottie/clap.json',
-                fit: BoxFit.cover,
-                width: 400,
-                height: 400,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 1).then((_) {
-                    Future.delayed(const Duration(seconds: 1), () {
-                      setState(() {
-                        _showLottieAnimation = false;
-                      });
-                    });
-                  });
-                },
-              ),
+          if (negativeNum != 0 && _isConeSuccess == false)
+            NegativeLottie(
+              controller: _lottieController,
+              randomIndex: randomIndex,
+              showLottieAnimation: showLottieAnimation,
+              onAnimationComplete: () {
+                setState(() {
+                  showLottieAnimation = false;
+                });
+              },
             ),
         ],
       ),
