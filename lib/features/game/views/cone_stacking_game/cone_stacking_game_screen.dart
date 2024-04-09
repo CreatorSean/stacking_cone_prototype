@@ -14,6 +14,9 @@ import 'package:stacking_cone_prototype/features/game/widgets/timer_container.da
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
+import '../../widgets/negative_lottie.dart';
+import '../../widgets/positive_lottie.dart';
+
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
   const ConeStackingGameScreen({super.key});
 
@@ -25,8 +28,8 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
 class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
+  bool showLottieAnimation = true;
   bool _isDialogShown = false;
-  bool _showLottieAnimation = true;
   bool _isConeSuccess = true; //콘 꽂았을 때 효과
   int positiveNum = 0;
   int negativeNum = 0;
@@ -34,16 +37,14 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
 
   void isTrue() {
     _isConeSuccess = true;
-    _showLottieAnimation = true;
-    print("isTrue");
+    showLottieAnimation = true;
     ++positiveNum;
     setState(() {});
   }
 
   void isFalse() {
     _isConeSuccess = false;
-    _showLottieAnimation = true;
-    print("isFalse");
+    showLottieAnimation = true;
     ++negativeNum;
     setState(() {});
   }
@@ -165,54 +166,28 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
               ],
             ),
           ),
-          //긍정 로띠
-          if (positiveNum != 0 && _isConeSuccess && _showLottieAnimation)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Lottie.asset(
-                randomIndex == 1
-                    ? 'assets/lottie/okay.json'
-                    : 'assets/lottie/confetti.json',
-                fit: BoxFit.cover,
-                width: 400,
-                height: 400,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 0).then((_) {
-                    Future.delayed(const Duration(seconds: 1), () {
-                      setState(() {
-                        _showLottieAnimation = false;
-                      });
-                    });
-                  });
-                },
-              ),
+          if (positiveNum != 0 && _isConeSuccess == true)
+            PositiveLottie(
+              controller: _lottieController,
+              randomIndex: randomIndex,
+              showLottieAnimation: showLottieAnimation,
+              onAnimationComplete: () {
+                setState(() {
+                  showLottieAnimation = false;
+                });
+              },
             ),
-
           //부정 로띠
-          if (negativeNum != 0 && !_isConeSuccess && _showLottieAnimation)
-            Align(
-              alignment: Alignment.center,
-              child: Lottie.asset(
-                randomIndex == 1
-                    ? 'assets/lottie/normal.json'
-                    : 'assets/lottie/clap.json',
-                fit: BoxFit.cover,
-                width: 400,
-                height: 400,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 1).then((_) {
-                    Future.delayed(const Duration(seconds: 1), () {
-                      setState(() {
-                        _showLottieAnimation = false;
-                      });
-                    });
-                  });
-                },
-              ),
+          if (negativeNum != 0 && _isConeSuccess == false)
+            NegativeLottie(
+              controller: _lottieController,
+              randomIndex: randomIndex,
+              showLottieAnimation: showLottieAnimation,
+              onAnimationComplete: () {
+                setState(() {
+                  showLottieAnimation = false;
+                });
+              },
             ),
         ],
       ),
