@@ -26,7 +26,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
-  bool showLottieAnimation = true;
+  bool showLottieAnimation = false;
   bool _isConeSuccess = true; //콘 꽂았을 때 효과
   int positiveNum = 0;
   int negativeNum = 0;

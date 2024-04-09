@@ -25,7 +25,7 @@ class ConeStackingGameScreen extends ConsumerStatefulWidget {
 class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
-  bool showLottieAnimation = true;
+  bool showLottieAnimation = false;
   bool _isDialogShown = false;
   bool _isConeSuccess = true; //콘 꽂았을 때 효과
   int positiveNum = 0;
@@ -139,8 +139,11 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                   ],
                 ),
                 Gaps.v28,
-                const Expanded(
-                  child: ConeContainer(),
+                Expanded(
+                  child: ConeContainer(
+                    trueLottie: () => isTrue(),
+                    falseLottie: () => isFalse(),
+                  ),
                 ),
                 Gaps.v20,
                 Padding(

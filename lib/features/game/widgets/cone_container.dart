@@ -2,16 +2,24 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
 class ConeContainer extends ConsumerStatefulWidget {
-  const ConeContainer({super.key});
+  final Function() trueLottie;
+  final Function() falseLottie;
+  const ConeContainer({
+    super.key,
+    required this.trueLottie,
+    required this.falseLottie,
+  });
 
   @override
   ConsumerState<ConeContainer> createState() => _ConeContainerState();
 }
 
-class _ConeContainerState extends ConsumerState<ConeContainer> {
+class _ConeContainerState extends ConsumerState<ConeContainer>
+    with TickerProviderStateMixin {
   late int _targetIndex;
 
   List<int> coneMatrix = [0, 0, 0];
@@ -127,6 +135,9 @@ class _ConeContainerState extends ConsumerState<ConeContainer> {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  index == _targetIndex
+                      ? const Text("data")
+                      : const Text("data"),
                 ],
               ),
             ),

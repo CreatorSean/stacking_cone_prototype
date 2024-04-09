@@ -6,6 +6,8 @@ import 'package:stacking_cone_prototype/features/game_select/view/game_select_sc
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
+import '../../../services/timer/timer_service.dart';
+
 class ResultDialog extends ConsumerWidget {
   final Widget screenName;
   final int totalCone;
@@ -26,7 +28,7 @@ class ResultDialog extends ConsumerWidget {
       totalCone: totalCone,
       answerCone: answer,
       wrongCong: totalCone - answer,
-      totalTime: ref.read(timeProvider.notifier).state.toInt(),
+      totalTime: ref.watch(timerControllerProvider).time,
     );
   }
 
