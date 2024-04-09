@@ -176,6 +176,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
               onAnimationComplete: () {
                 setState(() {
                   showLottieAnimation = false;
+                  randomIndex = Random().nextInt(2);
                 });
               },
             ),
@@ -188,6 +189,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
               onAnimationComplete: () {
                 setState(() {
                   showLottieAnimation = false;
+                  randomIndex = Random().nextInt(2);
                 });
               },
             ),
