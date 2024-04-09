@@ -43,7 +43,7 @@ class _NegativeLottieState extends State<NegativeLottie> {
   @override
   Widget build(BuildContext context) {
     if (!widget.showLottieAnimation) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Align(

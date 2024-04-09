@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
@@ -6,7 +5,6 @@ import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
-import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class ResultDialog extends ConsumerWidget {
   final Widget screenName;
@@ -28,7 +26,7 @@ class ResultDialog extends ConsumerWidget {
       totalCone: totalCone,
       answerCone: answer,
       wrongCong: totalCone - answer,
-      totalTime: 50,
+      totalTime: ref.read(timeProvider.notifier).state.toInt(),
     );
   }
 

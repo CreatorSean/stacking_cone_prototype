@@ -1,13 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
@@ -57,13 +54,13 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
           context: context,
           builder: (context) => ResultDialog(
             screenName: const ConeStackingGameScreen(),
-            answer: 8,
-            totalCone: 10,
+            answer: positiveNum,
+            totalCone: positiveNum + negativeNum,
             record: GameRecordModel(
               id: null,
-              totalCone: 10,
-              answerCone: 8,
-              wrongCong: 2,
+              totalCone: positiveNum + negativeNum,
+              answerCone: positiveNum,
+              wrongCong: negativeNum,
               totalTime: 60,
             ),
           ),
@@ -88,7 +85,6 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   Widget build(BuildContext context) {
     currentTime = ref.watch(timeProvider);
     showGameResult(currentTime);
-
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -129,13 +125,15 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleMedium
-                              ?.copyWith(color: Colors.pink),
-                        ),
+                        showLottieAnimation
+                            ? Text(
+                                _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(color: Colors.pink),
+                              )
+                            : const Text(""),
                       ],
                     ),
                   ],
@@ -166,6 +164,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
               ],
             ),
           ),
+          //긍정 로띠
           if (positiveNum != 0 && _isConeSuccess == true)
             PositiveLottie(
               controller: _lottieController,

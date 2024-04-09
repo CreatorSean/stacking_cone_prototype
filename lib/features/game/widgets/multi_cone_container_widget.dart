@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 
-import 'package:flutter/material.dart';
-import 'dart:async';
-import 'dart:math';
-
-import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
-
 class MultiConContainerWidget extends StatefulWidget {
   final Function() trueLottie;
   final Function() falseLottie;

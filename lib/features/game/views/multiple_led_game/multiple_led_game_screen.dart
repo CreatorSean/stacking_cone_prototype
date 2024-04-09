@@ -2,12 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
-import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/negative_lottie.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/positive_lottie.dart';
@@ -30,7 +27,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
   bool showLottieAnimation = true;
-  bool? _isConeSuccess = null; //콘 꽂았을 때 효과
+  bool _isConeSuccess = true; //콘 꽂았을 때 효과
   int positiveNum = 0;
   int negativeNum = 0;
   late final AnimationController _lottieController;
@@ -128,14 +125,15 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        if (_isConeSuccess != null)
-                          Text(
-                            _isConeSuccess == true ? "잘했어요!" : "다시 한 번 해보세요!",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.pink),
-                          ),
+                        showLottieAnimation
+                            ? Text(
+                                _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(color: Colors.pink),
+                              )
+                            : const Text(" "),
                       ],
                     ),
                   ],
