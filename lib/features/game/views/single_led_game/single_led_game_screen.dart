@@ -4,11 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
-import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/cone_container_widget.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/single_cone_container_widget%20.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
@@ -21,18 +18,18 @@ class SingleLedGameScreen extends ConsumerStatefulWidget {
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _MultipleLedGameScreenState();
+      _SingleLedGameScreenState();
 }
 
-class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
+class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
   bool _isDialogShown = false;
-  bool _showLottieAnimation = true;
+  bool _showLottieAnimation = false;
   bool _isConeSuccess = false; //콘 꽂았을 때 효과
-  late final AnimationController _lottieController;
   int positiveNum = 0;
   int negativeNum = 0;
+  late final AnimationController _lottieController;
 
   void showGameResult(double currentTime) {
     if (currentTime == 0 && !_isDialogShown) {
@@ -124,32 +121,20 @@ class _MultipleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
                       ],
                     ),
                     Gaps.v28,
-                    if (_isConeSuccess)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "잘했어요!",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.pink),
-                          ),
-                        ],
-                      ),
-                    if (!_isConeSuccess)
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "다시 한 번 해보세요!",
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(color: Colors.pink),
-                          ),
-                        ],
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _showLottieAnimation
+                            ? Text(
+                                _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleMedium
+                                    ?.copyWith(color: Colors.pink),
+                              )
+                            : const Text(" "),
+                      ],
+                    ),
                   ],
                 ),
                 Expanded(

@@ -33,7 +33,9 @@ class _SingleConContainerWidgetState extends State<SingleConContainerWidget> {
   }
 
   void _initRandomIndexes() {
-    while (randomIndexes.length == 1) {
+    // while (randomIndexes.length == 1)
+    {
+      randomIndexes.clear();
       randomIndexes.add(Random().nextInt(3));
     }
     _whiteLocationDisplayTime();
@@ -79,7 +81,7 @@ class _SingleConContainerWidgetState extends State<SingleConContainerWidget> {
       if (correctIndexes.contains(index)) {
         return;
       }
-      if (correctIndexes.length == 2) {
+      if (correctIndexes.length == 1) {
         return;
       }
       if (alreadyClicked.contains(index) || index == fixedRedConeIndex) {
@@ -111,7 +113,7 @@ class _SingleConContainerWidgetState extends State<SingleConContainerWidget> {
           });
         });
       }
-      if (convertScreen == 2) {
+      if (convertScreen == 1) {
         Future.delayed(const Duration(seconds: 3), () {
           setState(() {
             randomIndexes.clear();
