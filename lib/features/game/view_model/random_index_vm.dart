@@ -11,7 +11,8 @@ class RandomIndexController extends StateNotifier<TargetState> {
   RandomIndexController() : super(TargetState.initial());
 
   void setIndex() {
-    state.targetIndex = Random().nextInt(3);
+    int newIndex = Random().nextInt(3);
+    state = state.copyWith(targetIndex: newIndex);
   }
 }
 
@@ -22,15 +23,15 @@ class TargetState {
   TargetState({required this.targetIndex, this.isRunning = false});
 
   TargetState.initial()
-      : targetIndex = Random().nextInt(3),
+      : targetIndex = 0,
         isRunning = false;
 
   TargetState copyWith({
-    int? time,
+    int? targetIndex,
     bool? isRunning,
   }) {
     return TargetState(
-      targetIndex: time ?? targetIndex,
+      targetIndex: targetIndex ?? this.targetIndex,
       isRunning: isRunning ?? this.isRunning,
     );
   }

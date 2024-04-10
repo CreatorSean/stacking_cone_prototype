@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
@@ -44,6 +45,20 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
         state = AsyncValue.data(btModel);
         rawMsg = '';
       }
+    }
+  }
+
+  Future<void> onSendData(List<int> gameRuleList) async {
+    if (connection != null && connection!.isConnected) {
+      // List<int>를 "1,2" 형태의 문자열로 변환
+      String message = gameRuleList.join(",");
+      String messages = '[$message]';
+      // 문자열을 UTF-8 바이트로 인코딩하여 전송
+      connection!.output.add(Uint8List.fromList(utf8.encode(messages)));
+      await connection!.output.allSent;
+      print('Success');
+    } else {
+      print('Cannot send message, no connection established');
     }
   }
 

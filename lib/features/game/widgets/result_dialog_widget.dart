@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
-
 import '../../../services/timer/timer_service.dart';
 
 class ResultDialog extends ConsumerWidget {
@@ -43,7 +43,6 @@ class ResultDialog extends ConsumerWidget {
   }
 
   void onHomePressed(BuildContext context, WidgetRef ref) {
-    ref.read(timeProvider.notifier).state = 5;
     if (ref.read(gameConfigProvider).isTest) {
       getTestGameRecore();
       ref.watch(gameRecordProvider.notifier).insertRecord(record);
@@ -60,15 +59,20 @@ class ResultDialog extends ConsumerWidget {
     );
   }
 
-  void onContinuePressed(BuildContext context, WidgetRef ref) {
-    ref.read(timeProvider.notifier).state = 5;
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => screenName,
-      ),
-      (route) => false,
-    );
+  void onRestartPressed(BuildContext context, WidgetRef ref) {
+    ref.read(coneStackingGameProvider.notifier).startGame();
+    ref
+        .read(bluetoothServiceProvider.notifier)
+        .onSendData(ref.watch(coneStackingGameProvider).gameRule);
+    Navigator.pop(context);
+    ref.read(timerControllerProvider.notifier).startTimer();
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (BuildContext context) => screenName,
+    //   ),
+    //   (route) => false,
+    // );
   }
 
   @override
@@ -153,7 +157,7 @@ class ResultDialog extends ConsumerWidget {
               width: 110,
               height: 40,
               child: TextButton(
-                onPressed: () => onContinuePressed(context, ref),
+                onPressed: () => onRestartPressed(context, ref),
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(

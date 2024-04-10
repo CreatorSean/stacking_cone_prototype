@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/random_index_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class CommonButton extends ConsumerStatefulWidget {
@@ -30,6 +32,13 @@ class _CommonButtonState extends ConsumerState<CommonButton> {
     );
   }
 
+  void _onGameStartTap() {
+    ref.read(coneStackingGameProvider.notifier).startGame();
+    ref
+        .read(bluetoothServiceProvider.notifier)
+        .onSendData(ref.watch(coneStackingGameProvider).gameRule);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -39,7 +48,7 @@ class _CommonButtonState extends ConsumerState<CommonButton> {
         } else {
           ref.read(timerControllerProvider.notifier).startTimer();
         }
-        ref.read(randomIndexProvider.notifier).setIndex();
+        _onGameStartTap();
         _onNextTap();
       },
       child: FractionallySizedBox(

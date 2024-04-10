@@ -1,10 +1,9 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/random_index_vm.dart';
-import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
+
+import '../view_model/cone_stacking_game_vm.dart';
 
 class ConeContainer extends ConsumerStatefulWidget {
   final Function() trueLottie;
@@ -69,10 +68,17 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                   coneMatrix, btModel.coneMatrixMsg);
               if (changedIndices.isNotEmpty) {
                 if (changedIndices[0] ==
-                    ref.watch(randomIndexProvider).targetIndex) {
+                    ref.watch(coneStackingGameProvider).targetIndex) {
                   widget.trueLottie();
+                  ref.watch(bluetoothServiceProvider.notifier).onSendData(
+                      [ref.watch(coneStackingGameProvider).targetIndex, 1]);
                 } else {
                   widget.falseLottie();
+                  ref
+                      .watch(bluetoothServiceProvider.notifier)
+                      .onSendData([changedIndices[0], 0]);
+                  ref.watch(bluetoothServiceProvider.notifier).onSendData(
+                      [ref.watch(coneStackingGameProvider).targetIndex, 1]);
                 }
               }
 
@@ -107,7 +113,7 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
         children: [
           Container(
             decoration: BoxDecoration(
-              color: index == ref.watch(randomIndexProvider).targetIndex
+              color: index == ref.watch(coneStackingGameProvider).targetIndex
                   ? Colors.white
                   : const Color(0xfff0e5c8),
               border: Border.all(
@@ -123,19 +129,20 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: index == ref.watch(randomIndexProvider).targetIndex
+                      color: index ==
+                              ref.watch(coneStackingGameProvider).targetIndex
                           ? Colors.transparent
                           : Colors.red.withOpacity(0.5),
                     ),
                   )
                       .animate(
-                        target:
-                            index != ref.watch(randomIndexProvider).targetIndex
-                                ? 1
-                                : 0,
+                        target: index !=
+                                ref.watch(coneStackingGameProvider).targetIndex
+                            ? 1
+                            : 0,
                         onComplete: (controller) {
                           if (index !=
-                              ref.watch(randomIndexProvider).targetIndex) {
+                              ref.watch(coneStackingGameProvider).targetIndex) {
                             controller.forward(from: 0);
                           }
                         },

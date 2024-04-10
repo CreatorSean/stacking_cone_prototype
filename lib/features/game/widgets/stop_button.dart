@@ -22,7 +22,6 @@ class StopButton extends ConsumerWidget {
       child: ElevatedButton(
         onPressed: () {
           ref.read(timerControllerProvider.notifier).stopTimer();
-          ref.read(randomIndexProvider.notifier).setIndex();
           showDialog(
             context: context,
             builder: (context) => ResultDialog(
