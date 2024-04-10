@@ -66,18 +66,16 @@ class ResultDialog extends ConsumerWidget {
         .onSendData(ref.watch(coneStackingGameProvider).gameRule);
     Navigator.pop(context);
     ref.read(timerControllerProvider.notifier).startTimer();
-    // Navigator.pushAndRemoveUntil(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (BuildContext context) => screenName,
-    //   ),
-    //   (route) => false,
-    // );
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final int score = (answer / totalCone * 100).toInt();
+    int score = 0;
+    if (record.answerCone != 0 && record.totalCone != 0) {
+      score = (record.answerCone / record.totalCone * 100).toInt();
+    } else {
+      score = 0;
+    }
 
     return AlertDialog(
       backgroundColor: Colors.white,
@@ -111,7 +109,7 @@ class ResultDialog extends ConsumerWidget {
           ),
           const SizedBox(height: 5),
           Text(
-            '$answer / $totalCone',
+            '${record.answerCone} / ${record.totalCone}',
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: Color(0xff332F23),

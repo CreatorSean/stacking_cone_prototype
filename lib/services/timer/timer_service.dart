@@ -18,6 +18,16 @@ class TimerController extends StateNotifier<TimerState> {
     });
   }
 
+  void startTestTimer() {
+    state.time = 10;
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      state = state.copyWith(time: state.time - 1);
+      if (state.time == 0) {
+        stopTimer();
+      }
+    });
+  }
+
   void stopTimer() {
     _timer?.cancel();
     state = state.copyWith(isRunning: false);

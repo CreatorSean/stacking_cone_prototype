@@ -2,17 +2,14 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class TimerContainer extends ConsumerStatefulWidget {
-  final double maxTime;
   final bool isTimerShow;
   final bool isGameStop;
   const TimerContainer({
     super.key,
-    required this.maxTime,
     this.isGameStop = false,
     this.isTimerShow = false,
   });
@@ -22,53 +19,8 @@ class TimerContainer extends ConsumerStatefulWidget {
 
 class _TimerContainerState extends ConsumerState<TimerContainer>
     with TickerProviderStateMixin {
-  late final AnimationController _controller;
-  late final AnimationController _circleController;
   late double currentTime;
   late double time;
-  Timer? _timer;
-  @override
-  void initState() {
-    super.initState();
-    currentTime = widget.maxTime.toDouble();
-    // ref.read(timeProvider.notifier).state = currentTime;
-    time = 0;
-
-    _controller = AnimationController(
-      duration: (1.25).seconds,
-      vsync: this,
-    )
-      ..addListener(() {
-        setState(() {});
-      })
-      ..repeat();
-    _circleController = AnimationController(
-      duration: widget.maxTime.seconds,
-      vsync: this,
-    )
-      ..addListener(() {
-        setState(() {
-          if (ref.read(gameConfigProvider).isTest) {
-            currentTime =
-                widget.maxTime - _circleController.value * widget.maxTime;
-            // if (currentTime == 0) {
-            //   ref.read(timeProvider.notifier).state = 0;
-            // }
-          }
-        });
-      })
-      ..forward();
-
-    // ref.read(timerControllerProvider.notifier).startTimer();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    _circleController.dispose();
-    _timer?.cancel();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +39,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
               height: 90,
               child: Center(
                 child: Text(
-                  ref.read(gameConfigProvider).isTest
-                      ? currentTime.toInt().toString()
-                      : ref.watch(timerControllerProvider).time.toString(),
+                  ref.watch(timerControllerProvider).time.toString(),
                   style: const TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/random_index_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class StopButton extends ConsumerWidget {
+  final Function() showResult;
   final Widget screenName;
   final int answer = 9;
   final int totalCone = 10;
   const StopButton({
     Key? key,
+    required this.showResult,
     required this.screenName,
   }) : super(key: key);
 
@@ -22,21 +23,7 @@ class StopButton extends ConsumerWidget {
       child: ElevatedButton(
         onPressed: () {
           ref.read(timerControllerProvider.notifier).stopTimer();
-          showDialog(
-            context: context,
-            builder: (context) => ResultDialog(
-              screenName: screenName,
-              answer: answer,
-              totalCone: totalCone,
-              record: GameRecordModel(
-                id: null,
-                totalCone: 10,
-                answerCone: 8,
-                wrongCong: 2,
-                totalTime: 60,
-              ),
-            ),
-          );
+          showResult();
         },
         style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(

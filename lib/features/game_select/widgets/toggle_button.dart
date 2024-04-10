@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 
 class ToggleButton extends ConsumerStatefulWidget {
@@ -37,7 +36,6 @@ class _ToggleButtonState extends ConsumerState<ToggleButton> {
             setState(
               () {
                 ref.read(gameConfigProvider.notifier).setTest(value);
-                ref.read(timeProvider.notifier).state = 5;
               },
             );
           },
