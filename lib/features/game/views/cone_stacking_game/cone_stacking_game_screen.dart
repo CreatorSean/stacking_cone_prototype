@@ -4,11 +4,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/current_time_vm.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/random_index_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/cone_container.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
 import '../../widgets/negative_lottie.dart';
@@ -36,14 +38,18 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     _isConeSuccess = true;
     showLottieAnimation = true;
     ++positiveNum;
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   void isFalse() {
     _isConeSuccess = false;
     showLottieAnimation = true;
     ++negativeNum;
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   void showGameResult(double currentTime) {

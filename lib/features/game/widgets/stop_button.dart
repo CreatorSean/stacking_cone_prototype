@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/random_index_vm.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
@@ -21,6 +22,7 @@ class StopButton extends ConsumerWidget {
       child: ElevatedButton(
         onPressed: () {
           ref.read(timerControllerProvider.notifier).stopTimer();
+          ref.read(randomIndexProvider.notifier).setIndex();
           showDialog(
             context: context,
             builder: (context) => ResultDialog(

@@ -44,7 +44,7 @@ class _PositiveLottieState extends State<PositiveLottie> {
   Widget build(BuildContext context) {
     //lottie false이면 애니메이션 제거
     if (!widget.showLottieAnimation) {
-      return SizedBox.shrink();
+      return const SizedBox.shrink();
     }
 
     return Align(

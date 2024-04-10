@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/random_index_vm.dart';
 import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
@@ -20,7 +21,7 @@ class ConeContainer extends ConsumerStatefulWidget {
 
 class _ConeContainerState extends ConsumerState<ConeContainer>
     with TickerProviderStateMixin {
-  late int _targetIndex;
+  List<int> changedIndices = [0];
 
   List<int> coneMatrix = [0, 0, 0];
 
@@ -36,10 +37,18 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
     });
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _targetIndex = Random().nextInt(3);
+  List<int> detectChangesAndReturnIndices(
+      List<int> oldList, List<int> newList) {
+    List<int> changedIndices = [];
+
+    for (int i = 0; i < oldList.length; i++) {
+      if (oldList[i] != newList[i] && oldList[i] < newList[i]) {
+        changedIndices.clear();
+        changedIndices.add(i);
+      }
+    }
+
+    return changedIndices;
   }
 
   @override
@@ -56,6 +65,17 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
         ),
         child: ref.watch(bluetoothServiceProvider).when(
             data: (btModel) {
+              List<int> changedIndices = detectChangesAndReturnIndices(
+                  coneMatrix, btModel.coneMatrixMsg);
+              if (changedIndices.isNotEmpty) {
+                if (changedIndices[0] ==
+                    ref.watch(randomIndexProvider).targetIndex) {
+                  widget.trueLottie();
+                } else {
+                  widget.falseLottie();
+                }
+              }
+
               coneMatrix = btModel.coneMatrixMsg;
               return GridView.count(
                 physics: const NeverScrollableScrollPhysics(),
@@ -87,7 +107,7 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
         children: [
           Container(
             decoration: BoxDecoration(
-              color: index == _targetIndex
+              color: index == ref.watch(randomIndexProvider).targetIndex
                   ? Colors.white
                   : const Color(0xfff0e5c8),
               border: Border.all(
@@ -103,15 +123,19 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: index == _targetIndex
+                      color: index == ref.watch(randomIndexProvider).targetIndex
                           ? Colors.transparent
                           : Colors.red.withOpacity(0.5),
                     ),
                   )
                       .animate(
-                        target: index != _targetIndex ? 1 : 0,
+                        target:
+                            index != ref.watch(randomIndexProvider).targetIndex
+                                ? 1
+                                : 0,
                         onComplete: (controller) {
-                          if (index != _targetIndex) {
+                          if (index !=
+                              ref.watch(randomIndexProvider).targetIndex) {
                             controller.forward(from: 0);
                           }
                         },
@@ -135,9 +159,6 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  index == _targetIndex
-                      ? const Text("data")
-                      : const Text("data"),
                 ],
               ),
             ),
