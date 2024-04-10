@@ -25,6 +25,7 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
   int convertScreen = 0;
   int correctScore = 0;
   int incorrectScore = 0;
+  List<int> coneMatrix = [0, 0, 0];
 
   @override
   void initState() {
@@ -34,7 +35,7 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
 
   void _initRandomIndexes() {
     while (randomIndexes.length < 2) {
-      randomIndexes.add(Random().nextInt(6));
+      randomIndexes.add(Random().nextInt(3));
     }
     _whiteLocationDisplayTime();
   }
@@ -95,6 +96,7 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
         }
       }
       if (randomIndexes.contains(index)) {
+        coneMatrix[index]++;
         widget.trueLottie();
         ++correctScore;
         ++convertScreen;
@@ -102,6 +104,7 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
         fixedRedConeIndex ??= index;
       } else {
         widget.falseLottie();
+        coneMatrix[index]--;
         ++incorrectScore;
         incorrectIndexes.add(index);
         Future.delayed(const Duration(seconds: 1), () {
@@ -133,8 +136,8 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        width: 360,
-        height: 300,
+        width: 360, // 컨테이너의 너비
+        height: 151, // 컨테이너의 높이를 줄여 한 줄로 표시
         decoration: BoxDecoration(
           border: Border.all(
             color: const Color(0xFF332F23),
@@ -142,9 +145,12 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
           ),
         ),
         child: GridView.count(
-          crossAxisCount: 3,
+          crossAxisCount: 3, // 한 줄에 3개의 격자를 표시
           childAspectRatio: 0.8,
-          children: List.generate(6, (index) {
+          // GridView가 스크롤 가능한 영역을 넘어서지 않도록 physics 속성을 NeverScrollableScrollPhysics로 설정
+          physics: const NeverScrollableScrollPhysics(),
+          children: List.generate(3, (index) {
+            // 총 3개의 격자 생성
             return GestureDetector(
               onTap: () => _handleTap(index),
               child: Stack(
