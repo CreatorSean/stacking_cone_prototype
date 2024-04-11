@@ -138,7 +138,10 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                                     .titleMedium
                                     ?.copyWith(color: Colors.pink),
                               )
-                            : const Text(""),
+                            : Text(
+                                "",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
                       ],
                     ),
                   ],

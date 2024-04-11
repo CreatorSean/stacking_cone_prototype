@@ -13,6 +13,9 @@ import 'package:stacking_cone_prototype/features/game_select/view_model/game_con
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 
 import '../../../../services/timer/timer_service.dart';
+import '../../widgets/negative_lottie.dart';
+import '../../widgets/positive_lottie.dart';
+import '../../widgets/single_cone_container .dart';
 
 class SingleLedGameScreen extends ConsumerStatefulWidget {
   const SingleLedGameScreen({super.key});
@@ -39,13 +42,13 @@ class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
         context: context,
         builder: (context) => ResultDialog(
           screenName: const SingleLedGameScreen(),
-          answer: 8,
-          totalCone: 10,
+          answer: positiveNum,
+          totalCone: positiveNum + negativeNum,
           record: GameRecordModel(
             id: null,
-            totalCone: 10,
-            answerCone: 8,
-            wrongCong: 2,
+            totalCone: positiveNum + negativeNum,
+            answerCone: positiveNum,
+            wrongCong: negativeNum,
             totalTime: 60,
           ),
         ),
@@ -69,14 +72,18 @@ class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
     _isConeSuccess = true;
     _showLottieAnimation = true;
     ++positiveNum;
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   void isFalse() {
     _isConeSuccess = false;
     _showLottieAnimation = true;
     ++negativeNum;
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      setState(() {});
+    });
   }
 
   @override
@@ -135,13 +142,16 @@ class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
                                     .titleMedium
                                     ?.copyWith(color: Colors.pink),
                               )
-                            : const Text(" "),
+                            : Text(
+                                "",
+                                style: Theme.of(context).textTheme.titleMedium,
+                              ),
                       ],
                     ),
                   ],
                 ),
                 Expanded(
-                  child: SingleConContainerWidget(
+                  child: SingleConeContainer(
                     trueLottie: () => isTrue(),
                     falseLottie: () => isFalse(),
                   ),
@@ -169,52 +179,28 @@ class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
             ),
           ),
           //긍정 로띠
-          if (_isConeSuccess && _showLottieAnimation)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Lottie.asset(
-                randomIndex == 1
-                    ? 'assets/lottie/okay.json'
-                    : 'assets/lottie/confetti.json',
-                fit: BoxFit.cover,
-                width: 400,
-                height: 400,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 0).then((_) {
-                    Future.delayed(const Duration(seconds: 0), () {
-                      setState(() {
-                        _showLottieAnimation = false;
-                      });
-                    });
-                  });
-                },
-              ),
+          if (positiveNum != 0 && _isConeSuccess == true)
+            PositiveLottie(
+              controller: _lottieController,
+              randomIndex: randomIndex,
+              showLottieAnimation: _showLottieAnimation,
+              onAnimationComplete: () {
+                setState(() {
+                  _showLottieAnimation = false;
+                });
+              },
             ),
           //부정 로띠
-          if (!_isConeSuccess && _showLottieAnimation)
-            Align(
-              alignment: Alignment.center,
-              child: Lottie.asset(
-                randomIndex == 1
-                    ? 'assets/lottie/normal.json'
-                    : 'assets/lottie/clap.json',
-                fit: BoxFit.cover,
-                width: 200,
-                height: 200,
-                controller: _lottieController,
-                onLoaded: (composition) {
-                  _lottieController.duration = composition.duration;
-                  _lottieController.forward(from: 0).then((_) {
-                    Future.delayed(const Duration(seconds: 0), () {
-                      setState(() {
-                        _showLottieAnimation = false;
-                      });
-                    });
-                  });
-                },
-              ),
+          if (negativeNum != 0 && _isConeSuccess == false)
+            NegativeLottie(
+              controller: _lottieController,
+              randomIndex: randomIndex,
+              showLottieAnimation: _showLottieAnimation,
+              onAnimationComplete: () {
+                setState(() {
+                  _showLottieAnimation = false;
+                });
+              },
             ),
         ],
       ),

@@ -51,11 +51,11 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
             screenName: SingleLedGameScreen(),
             buttonName: "단일 LED MODE",
           ),
-          Gaps.v32,
-          const CommonButton(
-            screenName: MultipleLedGameScreen(),
-            buttonName: "이중 LED MODE",
-          ),
+          // Gaps.v32,
+          // const CommonButton(
+          //   screenName: MultipleLedGameScreen(),
+          //   buttonName: "이중 LED MODE",
+          // ),
         ],
       ),
     );

@@ -60,10 +60,15 @@ class ResultDialog extends ConsumerWidget {
   }
 
   void onRestartPressed(BuildContext context, WidgetRef ref) {
-    ref.read(coneStackingGameProvider.notifier).startGame();
+    if (ref.watch(gameProvider).gameMode == "ConeStackingGame") {
+      ref.read(gameProvider.notifier).startStackingGame();
+    }
+    if (ref.watch(gameProvider).gameMode == "SingleLedGame") {
+      ref.read(gameProvider.notifier).startStackingGame();
+    }
     ref
         .read(bluetoothServiceProvider.notifier)
-        .onSendData(ref.watch(coneStackingGameProvider).gameRule);
+        .onSendData(ref.watch(gameProvider).gameRule);
     Navigator.pop(context);
     ref.read(timerControllerProvider.notifier).startTimer();
   }

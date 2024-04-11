@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -5,23 +7,25 @@ import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/b
 
 import '../view_model/cone_stacking_game_vm.dart';
 
-class ConeContainer extends ConsumerStatefulWidget {
+class SingleConeContainer extends ConsumerStatefulWidget {
   final Function() trueLottie;
   final Function() falseLottie;
-  const ConeContainer({
+  const SingleConeContainer({
     super.key,
     required this.trueLottie,
     required this.falseLottie,
   });
 
   @override
-  ConsumerState<ConeContainer> createState() => _ConeContainerState();
+  ConsumerState<SingleConeContainer> createState() =>
+      _SingleConeContainerState();
 }
 
-class _ConeContainerState extends ConsumerState<ConeContainer>
+class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
     with TickerProviderStateMixin {
   List<int> changedIndices = [0];
-
+  int randomIndex = 0;
+  List<int> gameRule = [];
   List<int> coneMatrix = [0, 0, 0];
 
   void stackCone(int index) {
@@ -50,6 +54,22 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
     return changedIndices;
   }
 
+  void updateRandomIndex(int currentValue) {
+    int newValue;
+    do {
+      newValue = Random().nextInt(3);
+    } while (newValue == currentValue);
+
+    randomIndex = newValue;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    randomIndex = Random().nextInt(3);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -67,8 +87,18 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
               List<int> changedIndices = detectChangesAndReturnIndices(
                   coneMatrix, btModel.coneMatrixMsg);
               if (changedIndices.isNotEmpty) {
-                if (changedIndices[0] == ref.watch(gameProvider).targetIndex) {
+                if (changedIndices[0] == randomIndex) {
+                  gameRule.clear();
                   widget.trueLottie();
+                  Future.delayed(const Duration(seconds: 1), () {
+                    updateRandomIndex(randomIndex);
+                    gameRule.add(randomIndex);
+                    gameRule.add(1);
+                    ref
+                        .read(bluetoothServiceProvider.notifier)
+                        .onSendData(gameRule);
+                    setState(() {});
+                  });
                 } else {
                   widget.falseLottie();
                 }
@@ -105,9 +135,8 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
         children: [
           Container(
             decoration: BoxDecoration(
-              color: index == ref.watch(gameProvider).targetIndex
-                  ? Colors.white
-                  : const Color(0xfff0e5c8),
+              color:
+                  index == randomIndex ? Colors.white : const Color(0xfff0e5c8),
               border: Border.all(
                 color: const Color(0xFF332F23),
                 width: 1.5,
@@ -121,17 +150,15 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: index == ref.watch(gameProvider).targetIndex
+                      color: index == randomIndex
                           ? Colors.transparent
                           : Colors.red.withOpacity(0.5),
                     ),
                   )
                       .animate(
-                        target: index != ref.watch(gameProvider).targetIndex
-                            ? 1
-                            : 0,
+                        target: index != randomIndex ? 1 : 0,
                         onComplete: (controller) {
-                          if (index != ref.watch(gameProvider).targetIndex) {
+                          if (index != randomIndex) {
                             controller.forward(from: 0);
                           }
                         },

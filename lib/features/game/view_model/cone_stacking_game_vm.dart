@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class ConeStackingGameViewModel extends StateNotifier<ConeStackingGameState> {
   ConeStackingGameViewModel() : super(ConeStackingGameState.initial());
 
-  void startGame() {
+  void startStackingGame() {
     List<int> list = [];
     int newIndex = Random().nextInt(3);
     list.add(newIndex);
@@ -14,32 +14,44 @@ class ConeStackingGameViewModel extends StateNotifier<ConeStackingGameState> {
       gameRule: list,
       targetIndex: newIndex,
     );
-    print(list);
+  }
+
+  void setGameMode(String gameMode) {
+    state = state.copyWith(
+      gameMode: gameMode,
+    );
   }
 }
 
 class ConeStackingGameState {
   List<int> gameRule;
   int targetIndex;
+  String gameMode;
 
-  ConeStackingGameState({required this.gameRule, required this.targetIndex});
+  ConeStackingGameState(
+      {required this.gameRule,
+      required this.targetIndex,
+      required this.gameMode});
 
   ConeStackingGameState.initial()
       : gameRule = [0, 0],
-        targetIndex = 0;
+        targetIndex = 0,
+        gameMode = "";
 
   ConeStackingGameState copyWith({
     List<int>? gameRule,
     int? targetIndex,
+    String? gameMode,
   }) {
     return ConeStackingGameState(
       gameRule: gameRule ?? this.gameRule,
       targetIndex: targetIndex ?? this.targetIndex,
+      gameMode: gameMode ?? this.gameMode,
     );
   }
 }
 
-final coneStackingGameProvider =
+final gameProvider =
     StateNotifierProvider<ConeStackingGameViewModel, ConeStackingGameState>(
         (ref) {
   return ConeStackingGameViewModel();

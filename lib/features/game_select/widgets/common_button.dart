@@ -30,11 +30,18 @@ class _CommonButtonState extends ConsumerState<CommonButton> {
     );
   }
 
-  void _onGameStartTap() {
-    ref.read(coneStackingGameProvider.notifier).startGame();
+  void _onStackingGameStartTap() {
+    ref.read(gameProvider.notifier).startStackingGame();
     ref
         .read(bluetoothServiceProvider.notifier)
-        .onSendData(ref.watch(coneStackingGameProvider).gameRule);
+        .onSendData(ref.watch(gameProvider).gameRule);
+  }
+
+  void _onLEDGameStartTap() {
+    ref.read(gameProvider.notifier).startStackingGame();
+    ref
+        .read(bluetoothServiceProvider.notifier)
+        .onSendData(ref.watch(gameProvider).gameRule);
   }
 
   @override
@@ -46,7 +53,14 @@ class _CommonButtonState extends ConsumerState<CommonButton> {
         } else {
           ref.read(timerControllerProvider.notifier).startTimer();
         }
-        _onGameStartTap();
+        if (widget.screenName.toString() == "ConeStackingGameScreen") {
+          _onStackingGameStartTap();
+          ref.read(gameProvider.notifier).setGameMode("ConeStackingGame");
+        }
+        if (widget.screenName.toString() == "SingleLedGameScreen") {
+          _onLEDGameStartTap();
+          ref.read(gameProvider.notifier).setGameMode("SingleLedGame");
+        }
         _onNextTap();
       },
       child: FractionallySizedBox(
