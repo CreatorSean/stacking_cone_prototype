@@ -13,7 +13,7 @@ class DatabaseService {
 
   static initDB() async {
     Logger().i(await getDatabasesPath());
-    String path = join(await getDatabasesPath(), 'HonestBalance.db');
+    String path = join(await getDatabasesPath(), 'StackingCone.db');
 
     //데이터 베이스를 리셋하고 싶을때 주석 지우고 다시시작
     //await deleteDatabase(path);

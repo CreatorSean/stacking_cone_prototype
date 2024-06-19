@@ -70,7 +70,11 @@ class ResultDialog extends ConsumerWidget {
         .read(bluetoothServiceProvider.notifier)
         .onSendData(ref.watch(gameProvider).gameRule);
     Navigator.pop(context);
-    ref.read(timerControllerProvider.notifier).startTimer();
+    if (ref.watch(gameConfigProvider).isTest) {
+      ref.read(timerControllerProvider.notifier).startTestTimer();
+    } else {
+      ref.read(timerControllerProvider.notifier).startTimer();
+    }
   }
 
   @override

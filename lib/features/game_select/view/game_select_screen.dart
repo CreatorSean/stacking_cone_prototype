@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
+import 'package:stacking_cone_prototype/features/db_save/views/db_save_screen.dart';
 
 import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
@@ -50,6 +51,11 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
           const CommonButton(
             screenName: SingleLedGameScreen(),
             buttonName: "단일 LED MODE",
+          ),
+          Gaps.v32,
+          const CommonButton(
+            screenName: DbSaveScreen(),
+            buttonName: "DB 저장",
           ),
           // Gaps.v32,
           // const CommonButton(
