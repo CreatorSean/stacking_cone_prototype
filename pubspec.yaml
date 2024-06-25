@@ -47,7 +47,8 @@ dependencies:
   path: ^1.8.3
   path_provider: ^2.0.14
   permission_handler: ^11.3.1
-  flutter_bluetooth_serial: ^0.4.0
+  flutter_bluetooth_serial: 0.4.0
+  share_plus: 6.2.0
 
 dev_dependencies:
   flutter_test:

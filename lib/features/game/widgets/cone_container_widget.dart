@@ -32,7 +32,7 @@ class _ConContainerWidgetState extends State<ConContainerWidget> {
           ),
         ),
         child: GridView.count(
-          crossAxisCount: 3,
+          crossAxisCount: 9,
           childAspectRatio: 0.8,
           children: List.generate(6, (index) {
             return _buildGridItem(context, index);

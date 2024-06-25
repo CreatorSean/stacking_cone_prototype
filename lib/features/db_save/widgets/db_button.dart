@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
@@ -19,10 +24,33 @@ class DbButton extends ConsumerStatefulWidget {
 }
 
 class _DbButtonState extends ConsumerState<DbButton> {
+  Future<String> getDatabasePath() async {
+    final databasePath = await getDatabasesPath();
+    return join(databasePath, 'StackingCone.db'); // 여기에 실제 데이터베이스 파일 이름을 넣으세요
+  }
+
+  Future<void> shareDatabase() async {
+    final databasePath = await getDatabasePath();
+    final File databaseFile = File(databasePath);
+    final XFile xfile = XFile(databaseFile.path);
+
+    try {
+      await Share.shareXFiles(
+        [xfile],
+        text: 'Here is the database file.',
+        subject: 'Database File',
+      );
+    } catch (error) {
+      print('Error sharing file: $error');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        shareDatabase();
+      },
       child: FractionallySizedBox(
         widthFactor: 0.6,
         child: AnimatedContainer(
