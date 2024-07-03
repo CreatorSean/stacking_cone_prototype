@@ -101,7 +101,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
         children: [
           Padding(
             padding: const EdgeInsets.only(
-              bottom: 40,
+              bottom: 10,
             ),
             child: Column(
               children: [

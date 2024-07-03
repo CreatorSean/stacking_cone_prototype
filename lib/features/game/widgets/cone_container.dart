@@ -22,7 +22,7 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
     with TickerProviderStateMixin {
   List<int> changedIndices = [0];
 
-  List<int> coneMatrix = [0, 0, 0];
+  List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   void stackCone(int index) {
     setState(() {
@@ -53,42 +53,51 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
-        width: 360,
-        height: 151,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: const Color(0xFF332F23),
-            width: 1.5,
-          ),
-        ),
-        child: ref.watch(bluetoothServiceProvider).when(
-            data: (btModel) {
-              List<int> changedIndices = detectChangesAndReturnIndices(
-                  coneMatrix, btModel.coneMatrixMsg);
-              if (changedIndices.isNotEmpty) {
-                if (changedIndices[0] == ref.watch(gameProvider).targetIndex) {
-                  widget.trueLottie();
-                } else {
-                  widget.falseLottie();
-                }
-              }
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          double containerSize = constraints.maxWidth * 0.8; // 부모 위젯의 80% 크기
 
-              coneMatrix = btModel.coneMatrixMsg;
-              return GridView.count(
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 3,
-                childAspectRatio: 0.8,
-                children: List.generate(
-                  3,
-                  (index) {
-                    return _buildGridItem(context, index);
+          return Container(
+            width: containerSize,
+            height: containerSize, // 정사각형으로 만듭니다.
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: const Color(0xFF332F23),
+                width: 1.5,
+              ),
+            ),
+            child: ref.watch(bluetoothServiceProvider).when(
+                  data: (btModel) {
+                    List<int> changedIndices = detectChangesAndReturnIndices(
+                        coneMatrix, btModel.coneMatrixMsg);
+                    if (changedIndices.isNotEmpty) {
+                      if (changedIndices[0] ==
+                          ref.watch(gameProvider).targetIndex) {
+                        widget.trueLottie();
+                      } else {
+                        widget.falseLottie();
+                      }
+                    }
+
+                    coneMatrix = btModel.coneMatrixMsg;
+                    return GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 3,
+                      childAspectRatio: 1.0,
+                      children: List.generate(
+                        9,
+                        (index) {
+                          return _buildGridItem(context, index);
+                        },
+                      ),
+                    );
                   },
+                  error: (error, stackTrace) => const Text('Error'),
+                  loading: () => const CircularProgressIndicator(),
                 ),
-              );
-            },
-            error: (error, stackTrace) => const Text('Error'),
-            loading: () => const CircularProgressIndicator()),
+          );
+        },
       ),
     );
   }

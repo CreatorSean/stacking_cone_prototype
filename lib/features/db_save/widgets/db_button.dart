@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:path/path.dart';
 import 'package:share_plus/share_plus.dart';
@@ -40,8 +41,10 @@ class _DbButtonState extends ConsumerState<DbButton> {
         text: 'Here is the database file.',
         subject: 'Database File',
       );
+    } on PlatformException catch (e) {
+      print('Error sharing file: $e');
     } catch (error) {
-      print('Error sharing file: $error');
+      print('Unexpected error sharing file: $error');
     }
   }
 

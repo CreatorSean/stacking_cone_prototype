@@ -5,15 +5,9 @@ import 'package:stacking_cone_prototype/features/game_select/view_model/game_con
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
-class StopButton extends ConsumerWidget {
-  final Function() showResult;
-  final Widget screenName;
-  final int answer = 9;
-  final int totalCone = 10;
-  const StopButton({
+class DifficultSelectButton extends ConsumerWidget {
+  const DifficultSelectButton({
     Key? key,
-    required this.showResult,
-    required this.screenName,
   }) : super(key: key);
 
   @override
@@ -21,13 +15,10 @@ class StopButton extends ConsumerWidget {
     return Visibility(
       visible: !ref.read(gameConfigProvider).isTest,
       child: ElevatedButton(
-        onPressed: () {
-          ref.read(timerControllerProvider.notifier).stopTimer();
-          showResult();
-        },
+        onPressed: () {},
         style: ButtonStyle(
             backgroundColor: WidgetStateProperty.all(
-              const Color(0xfff0e5c8),
+              Theme.of(context).primaryColor,
             ),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
@@ -40,9 +31,9 @@ class StopButton extends ConsumerWidget {
             ),
             minimumSize: WidgetStateProperty.all(const Size(100, 40))),
         child: const Text(
-          '그만하기',
+          '난이도 선택',
           style: TextStyle(
-            color: Color(0xFF332F23),
+            color: Colors.white,
           ),
         ),
       ),

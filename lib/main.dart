@@ -6,6 +6,7 @@ import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game_select/repos/game_config_repo.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,9 +31,12 @@ class StackingConePrototype extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final router = ref.watch(routerProvier);
     FlexScheme deepBlue = FlexScheme.deepBlue;
 
-    return MaterialApp(
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: false,
+      routerConfig: router,
       title: 'Stacking Cone',
       theme: FlexThemeData.light(
         scheme: deepBlue,
@@ -73,7 +77,6 @@ class StackingConePrototype extends ConsumerWidget {
         appBarElevation: 2,
       ),
       themeMode: ThemeMode.light,
-      home: const GameSelectScreen(),
     );
   }
 }

@@ -90,7 +90,8 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
         results[existingIndex] = r;
       } else {
         results.add(r);
-        btModel = BluetoothModel(results: results, coneMatrixMsg: [0, 0, 0]);
+        btModel = BluetoothModel(
+            results: results, coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
         state = AsyncValue.data(btModel);
       }
@@ -98,14 +99,16 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
 
     _streamSubscription!.onDone(() {
       isDiscovering = false;
-      btModel = BluetoothModel(results: results, coneMatrixMsg: [0, 0, 0]);
+      btModel = BluetoothModel(
+          results: results, coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0]);
       state = AsyncValue.data(btModel);
     });
   }
 
   @override
   FutureOr<BluetoothModel> build() {
-    btModel = BluetoothModel(results: results, coneMatrixMsg: [0, 0, 0]);
+    btModel = BluetoothModel(
+        results: results, coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0]);
     startDiscovery();
 
     return btModel;

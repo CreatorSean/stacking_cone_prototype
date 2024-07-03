@@ -10,6 +10,7 @@ import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/mu
 import 'package:stacking_cone_prototype/features/game/views/single_led_game/single_led_game_screen.dart';
 
 import 'package:stacking_cone_prototype/features/game_select/widgets/common_button.dart';
+import 'package:stacking_cone_prototype/features/game_select/widgets/difficult_select_button.dart';
 
 class GameSelectScreen extends ConsumerStatefulWidget {
   const GameSelectScreen({super.key});
@@ -62,6 +63,8 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
           //   screenName: MultipleLedGameScreen(),
           //   buttonName: "이중 LED MODE",
           // ),
+          Gaps.v32,
+          const DifficultSelectButton(),
         ],
       ),
     );

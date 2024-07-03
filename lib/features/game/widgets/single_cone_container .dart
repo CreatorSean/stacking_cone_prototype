@@ -26,7 +26,7 @@ class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
   List<int> changedIndices = [0];
   int randomIndex = 0;
   List<int> gameRule = [];
-  List<int> coneMatrix = [0, 0, 0];
+  List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   void stackCone(int index) {
     setState(() {
@@ -67,7 +67,7 @@ class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
   void initState() {
     // TODO: implement initState
     super.initState();
-    randomIndex = Random().nextInt(3);
+    randomIndex = Random().nextInt(9);
   }
 
   @override
@@ -75,7 +75,7 @@ class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
     return Center(
       child: Container(
         width: 360,
-        height: 151,
+        height: 360,
         decoration: BoxDecoration(
           border: Border.all(
             color: const Color(0xFF332F23),
@@ -108,9 +108,9 @@ class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
               return GridView.count(
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: 3,
-                childAspectRatio: 0.8,
+                childAspectRatio: 1.0,
                 children: List.generate(
-                  3,
+                  9,
                   (index) {
                     return _buildGridItem(context, index);
                   },
