@@ -11,7 +11,6 @@ import 'package:stacking_cone_prototype/router.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final preferences = await SharedPreferences.getInstance();
-
   final repository = GameConfigRepository(preferences);
 
   runApp(

@@ -1,14 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
+import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
-import 'package:stacking_cone_prototype/features/staff/view_model/patient_load_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/registration_view_model.dart';
+import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
+import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_view_model.dart';
+import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_button.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_container.dart';
+import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 class StaffScreen extends ConsumerStatefulWidget {
   static String routeURL = '/staff';
@@ -20,6 +23,8 @@ class StaffScreen extends ConsumerStatefulWidget {
 }
 
 class _StaffScreenState extends ConsumerState<StaffScreen> {
+  int _selectedIdx = -1;
+
   void _onPatientScreenTap() {
     Navigator.push(
       context,
@@ -30,15 +35,181 @@ class _StaffScreenState extends ConsumerState<StaffScreen> {
     //context.goNamed(PatientAddScreen.routeName);
   }
 
+  Future<void> selectPatient(
+      int idx, PatientModel selectedPatient, bool isChecked) async {
+    final prefs = await SharedPreferences.getInstance();
+    _selectedIdx = idx;
+    if (isChecked) {
+      prefs.setInt('selectedPatientId', selectedPatient.id!);
+      ref
+          .read(SelectedPatientViewModelProvider.notifier)
+          .setSelectedPatient(selectedPatient);
+    }
+    setState(() {});
+  }
+
+  void onDeleteTap(context, int index, List<PatientModel> patientList) {
+    if (patientList.length != 1) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          // buttonPadding: const EdgeInsets.all(20),
+          actionsAlignment: MainAxisAlignment.spaceAround,
+          // actionsOverflowButtonSpacing: 0,
+          actionsPadding:
+              const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          titlePadding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+
+          title: const Row(
+            children: [
+              Icon(
+                Icons.dangerous,
+                color: Colors.red,
+              ),
+              Text(
+                "  Delete User",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          content: SizedBox(
+              height: 70,
+              child: Center(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Would you like to delete",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 18,
+                        ),
+                  ),
+                  Text(
+                    "${patientList[index].userName}’s information",
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                          fontSize: 18,
+                        ),
+                  ),
+                ],
+              ))),
+          actions: <Widget>[
+            GestureDetector(
+                onTap: () {
+                  ref
+                      .read(StaffScreenViewModelProvider.notifier)
+                      .deleteUser(patientList[index]);
+                  if (index == patientList.length - 1 && index == index) {
+                    ref
+                        .read(SelectedPatientViewModelProvider.notifier)
+                        .setSelectedPatient(patientList[index - 1]);
+                  } else if (index != patientList.length - 1 &&
+                      index == index) {
+                    ref
+                        .read(SelectedPatientViewModelProvider.notifier)
+                        .setSelectedPatient(patientList[index + 1]);
+                  }
+                  Navigator.pop(context);
+                },
+                child: Text("Yes",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 15,
+                        ))),
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text("No",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 15,
+                        ))),
+          ],
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
+          actionsPadding:
+              const EdgeInsets.only(bottom: 20, left: 20, right: 20),
+          // shape: const RoundedRectangleBorder(
+          //     // borderRadius: BorderRadius.all(
+          //     //   Radius.circular(5.0),
+          //     // ),
+          //     ),
+          titlePadding: const EdgeInsets.only(top: 20, left: 20, right: 20),
+          title: const Row(
+            children: [
+              Icon(
+                Icons.dangerous,
+                color: Colors.red,
+              ),
+              Text(
+                "  User deletion failed",
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ],
+          ),
+          content: const SizedBox(
+            height: 70,
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "The last remaining user",
+                  ),
+                  Text(
+                    "cannot be deleted.",
+                  ),
+                ],
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Text("Close",
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          fontSize: 15,
+                        ))),
+          ],
+        ),
+      );
+    }
+
+    setState(() {});
+  }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    PatientModel selectedPatient = ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .getSelectedPatient();
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text(
+          'Staff Screen',
+          style: TextStyle(
+            color: Color(0xFFF8F9FA),
+            fontSize: Sizes.size24,
+          ),
+        ),
+      ),
       body: ref.watch(registrationProvider).when(
         data: (patientList) {
           return SingleChildScrollView(
@@ -50,6 +221,17 @@ class _StaffScreenState extends ConsumerState<StaffScreen> {
             ),
             child: Column(
               children: [
+                InfoContainer(
+                  selectedPatient: selectedPatient,
+                  isSetting: false,
+                ),
+                Gaps.v8,
+                Divider(
+                  height: 2,
+                  thickness: 0.5,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
+                Gaps.v8,
                 GestureDetector(
                   onTap: () {
                     _onPatientScreenTap();
@@ -59,8 +241,9 @@ class _StaffScreenState extends ConsumerState<StaffScreen> {
                     isAddScreen: false,
                   ),
                 ),
-                Gaps.v16,
+                Gaps.v8,
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                       child: ListView.separated(
@@ -68,10 +251,36 @@ class _StaffScreenState extends ConsumerState<StaffScreen> {
                         primary: false,
                         itemCount: patientList.length,
                         itemBuilder: (context, index) {
-                          return PatientContainer(
-                              idx: index,
-                              context: context,
-                              patient: patientList[index]);
+                          return Slidable(
+                            endActionPane: ActionPane(
+                              extentRatio: 1,
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (context) =>
+                                      onDeleteTap(context, index, patientList),
+                                  // onPressed: (context) =>
+                                  // onDeletePressed(context, index, userList),
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                ),
+                              ],
+                            ),
+                            child: PatientContainer(
+                                index: index,
+                                selected: _selectedIdx == index,
+                                selectFunc: selectPatient,
+                                context: context,
+                                patient: patientList[index]),
+                            // child: UserCard(
+                            //   userModel: patientList[index],
+                            //   isHome: false,
+                            //   index: index,
+                            //   selected: _selectedIdx == index,
+                            //   selectFunc: selectPatient,
+                            // ),
+                          );
                         },
                         separatorBuilder: (context, index) {
                           return const Divider();

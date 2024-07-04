@@ -4,7 +4,6 @@ import 'package:go_router/go_router.dart';
 import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
-import 'features/home/view/home_screen.dart';
 
 final routerProvier = Provider(
   (ref) {

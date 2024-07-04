@@ -17,7 +17,7 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'StackingCone.db');
 
     //데이터 베이스를 리셋하고 싶을때 주석 지우고 다시시작
-    //await deleteDatabase(path);
+    await deleteDatabase(path);
 
     //db가 존재하지 않으면 onCreate 함수 실행되어 table 생성
     return await openDatabase(path, version: 1, onCreate: (db, version) async {
@@ -105,6 +105,18 @@ class DatabaseService {
         age: maps[index]["age"],
       );
     });
+  }
+
+// ========================= update DB ==============================
+  static Future<void> updatePatientDB(PatientModel patient) async {
+    final db = await database;
+    Logger().i('Update DB: ${patient.userName}');
+    await db!.update(
+      "Users",
+      patient.toMap(),
+      where: "id = ?",
+      whereArgs: [patient.id],
+    );
   }
 
   ///DB에서 모든 데이터를 불러와서 하나씩 모델 생성하고, 모두 List로 반환

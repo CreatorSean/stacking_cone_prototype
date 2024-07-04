@@ -5,6 +5,8 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
+import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
+import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   static const routeName = 'home';
@@ -19,7 +21,7 @@ class MainScaffold extends ConsumerStatefulWidget {
 }
 
 class _MainScaffoldState extends ConsumerState<MainScaffold> {
-  int _selectedPageIndex = 1;
+  int _selectedPageIndex = 0;
 
   final List<Widget> _pageScreen = <Widget>[
     const GameSelectScreen(),
@@ -32,21 +34,23 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     });
   }
 
-  // Future<void> initUser() async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   int? savedUserId = prefs.getInt('selectedUserId') ?? 1;
-  //   Logger().i("initUser");
-  //   UserModel user = await ref
-  //       .read(selectedUserViewModelProvider.notifier)
-  //       .getSavedUserDB(savedUserId);
-  //   ref.read(selectedUserViewModelProvider.notifier).setSelectedUser(user);
-  // }
+  Future<void> initUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? savedPatientId = prefs.getInt('selectedPatientId') ?? 1;
+    Logger().i("initPatient");
+    PatientModel user = await ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .getSavedPatientDB(savedPatientId);
+    ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .setSelectedPatient(user);
+  }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   initUser();
-  // }
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
 
   @override
   Widget build(BuildContext context) {

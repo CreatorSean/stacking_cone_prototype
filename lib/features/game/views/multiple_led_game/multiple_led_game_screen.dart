@@ -16,6 +16,8 @@ import 'package:stacking_cone_prototype/services/database/models/game_record_mod
 import '../../../../services/timer/timer_service.dart';
 
 class MultipleLedGameScreen extends ConsumerStatefulWidget {
+  static String routeURL = '/multiple';
+  static String routeName = 'multiple';
   const MultipleLedGameScreen({super.key});
 
   @override

@@ -50,6 +50,7 @@ dependencies:
   flutter_bluetooth_serial: 0.4.0
   share_plus: 6.2.0
   go_router: 6.0.2
+  flutter_slidable: ^3.0.1
   
 dev_dependencies:
   flutter_test:
@@ -81,6 +82,7 @@ flutter:
     #- assets/images/confetti.gif
     - assets/fonts/
     - assets/lottie/
+    - assets/images/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

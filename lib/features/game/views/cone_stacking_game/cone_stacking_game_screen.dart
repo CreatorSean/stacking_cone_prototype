@@ -14,6 +14,8 @@ import '../../widgets/negative_lottie.dart';
 import '../../widgets/positive_lottie.dart';
 
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
+  static String routeURL = '/stacking';
+  static String routeName = 'stacking';
   const ConeStackingGameScreen({super.key});
 
   @override

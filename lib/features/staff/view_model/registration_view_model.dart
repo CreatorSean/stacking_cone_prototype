@@ -47,7 +47,12 @@ class RegistrationViewModel extends AsyncNotifier<List<PatientModel>> {
     state = const AsyncValue.loading();
     final form = ref.read(registrationForm);
     final age = getUserAge(form["birth"]);
-
+    String img;
+    if (form["gender"] == 1) {
+      img = "assets/images/woman.png";
+    } else {
+      img = "assets/images/man.png";
+    }
     PatientModel patient = PatientModel(
       id: null,
       userName: form["userName"],
@@ -58,6 +63,7 @@ class RegistrationViewModel extends AsyncNotifier<List<PatientModel>> {
       diagnosisDate: form["diagnosisDate"],
       surgeryDate: form["surgeryDate"],
       medication: form["medication"],
+      img: img,
     );
 
     await AsyncValue.guard(() async {

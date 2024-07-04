@@ -10,6 +10,7 @@ class PatientModel {
   final String diagnosisDate;
   final String surgeryDate;
   final String medication;
+  final String img;
   final String memo;
   final int age;
 
@@ -23,6 +24,7 @@ class PatientModel {
     required this.diagnosisDate,
     required this.surgeryDate,
     required this.medication,
+    this.img = "assets/images/man.png",
     this.memo = "",
   });
 
@@ -39,12 +41,13 @@ class PatientModel {
       'diagnosisDate': diagnosisDate,
       'surgeryDate': surgeryDate,
       'medication': medication,
+      'img': img,
       'memo': memo,
     };
   }
 
   @override
   String toString() {
-    return 'Memo{id: $id, userName: $userName, gender: $gender, birth: $birth, diagnosis: $diagnosis, diagnosisDate : $diagnosisDate, surgeryDate: $surgeryDate, medication: $medication, age: $age, memo: $memo,}';
+    return 'Memo{id: $id, userName: $userName, gender: $gender, birth: $birth, diagnosis: $diagnosis, diagnosisDate : $diagnosisDate, surgeryDate: $surgeryDate, medication: $medication, img: $img, age: $age, memo: $memo,}';
   }
 }

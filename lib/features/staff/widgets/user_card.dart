@@ -1,42 +1,44 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
-import 'package:stacking_cone_prototype/common/constants/sizes.dart';
+import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
-class PatientContainer extends ConsumerStatefulWidget {
-  final BuildContext context;
-  final PatientModel patient;
+class UserCard extends ConsumerStatefulWidget {
+  final PatientModel userModel;
+  final bool isHome;
   final bool selected;
   final int index;
   final Function? selectFunc;
 
-  const PatientContainer({
+  const UserCard({
     super.key,
-    required this.context,
-    required this.patient,
+    required this.userModel,
+    required this.isHome,
     this.index = -1,
     this.selected = false,
     this.selectFunc,
   });
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() =>
-      _PatientContainerState();
+  ConsumerState<UserCard> createState() => _UserCardState();
 }
 
-class _PatientContainerState extends ConsumerState<PatientContainer>
+class _UserCardState extends ConsumerState<UserCard>
     with SingleTickerProviderStateMixin {
+  int userAge = 0;
+
   bool isSelecting = false;
   bool isChecked = false;
 
   void onSelectTap() {
     isSelecting = !isSelecting;
     if (isSelecting && widget.selectFunc != null) {
-      widget.selectFunc!(widget.index, widget.patient, false);
-      if (widget.patient.id ==
+      widget.selectFunc!(widget.index, widget.userModel, false);
+      if (widget.userModel.id ==
           ref
               .read(SelectedPatientViewModelProvider.notifier)
               .getSelectedPatient()
@@ -51,19 +53,29 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
 
   void onUserCheckTap() {
     if (isSelecting && widget.selectFunc != null) {
-      widget.selectFunc!(widget.index, widget.patient, true);
+      widget.selectFunc!(widget.index, widget.userModel, true);
       setState(() {});
     }
   }
 
-  String _gender = "";
-  void _maleOrFemale() {
-    if (widget.patient.gender == 0) {
-      _gender = "남";
-    } else {
-      _gender = "여";
-    }
-  }
+  // void onModifyTap(PatientModel user) async {
+  //   await Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => PatientAddScreen(isAdd: false, user: user),
+  //     ),
+  //   );
+
+  // await Future.delayed(1000.ms);
+  // if (mounted) {
+  //   if (widget.userModel.id ==
+  //       ref.read(selectedUserViewModelProvider.notifier).selectedUser.id) {
+  //     onUserCheckTap();
+  //   } else {
+  //     onSelectTap();
+  //   }
+  // }
+  //}
 
   @override
   void initState() {
@@ -72,15 +84,15 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    // final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    _maleOrFemale();
+    const cardSizeRatio = 0.08;
 
     if (!widget.selected) {
       isSelecting = false;
       setState(() {});
     }
-    if (widget.patient.id ==
+    if (widget.userModel.id ==
         ref
             .read(SelectedPatientViewModelProvider.notifier)
             .getSelectedPatient()
@@ -94,86 +106,61 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
         alignment: Alignment.center,
         children: [
           Container(
-            height: screenHeight * 0.1,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8.0,
-              vertical: 12.0,
-            ),
+            height: screenHeight * cardSizeRatio,
+            // padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: Theme.of(context).primaryColor,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(right: 12, left: 12),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.patient.userName,
-                        style: const TextStyle(
-                          color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
-                          fontFamily: 'NotosansKR-Medium',
-                        ),
-                      ),
-                      Gaps.h20,
-                      Text(
-                        widget.patient.birth,
-                        style: const TextStyle(
-                          color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
-                          fontFamily: 'NotosansKR-Medium',
-                        ),
-                      ),
-                    ],
-                  ),
-                  Gaps.v16,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        _gender,
-                        style: const TextStyle(
-                          color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
-                          fontFamily: 'NotosansKR-Medium',
-                        ),
-                      ),
-                      Gaps.h20,
-                      Text(
-                        "${widget.patient.age}",
-                        style: const TextStyle(
-                          color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
-                          fontFamily: 'NotosansKR-Medium',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+              color: Theme.of(context).cardColor,
+              border: Border.symmetric(
+                horizontal: BorderSide(
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  width: 0.3,
+                ),
               ),
             ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Gaps.h10,
+                widget.userModel.img.contains("asset")
+                    ? CircleAvatar(
+                        radius: 25,
+                        backgroundImage: AssetImage(widget.userModel.img))
+                    : CircleAvatar(
+                        radius: 25,
+                        backgroundImage: FileImage(File(widget.userModel.img))),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.userModel.userName,
+                        style: const TextStyle(
+                          fontFamily: 'NotosansKR-Medium',
+                          fontSize: 22,
+                        ),
+                      ),
+                      Text(
+                        "${widget.userModel.gender == 0 ? "man" : "woman"} ${widget.userModel.age} years old",
+                        style: TextStyle(
+                          fontFamily: 'NotosansKR-Regular',
+                          fontSize: 13,
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.7),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
-          // .animate()
-          // .then(delay: (widget.idx * 50).ms)
-          // .fadeIn(
-          //   duration: 300.ms,
-          //   curve: Curves.easeInOut,
-          // )
-          // .flipV(
-          //   begin: -0.25,
-          //   end: 0,
-          //   duration: 300.ms,
-          //   curve: Curves.easeInOut,
-          // ),
+
           //==================== 선택 됐을 때 ====================
           Positioned(
             child: Container(
-              width: screenWidth * 0.84,
-              height: screenHeight * 0.09,
+              height: screenHeight * cardSizeRatio,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor.withOpacity(0.2),
               ),
@@ -183,8 +170,7 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
               ),
           Positioned(
             child: SizedBox(
-              width: screenWidth * 0.84,
-              height: screenHeight * 0.09,
+              height: screenHeight * cardSizeRatio,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,

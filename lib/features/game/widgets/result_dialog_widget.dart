@@ -4,6 +4,7 @@ import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_g
 import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import '../../../services/timer/timer_service.dart';
@@ -53,9 +54,9 @@ class ResultDialog extends ConsumerWidget {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (BuildContext context) => const GameSelectScreen(),
+        builder: (BuildContext context) => const MainScaffold(),
       ),
-      (route) => false, // 현재 화면 닫기
+      (route) => true, // 현재 화면 닫기
     );
   }
 
@@ -139,15 +140,15 @@ class ResultDialog extends ConsumerWidget {
               child: TextButton(
                 onPressed: () => onHomePressed(context, ref),
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       side: const BorderSide(color: Colors.black, width: 2.0),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) {
+                  backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+                    (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed)) {
                         return Colors.grey.shade400; // 눌렸을 때의 배경색
                       }
                       return const Color(0xfff0e5c8); // 기본 배경색
@@ -166,15 +167,15 @@ class ResultDialog extends ConsumerWidget {
               child: TextButton(
                 onPressed: () => onRestartPressed(context, ref),
                 style: ButtonStyle(
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       side: const BorderSide(color: Colors.black, width: 2.0),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
-                  backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.pressed)) {
+                  backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+                    (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.pressed)) {
                         return Colors.grey.shade400; // 눌렸을 때의 배경색
                       }
                       return const Color(0xfff0e5c8); // 기본 배경색

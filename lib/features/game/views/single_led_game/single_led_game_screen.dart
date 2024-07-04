@@ -1,12 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lottie/lottie.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/single_cone_container_widget%20.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
@@ -18,6 +15,8 @@ import '../../widgets/positive_lottie.dart';
 import '../../widgets/single_cone_container .dart';
 
 class SingleLedGameScreen extends ConsumerStatefulWidget {
+  static String routeURL = '/single';
+  static String routeName = 'single';
   const SingleLedGameScreen({super.key});
 
   @override
