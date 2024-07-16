@@ -2,10 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
-import 'package:stacking_cone_prototype/features/home/view/home_screen.dart';
-import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
-import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
 import 'package:stacking_cone_prototype/services/database/database_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
@@ -65,16 +61,16 @@ class RegistrationViewModel extends AsyncNotifier<List<PatientModel>> {
       medication: form["medication"],
       img: img,
     );
-
     await AsyncValue.guard(() async {
+      // Logger().d("Setting View Model : User insert ${user.userName}");
       DatabaseService.insertDB(patient, "Patients");
     });
     await getPatientList();
     if (state.hasError) {
       showErrorSnack(context);
     } else {
-      Navigator.pop(context);
-      context.goNamed(MainScaffold.routeName);
+      //Navigator.pop(context);
+      //context.goNamed(MainScaffold.routeName);
     }
   }
 

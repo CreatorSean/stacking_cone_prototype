@@ -5,14 +5,17 @@ import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
+import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
+import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 import '../../../services/timer/timer_service.dart';
 
 class ResultDialog extends ConsumerWidget {
   final Widget screenName;
   final int totalCone;
   final int answer;
+  final int mode;
   GameRecordModel record;
 
   ResultDialog({
@@ -21,31 +24,48 @@ class ResultDialog extends ConsumerWidget {
     required this.totalCone,
     required this.screenName,
     required this.record,
+    required this.mode,
   }) : super(key: key);
 
   void getTrainGameRecore(WidgetRef ref) {
+    DateTime dateTime = DateTime.now();
+    PatientModel selectedPatient = ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .getSelectedPatient();
     record = GameRecordModel(
       id: null,
       totalCone: totalCone,
+      patientId: selectedPatient.id!,
       answerCone: answer,
       wrongCong: totalCone - answer,
       totalTime: ref.watch(timerControllerProvider).time,
+      date: dateTime.microsecondsSinceEpoch,
+      mode: mode,
+      trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
     );
   }
 
-  void getTestGameRecore() {
+  void getTestGameRecore(WidgetRef ref) {
+    DateTime dateTime = DateTime.now();
+    PatientModel selectedPatient = ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .getSelectedPatient();
     record = GameRecordModel(
       id: null,
       totalCone: totalCone,
+      patientId: selectedPatient.id!,
       answerCone: answer,
       wrongCong: totalCone - answer,
       totalTime: 60,
+      date: dateTime.microsecondsSinceEpoch,
+      mode: mode,
+      trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
     );
   }
 
   void onHomePressed(BuildContext context, WidgetRef ref) {
     if (ref.read(gameConfigProvider).isTest) {
-      getTestGameRecore();
+      getTestGameRecore(ref);
       ref.watch(gameRecordProvider.notifier).insertRecord(record);
     } else {
       getTrainGameRecore(ref);

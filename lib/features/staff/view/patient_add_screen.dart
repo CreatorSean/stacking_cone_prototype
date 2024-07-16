@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
-import 'package:stacking_cone_prototype/features/staff/view_model/registration_view_model.dart';
+import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/date_textField.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_button.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_textField.dart';
@@ -63,6 +64,23 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
     _surgeryDate = "$_surgeryYear.$_surgeryMonth.$_surgeryDay";
     if (_birthYear.isEmpty && _birthMonth.isEmpty && _birthDay.isEmpty ||
         _isValidBirth(_birth) == false) return;
+    if (_userNameController.text == "" || _birth == "") {
+      ScaffoldMessenger.of(context).clearSnackBars();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Center(
+            child: Text(
+              "Please write your user information.",
+              style: Theme.of(context).textTheme.labelMedium!.copyWith(
+                    fontSize: 15,
+                    fontStyle: FontStyle.italic,
+                  ),
+            ),
+          ),
+          duration: 1.seconds,
+        ),
+      );
+    }
     ref.read(registrationForm.notifier).state = {
       "userName": _userName,
       "gender": _gender,
@@ -72,7 +90,8 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
       "surgeryDate": _surgeryDate,
       "medication": _medication,
     };
-    ref.read(registrationProvider.notifier).insertPatient(context);
+    ref.read(staffScreenViewModelProvider.notifier).insertPatient(context);
+    Navigator.pop(context);
   }
 
   @override
@@ -212,278 +231,284 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
   @override
   Widget build(BuildContext context) {
     final displayWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(30),
-        child: Center(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                "개인 정보",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Gaps.v36,
-              const Text(
-                "이름",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Gaps.v16,
-              PatientTextfield(
-                focusNode: fieldOne,
-                isAutofocus: true,
-                birthdayController: _userNameController,
-                birthHintText: "",
-                boxWidth: displayWidth * 0.84,
-                maxLength: 4,
-              ),
-              Gaps.v24,
-              const Text(
-                "생일",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Gaps.v16,
-              Row(
-                children: [
-                  DateTextField(
-                    focusNode: fieldOne,
-                    isAutofocus: false,
-                    birthdayController: _birthYearController,
-                    birthHintText: "YYYY",
-                    boxWidth: displayWidth * 0.4,
-                    maxLength: 4,
+    return GestureDetector(
+      onTap: () {
+        //FocusManager.instance.primaryFocus?.unfocus();
+        FocusScope.of(context).unfocus();
+      },
+      child: Scaffold(
+        appBar: AppBar(),
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(30),
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "개인 정보",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size32,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Gaps.h6,
-                  DateTextField(
-                    focusNode: fieldTwo,
-                    isAutofocus: false,
-                    birthdayController: _birthMonthController,
-                    birthHintText: "MM",
-                    boxWidth: displayWidth * 0.22,
-                    maxLength: 2,
-                  ),
-                  Gaps.h6,
-                  DateTextField(
-                    focusNode: fieldThree,
-                    isAutofocus: false,
-                    birthdayController: _birthDayController,
-                    birthHintText: "DD",
-                    boxWidth: displayWidth * 0.22,
-                    maxLength: 2,
-                  ),
-                ],
-              ),
-              Gaps.v24,
-              const Text(
-                "성별",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
                 ),
-              ),
-              Gaps.v16,
-              Row(
-                children: [
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Radio(
-                          value: 0,
-                          groupValue: _gender,
-                          onChanged: (value) {
-                            setState(() {
-                              _gender = value!;
-                            });
-                          },
-                        ),
-                        const Text(
-                          '남자',
-                          style: TextStyle(
-                            color: Color(0xFF223A5E),
-                            fontSize: Sizes.size20,
-                            fontWeight: FontWeight.w600,
+                Gaps.v36,
+                const Text(
+                  "이름",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                PatientTextfield(
+                  focusNode: fieldOne,
+                  isAutofocus: true,
+                  birthdayController: _userNameController,
+                  birthHintText: "",
+                  boxWidth: displayWidth * 0.84,
+                  maxLength: 4,
+                ),
+                Gaps.v24,
+                const Text(
+                  "생일",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                Row(
+                  children: [
+                    DateTextField(
+                      focusNode: fieldOne,
+                      isAutofocus: false,
+                      birthdayController: _birthYearController,
+                      birthHintText: "YYYY",
+                      boxWidth: displayWidth * 0.4,
+                      maxLength: 4,
+                    ),
+                    Gaps.h6,
+                    DateTextField(
+                      focusNode: fieldTwo,
+                      isAutofocus: false,
+                      birthdayController: _birthMonthController,
+                      birthHintText: "MM",
+                      boxWidth: displayWidth * 0.2,
+                      maxLength: 2,
+                    ),
+                    Gaps.h6,
+                    DateTextField(
+                      focusNode: fieldThree,
+                      isAutofocus: false,
+                      birthdayController: _birthDayController,
+                      birthHintText: "DD",
+                      boxWidth: displayWidth * 0.2,
+                      maxLength: 2,
+                    ),
+                  ],
+                ),
+                Gaps.v24,
+                const Text(
+                  "성별",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                Row(
+                  children: [
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Radio(
+                            value: 0,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
                           ),
-                        ),
-                      ],
+                          const Text(
+                            '남자',
+                            style: TextStyle(
+                              color: Color(0xFF223A5E),
+                              fontSize: Sizes.size20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Row(
+                        children: [
+                          Radio(
+                            value: 1,
+                            groupValue: _gender,
+                            onChanged: (value) {
+                              setState(() {
+                                _gender = value!;
+                              });
+                            },
+                          ),
+                          const Text(
+                            '여자',
+                            style: TextStyle(
+                              color: Color(0xFF223A5E),
+                              fontSize: Sizes.size20,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Gaps.v52,
+                const Text(
+                  "진단 정보",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size32,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Gaps.v36,
+                const Text(
+                  "진단명",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                PatientTextfield(
+                  focusNode: fieldOne,
+                  isAutofocus: true,
+                  birthdayController: _diagnosisController,
+                  birthHintText: "",
+                  boxWidth: displayWidth * 0.84,
+                  maxLength: 4,
+                ),
+                Gaps.v24,
+                const Text(
+                  "진단 일자",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                Row(
+                  children: [
+                    DateTextField(
+                      focusNode: fieldOne,
+                      isAutofocus: false,
+                      birthdayController: _diagnosisYearController,
+                      birthHintText: "YYYY",
+                      boxWidth: displayWidth * 0.4,
+                      maxLength: 4,
+                    ),
+                    Gaps.h6,
+                    DateTextField(
+                      focusNode: fieldTwo,
+                      isAutofocus: false,
+                      birthdayController: _diagnosisMonthController,
+                      birthHintText: "MM",
+                      boxWidth: displayWidth * 0.2,
+                      maxLength: 2,
+                    ),
+                    Gaps.h6,
+                    DateTextField(
+                      focusNode: fieldThree,
+                      isAutofocus: false,
+                      birthdayController: _diagnosisDayController,
+                      birthHintText: "DD",
+                      boxWidth: displayWidth * 0.2,
+                      maxLength: 2,
+                    ),
+                  ],
+                ),
+                Gaps.v24,
+                const Text(
+                  "수술 일자",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                Row(
+                  children: [
+                    DateTextField(
+                      focusNode: fieldOne,
+                      isAutofocus: false,
+                      birthdayController: _surgeryYearController,
+                      birthHintText: "YYYY",
+                      boxWidth: displayWidth * 0.4,
+                      maxLength: 4,
+                    ),
+                    Gaps.h6,
+                    DateTextField(
+                      focusNode: fieldTwo,
+                      isAutofocus: false,
+                      birthdayController: _surgeryMonthController,
+                      birthHintText: "MM",
+                      boxWidth: displayWidth * 0.2,
+                      maxLength: 2,
+                    ),
+                    Gaps.h6,
+                    DateTextField(
+                      focusNode: fieldThree,
+                      isAutofocus: false,
+                      birthdayController: _surgeryDayController,
+                      birthHintText: "DD",
+                      boxWidth: displayWidth * 0.2,
+                      maxLength: 2,
+                    ),
+                  ],
+                ),
+                Gaps.v24,
+                const Text(
+                  "복용 약물",
+                  style: TextStyle(
+                    color: Color(0xFF223A5E),
+                    fontSize: Sizes.size20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Gaps.v16,
+                PatientTextfield(
+                  focusNode: fieldOne,
+                  isAutofocus: true,
+                  birthdayController: _medicationController,
+                  birthHintText: "",
+                  boxWidth: displayWidth * 0.84,
+                  maxLength: 4,
+                ),
+                Gaps.v52,
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      _addPatient();
+                    },
+                    child: const PatientButton(
+                      screenName: StaffScreen(),
+                      isAddScreen: true,
                     ),
                   ),
-                  Expanded(
-                    child: Row(
-                      children: [
-                        Radio(
-                          value: 1,
-                          groupValue: _gender,
-                          onChanged: (value) {
-                            setState(() {
-                              _gender = value!;
-                            });
-                          },
-                        ),
-                        const Text(
-                          '여자',
-                          style: TextStyle(
-                            color: Color(0xFF223A5E),
-                            fontSize: Sizes.size20,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              Gaps.v52,
-              const Text(
-                "진단 정보",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size32,
-                  fontWeight: FontWeight.bold,
                 ),
-              ),
-              Gaps.v36,
-              const Text(
-                "진단명",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Gaps.v16,
-              PatientTextfield(
-                focusNode: fieldOne,
-                isAutofocus: true,
-                birthdayController: _diagnosisController,
-                birthHintText: "",
-                boxWidth: displayWidth * 0.84,
-                maxLength: 4,
-              ),
-              Gaps.v24,
-              const Text(
-                "진단 일자",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Gaps.v16,
-              Row(
-                children: [
-                  DateTextField(
-                    focusNode: fieldOne,
-                    isAutofocus: false,
-                    birthdayController: _diagnosisYearController,
-                    birthHintText: "YYYY",
-                    boxWidth: displayWidth * 0.4,
-                    maxLength: 4,
-                  ),
-                  Gaps.h6,
-                  DateTextField(
-                    focusNode: fieldTwo,
-                    isAutofocus: false,
-                    birthdayController: _diagnosisMonthController,
-                    birthHintText: "MM",
-                    boxWidth: displayWidth * 0.22,
-                    maxLength: 2,
-                  ),
-                  Gaps.h6,
-                  DateTextField(
-                    focusNode: fieldThree,
-                    isAutofocus: false,
-                    birthdayController: _diagnosisDayController,
-                    birthHintText: "DD",
-                    boxWidth: displayWidth * 0.22,
-                    maxLength: 2,
-                  ),
-                ],
-              ),
-              Gaps.v24,
-              const Text(
-                "수술 일자",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Gaps.v16,
-              Row(
-                children: [
-                  DateTextField(
-                    focusNode: fieldOne,
-                    isAutofocus: false,
-                    birthdayController: _surgeryYearController,
-                    birthHintText: "YYYY",
-                    boxWidth: displayWidth * 0.4,
-                    maxLength: 4,
-                  ),
-                  Gaps.h6,
-                  DateTextField(
-                    focusNode: fieldTwo,
-                    isAutofocus: false,
-                    birthdayController: _surgeryMonthController,
-                    birthHintText: "MM",
-                    boxWidth: displayWidth * 0.22,
-                    maxLength: 2,
-                  ),
-                  Gaps.h6,
-                  DateTextField(
-                    focusNode: fieldThree,
-                    isAutofocus: false,
-                    birthdayController: _surgeryDayController,
-                    birthHintText: "DD",
-                    boxWidth: displayWidth * 0.22,
-                    maxLength: 2,
-                  ),
-                ],
-              ),
-              Gaps.v24,
-              const Text(
-                "복용 약물",
-                style: TextStyle(
-                  color: Color(0xFF223A5E),
-                  fontSize: Sizes.size20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Gaps.v16,
-              PatientTextfield(
-                focusNode: fieldOne,
-                isAutofocus: true,
-                birthdayController: _medicationController,
-                birthHintText: "",
-                boxWidth: displayWidth * 0.84,
-                maxLength: 4,
-              ),
-              Gaps.v52,
-              Center(
-                child: GestureDetector(
-                  onTap: () {
-                    _addPatient();
-                  },
-                  child: const PatientButton(
-                    screenName: StaffScreen(),
-                    isAddScreen: true,
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

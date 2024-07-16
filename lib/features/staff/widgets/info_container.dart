@@ -53,7 +53,7 @@ class _InfoContainerState extends ConsumerState<InfoContainer> {
         medication: widget.selectedPatient.medication,
       );
 
-      ref.read(StaffScreenViewModelProvider.notifier).updateUser(updateUser);
+      ref.read(staffScreenViewModelProvider.notifier).updateUser(updateUser);
       ref
           .read(SelectedPatientViewModelProvider.notifier)
           .setSelectedPatient(updateUser);

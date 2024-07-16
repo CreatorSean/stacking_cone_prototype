@@ -17,14 +17,14 @@ class DatabaseService {
     String path = join(await getDatabasesPath(), 'StackingCone.db');
 
     //데이터 베이스를 리셋하고 싶을때 주석 지우고 다시시작
-    await deleteDatabase(path);
+    //await deleteDatabase(path);
 
     //db가 존재하지 않으면 onCreate 함수 실행되어 table 생성
     return await openDatabase(path, version: 1, onCreate: (db, version) async {
       await db.execute(
-          "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, totalCone INTEGER, answerCone INTEGER, wrongCone INTEGER, totalTime INTEGER)");
+          "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, patientId INTEGER, date INTEGER, mode INTEGER, trainOrtest INTEGER, totalCone INTEGER, answerCone INTEGER, wrongCone INTEGER, totalTime INTEGER, FOREIGN KEY (patientId) REFERENCES Patients (patientId) )");
       await db.execute(
-          "CREATE TABLE Patients(id INTEGER PRIMARY KEY AUTOINCREMENT,  userName TEXT, gender INTEGER, birth TEXT,  diagnosis TEXT, diagnosisDate TEXT, surgeryDate TEXT, medication TEXT, memo TEXT, age INT NOT NULL)");
+          "CREATE TABLE Patients(id INTEGER PRIMARY KEY AUTOINCREMENT,  userName TEXT, gender INTEGER, birth TEXT,  diagnosis TEXT, diagnosisDate TEXT, surgeryDate TEXT, medication TEXT, memo TEXT, img TEXT, age INT NOT NULL)");
     }, onUpgrade: (db, oldVersion, newVersion) {});
   }
 
@@ -52,6 +52,18 @@ class DatabaseService {
     );
   }
 
+  // ========================= delete DB ==============================
+  static Future<void> deletePatientDB(PatientModel patient) async {
+    final db = await database;
+    Logger().i('Delete DB');
+
+    await db!.delete(
+      "Patients",
+      where: "id = ?",
+      whereArgs: [patient.id],
+    );
+  }
+
   // ========================= update Train Record DB ==============================
   static Future<void> updatenRecordDB(GameRecordModel record) async {
     final db = await database;
@@ -61,6 +73,18 @@ class DatabaseService {
       record.toMap(),
       where: "id = ?",
       whereArgs: [record.id],
+    );
+  }
+
+  // ========================= update DB ==============================
+  static Future<void> updateUserDB(PatientModel patient) async {
+    final db = await database;
+    Logger().i('Update DB: ${patient.userName}');
+    await db!.update(
+      "Patients",
+      patient.toMap(),
+      where: "id = ?",
+      whereArgs: [patient.id],
     );
   }
 
@@ -74,10 +98,14 @@ class DatabaseService {
     return List.generate(maps.length, (index) {
       return GameRecordModel(
         id: maps[index]["id"],
+        patientId: maps[index]["patientId"],
+        date: maps[index]["date"],
+        mode: maps[index]["mode"],
         totalCone: maps[index]["totalCone"],
         answerCone: maps[index]["answerCone"],
         wrongCong: maps[index]["wrongCone"],
         totalTime: maps[index]["totalTime"],
+        trainOrtest: maps[index]["trainOrtest"],
       );
     });
   }

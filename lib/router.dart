@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
+import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
 import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
@@ -34,6 +36,20 @@ final routerProvier = Provider(
         GoRoute(
           path: PatientAddScreen.routeURL,
           name: PatientAddScreen.routeName,
+          pageBuilder: (context, state) => const MaterialPage(
+            child: PatientAddScreen(),
+          ),
+        ),
+        GoRoute(
+          path: ConeStackingGameScreen.routeURL,
+          name: ConeStackingGameScreen.routeName,
+          pageBuilder: (context, state) => const MaterialPage(
+            child: PatientAddScreen(),
+          ),
+        ),
+        GoRoute(
+          path: MultipleLedGameScreen.routeURL,
+          name: MultipleLedGameScreen.routeName,
           pageBuilder: (context, state) => const MaterialPage(
             child: PatientAddScreen(),
           ),

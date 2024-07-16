@@ -27,33 +27,33 @@ class SingleLedGameScreen extends ConsumerStatefulWidget {
 class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
-  bool _isDialogShown = false;
+  final bool _isDialogShown = false;
   bool _showLottieAnimation = false;
   bool _isConeSuccess = false; //콘 꽂았을 때 효과
   int positiveNum = 0;
   int negativeNum = 0;
   late final AnimationController _lottieController;
 
-  void showGameResult() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isDialogShown = true;
-      showDialog(
-        context: context,
-        builder: (context) => ResultDialog(
-          screenName: const SingleLedGameScreen(),
-          answer: positiveNum,
-          totalCone: positiveNum + negativeNum,
-          record: GameRecordModel(
-            id: null,
-            totalCone: positiveNum + negativeNum,
-            answerCone: positiveNum,
-            wrongCong: negativeNum,
-            totalTime: 60,
-          ),
-        ),
-      ).then((value) => _isDialogShown = false);
-    });
-  }
+  // void showGameResult() {
+  //   WidgetsBinding.instance.addPostFrameCallback((_) {
+  //     _isDialogShown = true;
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => ResultDialog(
+  //         screenName: const SingleLedGameScreen(),
+  //         answer: positiveNum,
+  //         totalCone: positiveNum + negativeNum,
+  //         record: GameRecordModel(
+  //           id: null,
+  //           totalCone: positiveNum + negativeNum,
+  //           answerCone: positiveNum,
+  //           wrongCong: negativeNum,
+  //           totalTime: 60,
+  //         ),
+  //       ),
+  //     ).then((value) => _isDialogShown = false);
+  //   });
+  // }
 
   @override
   void initState() {
@@ -90,7 +90,7 @@ class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
     final currentTime = ref.watch(timerControllerProvider).time;
     if (ref.read(gameConfigProvider).isTest) {
       if (currentTime == 0 && !_isDialogShown) {
-        showGameResult();
+        // showGameResult();
       }
     }
     return Scaffold(
@@ -165,7 +165,7 @@ class _SingleLedGameScreenState extends ConsumerState<SingleLedGameScreen>
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       StopButton(
-                        showResult: () => showGameResult(),
+                        showResult: () {},
                         screenName: const SingleLedGameScreen(),
                       ),
                       TimerContainer(

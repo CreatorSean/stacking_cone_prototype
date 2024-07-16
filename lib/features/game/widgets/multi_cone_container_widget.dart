@@ -149,7 +149,7 @@ class _MultiConContainerWidgetState extends State<MultiConContainerWidget> {
           childAspectRatio: 0.8,
           // GridView가 스크롤 가능한 영역을 넘어서지 않도록 physics 속성을 NeverScrollableScrollPhysics로 설정
           physics: const NeverScrollableScrollPhysics(),
-          children: List.generate(3, (index) {
+          children: List.generate(9, (index) {
             // 총 3개의 격자 생성
             return GestureDetector(
               onTap: () => _handleTap(index),

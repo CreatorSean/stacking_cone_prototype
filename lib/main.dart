@@ -69,6 +69,11 @@ class StackingConePrototype extends ConsumerWidget {
             fontFamily: 'NotosansKR-Regular',
             fontSize: Sizes.size20,
           ),
+          displaySmall: TextStyle(
+            color: Color(0xFFF8F9FA),
+            fontFamily: 'NotosansKR-Regular',
+            fontSize: Sizes.size20,
+          ),
         ),
       ),
       darkTheme: FlexThemeData.dark(

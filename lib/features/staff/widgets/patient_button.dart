@@ -54,7 +54,7 @@ class _PatientButtonState extends ConsumerState<PatientButton> {
           child: Text(
             "신규환자 등록하기",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.displaySmall,
           ),
         ),
       ),

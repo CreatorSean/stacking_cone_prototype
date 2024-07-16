@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
+import 'package:stacking_cone_prototype/features/staff/view/user_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
@@ -25,7 +27,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
 
   final List<Widget> _pageScreen = <Widget>[
     const GameSelectScreen(),
-    const StaffScreen(),
+    const UserScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -46,10 +48,19 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
         .setSelectedPatient(user);
   }
 
+  Future<void> initPermission() async {
+    await Permission.bluetooth.request();
+    await Permission.bluetoothConnect.request();
+    await Permission.bluetoothScan.request();
+    await Permission.location.request();
+    print('success');
+  }
+
   @override
   void initState() {
     super.initState();
     initUser();
+    initPermission();
   }
 
   @override

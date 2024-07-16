@@ -1,41 +1,31 @@
+import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
+import 'package:stacking_cone_prototype/common/my_scrolll_behavior.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
-import 'package:stacking_cone_prototype/features/staff/view_model/registration_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
-import 'package:stacking_cone_prototype/features/staff/widgets/patient_button.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_container.dart';
+import 'package:stacking_cone_prototype/features/staff/widgets/user_card.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
-class StaffScreen extends ConsumerStatefulWidget {
-  static String routeURL = '/staff';
-  static String routeName = 'staff';
-  const StaffScreen({super.key});
+class UserScreen extends ConsumerStatefulWidget {
+  const UserScreen({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _StaffScreenState();
+  ConsumerState<UserScreen> createState() => _SettingScreenState();
 }
 
-class _StaffScreenState extends ConsumerState<StaffScreen>
+class _SettingScreenState extends ConsumerState<UserScreen>
     with TickerProviderStateMixin {
   int _selectedIdx = -1;
-
-  void _onPatientScreenTap() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const PatientAddScreen(),
-      ),
-    );
-    //context.goNamed(PatientAddScreen.routeName);
-  }
+  // late final AnimationController _controller;
 
   Future<void> selectPatient(
       int idx, PatientModel selectedPatient, bool isChecked) async {
@@ -49,6 +39,21 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
     }
     setState(() {});
   }
+
+  // void makeFakeRecord(UserModel selectedUser) {
+  //   DateTime dateTime = DateTime(2023, 10, 1, 15, 23, 58, 0, 0);
+
+  //   RecordModel fake_1 = RecordModel(
+  //     id: null,
+  //     userId: selectedUser.id!,
+  //     date: dateTime.microsecondsSinceEpoch,
+  //     mode: 0,
+  //     score: Random().nextInt(20) + 60,
+  //     xList: "[0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5,0.5]",
+  //     yList: "[0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]",
+  //   );
+  //   DatabaseService.insertDB(fake_1, "Records");
+  // }
 
   void onDeleteTap(context, int index, List<PatientModel> patientList) {
     if (patientList.length != 1) {
@@ -191,158 +196,158 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
     setState(() {});
   }
 
+  void onAddPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const PatientAddScreen(),
+      ),
+    );
+    //context.goNamed(PatientAddScreen.routeName);
+  }
+
+  // void onModifyPressed(UserModel user) {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => const UserAddScreen(isAdd: false),
+  //     ),
+  //   );
+  // }
+
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     PatientModel selectedPatient = ref
         .read(SelectedPatientViewModelProvider.notifier)
         .getSelectedPatient();
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          'Staff Screen',
-          style: TextStyle(
-            color: Color(0xFFF8F9FA),
-            fontSize: Sizes.size24,
+    return ref.watch(staffScreenViewModelProvider).when(
+      data: (userList) {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            title: const Text(
+              'Staff Screen',
+              style: TextStyle(
+                color: Color(0xFFF8F9FA),
+                fontSize: Sizes.size24,
+              ),
+            ),
           ),
-        ),
-      ),
-      body: ref.watch(staffScreenViewModelProvider).when(
-        data: (patientList) {
-          return SingleChildScrollView(
-            padding: const EdgeInsets.only(
-              top: 50,
-              left: 20,
-              right: 20,
-              bottom: 10,
-            ),
-            child: Column(
-              children: [
-                InfoContainer(
-                  selectedPatient: selectedPatient,
-                  isSetting: false,
-                ),
-                Divider(
-                  height: 2,
-                  thickness: 0.5,
-                  color: Theme.of(context).secondaryHeaderColor,
-                ),
-                Gaps.v8,
-                GestureDetector(
-                  onTap: () {
-                    _onPatientScreenTap();
-                  },
-                  child: const PatientButton(
-                    screenName: PatientAddScreen(),
-                    isAddScreen: false,
-                  ),
-                ),
-                Gaps.v8,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+          body: Column(
+            children: [
+              InfoContainer(
+                isSetting: true,
+                selectedPatient: selectedPatient,
+              ),
+              Divider(
+                height: 2,
+                thickness: 0.5,
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
+              Container(
+                padding: const EdgeInsets.only(left: 15, bottom: 5, right: 5),
+                height: screenHeight * 0.053,
+                color: Theme.of(context).hoverColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      child: ListView.separated(
-                        shrinkWrap: true,
-                        primary: false,
-                        itemCount: patientList.length,
-                        itemBuilder: (context, index) {
-                          return Slidable(
-                            endActionPane: ActionPane(
-                              extentRatio: 1,
-                              motion: const ScrollMotion(),
-                              children: [
-                                SlidableAction(
-                                  onPressed: (context) =>
-                                      onDeleteTap(context, index, patientList),
-                                  // onPressed: (context) =>
-                                  // onDeletePressed(context, index, userList),
-                                  backgroundColor: const Color(0xFFFE4A49),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                ),
-                              ],
-                            ),
-                            child: PatientContainer(
-                                    index: index,
-                                    selected: _selectedIdx == index,
-                                    selectFunc: selectPatient,
-                                    context: context,
-                                    patient: patientList[index])
-                                .animate()
-                                .then(delay: (index * 50).ms)
-                                .fadeIn(
-                                  duration: 300.ms,
-                                  curve: Curves.easeInOut,
-                                )
-                                .flipV(
-                                  begin: -0.25,
-                                  end: 0,
-                                  duration: 300.ms,
-                                  curve: Curves.easeInOut,
-                                ),
-                            // child: UserCard(
-                            //   userModel: patientList[index],
-                            //   isHome: false,
-                            //   index: index,
-                            //   selected: _selectedIdx == index,
-                            //   selectFunc: selectPatient,
-                            // ),
-                          );
-                        },
-                        separatorBuilder: (context, index) {
-                          return const Divider();
-                        },
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          );
-        },
-        loading: () {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
-        error: (error, stackTrace) {
-          return Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: Center(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 50,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center, // 수직 가운데 정렬
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        _onPatientScreenTap();
-                      },
-                      child: const PatientButton(
-                        screenName: PatientAddScreen(),
-                        isAddScreen: false,
+                    Text(
+                      "Patients",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge!
+                          .copyWith(fontSize: screenHeight * 0.035),
+                    ),
+                    IconButton(
+                      onPressed: onAddPressed,
+                      icon: Icon(
+                        Icons.add,
+                        size: screenWidth * 0.08,
+                        color: Theme.of(context).primaryColor,
                       ),
                     ),
                   ],
                 ),
               ),
-            ),
-          );
-          // return Center(
-          //   child: Text(
-          //     error.toString(),
-          //     style: const TextStyle(
-          //       fontSize: Sizes.size16,
-          //       fontWeight: FontWeight.bold,
-          //     ),
-          //   ),
-          // );
-        },
-      ),
+              Divider(
+                height: 2,
+                thickness: 0.5,
+                color: Theme.of(context).secondaryHeaderColor,
+              ),
+              Expanded(
+                child: ScrollConfiguration(
+                  behavior: MyBehavior(),
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: userList.length,
+                    itemBuilder: (context, index) {
+                      return Slidable(
+                        endActionPane: ActionPane(
+                          extentRatio: 1,
+                          motion: const ScrollMotion(),
+                          children: [
+                            // SlidableAction(
+                            //   onPressed: (context) =>
+                            //       onModifyPressed(userList[index]),
+                            //   backgroundColor: Colors.blue,
+                            //   foregroundColor: Colors.white,
+                            //   icon: Icons.edit,
+                            // ),
+                            SlidableAction(
+                              onPressed: (context) =>
+                                  onDeleteTap(context, index, userList),
+                              // onPressed: (context) =>
+                              // onDeletePressed(context, index, userList),
+                              backgroundColor: const Color(0xFFFE4A49),
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
+                            ),
+                          ],
+                        ),
+                        child: PatientContainer(
+                          index: index,
+                          selected: _selectedIdx == index,
+                          selectFunc: selectPatient,
+                          context: context,
+                          patient: userList[index],
+                        )
+                            .animate()
+                            .fadeIn(
+                              begin: 0,
+                              duration: 500.ms,
+                            )
+                            .slideX(
+                              begin: -1,
+                              end: 0,
+                              duration: 300.ms,
+                              curve: Curves.easeInOut,
+                            ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        );
+      },
+      error: (error, stackTrace) {
+        return Column(
+          children: [
+            const Text("An error occurred while retrieving user information."),
+            Text("err: $error"),
+            Text("stackTrace: $stackTrace"),
+          ],
+        );
+      },
+      loading: () {
+        return const Center(
+          child: CupertinoActivityIndicator(),
+        );
+      },
     );
   }
 }

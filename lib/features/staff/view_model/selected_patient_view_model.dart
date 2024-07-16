@@ -8,10 +8,10 @@ import 'package:stacking_cone_prototype/services/database/models/patient_model.d
 class SelectedPatientViewModel extends AsyncNotifier<PatientModel> {
   PatientModel selectedPatient = PatientModel(
     id: -1,
-    userName: "노시헌",
+    userName: "Add Patient",
     gender: 0,
     birth: "1999.05.10",
-    age: 25,
+    age: 0,
     img: 'assets/images/man.png',
     diagnosis: '',
     diagnosisDate: '',

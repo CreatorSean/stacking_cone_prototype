@@ -97,7 +97,7 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
             height: screenHeight * 0.1,
             padding: const EdgeInsets.symmetric(
               horizontal: 8.0,
-              vertical: 12.0,
+              vertical: 4.0,
             ),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
@@ -106,7 +106,7 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
             child: Padding(
               padding: const EdgeInsets.only(right: 12, left: 12),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -115,7 +115,7 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
                         widget.patient.userName,
                         style: const TextStyle(
                           color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
+                          fontSize: Sizes.size16,
                           fontFamily: 'NotosansKR-Medium',
                         ),
                       ),
@@ -124,13 +124,12 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
                         widget.patient.birth,
                         style: const TextStyle(
                           color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
+                          fontSize: Sizes.size16,
                           fontFamily: 'NotosansKR-Medium',
                         ),
                       ),
                     ],
                   ),
-                  Gaps.v16,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -138,16 +137,16 @@ class _PatientContainerState extends ConsumerState<PatientContainer>
                         _gender,
                         style: const TextStyle(
                           color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
+                          fontSize: Sizes.size16,
                           fontFamily: 'NotosansKR-Medium',
                         ),
                       ),
-                      Gaps.h20,
+                      Gaps.h10,
                       Text(
                         "${widget.patient.age}",
                         style: const TextStyle(
                           color: Color(0xFFF8F9FA),
-                          fontSize: Sizes.size24,
+                          fontSize: Sizes.size16,
                           fontFamily: 'NotosansKR-Medium',
                         ),
                       ),

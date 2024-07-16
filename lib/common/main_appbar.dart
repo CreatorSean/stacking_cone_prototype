@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stacking_cone_prototype/common/bluetooth_dialog.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game_select/widgets/toggle_button.dart';
@@ -22,9 +23,7 @@ class MainAppBar extends ConsumerStatefulWidget {
   ConsumerState<ConsumerStatefulWidget> createState() => _MainAppBarState();
 }
 
-void onBluetooth(
-  BuildContext context,
-) {
+void onBluetooth(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {

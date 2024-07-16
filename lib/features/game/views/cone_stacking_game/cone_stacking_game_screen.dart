@@ -8,7 +8,9 @@ import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widg
 import 'package:stacking_cone_prototype/features/game/widgets/stop_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/timer_container.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
+import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
+import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 import '../../../../services/timer/timer_service.dart';
 import '../../widgets/negative_lottie.dart';
 import '../../widgets/positive_lottie.dart';
@@ -52,6 +54,10 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   }
 
   void showGameResult() {
+    DateTime dateTime = DateTime.now();
+    PatientModel selectedPatient = ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .getSelectedPatient();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isDialogShown = true;
       showDialog(
@@ -62,11 +68,16 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
           totalCone: positiveNum + negativeNum,
           record: GameRecordModel(
             id: null,
+            mode: 0,
             totalCone: positiveNum + negativeNum,
             answerCone: positiveNum,
             wrongCong: negativeNum,
             totalTime: 60,
+            patientId: selectedPatient.id!,
+            date: dateTime.microsecondsSinceEpoch,
+            trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
           ),
+          mode: 0,
         ),
       ).then((value) => _isDialogShown = false);
     });
