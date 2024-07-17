@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 
 class ResultScreen extends ConsumerStatefulWidget {
+  static String routeURL = '/result';
+  static String routeName = 'result';
   const ResultScreen({super.key});
 
   @override

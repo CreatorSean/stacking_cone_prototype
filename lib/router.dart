@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
 import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
+import 'package:stacking_cone_prototype/features/result/view/result_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 
@@ -52,6 +53,13 @@ final routerProvier = Provider(
           name: MultipleLedGameScreen.routeName,
           pageBuilder: (context, state) => const MaterialPage(
             child: PatientAddScreen(),
+          ),
+        ),
+        GoRoute(
+          path: ResultScreen.routeURL,
+          name: ResultScreen.routeName,
+          pageBuilder: (context, state) => const MaterialPage(
+            child: ResultScreen(),
           ),
         ),
       ],

@@ -6,7 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
-import 'package:stacking_cone_prototype/features/staff/view_model/registration_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
