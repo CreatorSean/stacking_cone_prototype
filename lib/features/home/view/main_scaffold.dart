@@ -5,6 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
+import 'package:stacking_cone_prototype/features/result/view/result_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/user_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
@@ -27,6 +28,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
 
   final List<Widget> _pageScreen = <Widget>[
     const GameSelectScreen(),
+    const ResultScreen(),
     const UserScreen(),
   ];
 
@@ -67,6 +69,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   Widget build(BuildContext context) {
     final List<String> titleList = <String>[
       "Game",
+      "Result",
       "Staff",
     ];
 
@@ -84,6 +87,13 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
           BottomNavigationBarItem(
             icon: Icon(
               FontAwesomeIcons.clipboard,
+              size: 35,
+            ),
+            label: 'Result',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.user,
               size: 35,
             ),
             label: 'Staff',
