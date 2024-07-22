@@ -68,6 +68,18 @@ class DatabaseService {
     );
   }
 
+  // ========================= delete DB ==============================
+  static Future<void> deleteGameRecordsByPatientId(int patientId) async {
+    final db = await database;
+    Logger().i('Delete GameRecords for Patient ID: $patientId');
+
+    await db!.delete(
+      'GameRecords',
+      where: 'patientId = ?',
+      whereArgs: [patientId],
+    );
+  }
+
   // ========================= update Train Record DB ==============================
   static Future<void> updatenRecordDB(GameRecordModel record) async {
     final db = await database;
@@ -170,6 +182,32 @@ class DatabaseService {
         surgeryDate: maps[index]["surgeryDate"],
         medication: maps[index]["medication"],
         age: maps[index]["age"],
+      );
+    });
+  }
+
+  static Future<List<GameRecordModel>> getGameRecordsByPatientId(
+      int patientId) async {
+    final db = await database;
+    Logger().i('Get GameRecords DB for patientId: $patientId');
+
+    final List<Map<String, dynamic>> maps = await db!.query(
+      'GameRecords',
+      where: 'patientId = ?',
+      whereArgs: [patientId],
+    );
+
+    return List.generate(maps.length, (index) {
+      return GameRecordModel(
+        id: maps[index]["id"],
+        patientId: maps[index]["patientId"],
+        date: maps[index]["date"],
+        mode: maps[index]["mode"],
+        totalCone: maps[index]["totalCone"],
+        answerCone: maps[index]["answerCone"],
+        wrongCong: maps[index]["wrongCone"],
+        totalTime: maps[index]["totalTime"],
+        trainOrtest: maps[index]["trainOrtest"],
       );
     });
   }
