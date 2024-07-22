@@ -1,7 +1,7 @@
 class GameRecordModel {
   final int? id;
   final int patientId;
-  final int date;
+  int date;
   final int mode; // 0: 콘 쌓기 | 1: 다중 LED
   final int trainOrtest; // 0: train | 1: test
   final int totalCone;

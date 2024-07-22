@@ -33,6 +33,10 @@ class DatabaseService {
     final db = await database;
     Logger().i('Insert $tablename DB');
 
+    if (model is GameRecordModel) {
+      model.date = DateTime.now().millisecondsSinceEpoch;
+    }
+
     await db!.insert(
       tablename,
       model.toMap(),
