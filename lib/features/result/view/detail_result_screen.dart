@@ -185,16 +185,29 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('총 쌓은 콘: ${widget.record.totalCone} 개',
-                                    style: TextStyle(fontSize: 16)),
+                                    style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.04,
+                                    )),
                                 Text('맞게 쌓은 콘: ${widget.record.answerCone} 개',
-                                    style: TextStyle(fontSize: 16)),
+                                    style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.04,
+                                    )),
                                 Text('틀린 콘: ${widget.record.wrongCong} 개',
-                                    style: TextStyle(fontSize: 16)),
+                                    style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.04,
+                                    )),
                                 Text('소요시간: ${widget.record.totalTime} s',
-                                    style: TextStyle(fontSize: 16)),
-                                Text(
-                                    '사용한 손: ${widget.record.trainOrtest == 0 ? '왼손' : '오른손'}',
-                                    style: TextStyle(fontSize: 16)),
+                                    style: TextStyle(
+                                      fontSize:
+                                          MediaQuery.of(context).size.width *
+                                              0.04,
+                                    )),
                               ],
                             ),
                           ),
