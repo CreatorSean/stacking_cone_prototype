@@ -8,7 +8,7 @@ import 'package:stacking_cone_prototype/services/database/models/game_record_mod
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
-import 'result_detail_screen.dart';
+import 'detail_result_screen.dart';
 
 class ResultScreen extends ConsumerStatefulWidget {
   static String routeURL = '/result';
@@ -125,8 +125,8 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) =>
-                                    ResultDetailScreen(record: record),
+                                builder: (context) => DetailResultScreen(
+                                    record: record, index: index + 1),
                               ),
                             );
                           },
