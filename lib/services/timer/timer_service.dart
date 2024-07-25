@@ -12,45 +12,38 @@ class TimerController extends StateNotifier<TimerState> {
   TimerController() : super(TimerState.initial());
 
   void startTimer() {
-    state.time = 0;
+    _timer?.cancel(); // 기존 타이머가 있으면 취소
+    state = TimerState(time: 0); // 타이머 상태 초기화
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       state = state.copyWith(time: state.time + 1);
     });
   }
 
   void startTestTimer() {
-    state.time = 10;
+    _timer?.cancel(); // 기존 타이머가 있으면 취소
+    state = TimerState(time: 10); // 타이머 상태 초기화
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      state = state.copyWith(time: state.time - 1);
       if (state.time == 0) {
         stopTimer();
+      } else {
+        state = state.copyWith(time: state.time - 1);
       }
     });
   }
 
   void stopTimer() {
     _timer?.cancel();
-    state = state.copyWith(isRunning: false);
   }
 }
 
 class TimerState {
-  int time;
-  final bool isRunning;
+  final int time;
 
-  TimerState({required this.time, this.isRunning = false});
+  TimerState({required this.time});
 
-  TimerState.initial()
-      : time = 0,
-        isRunning = false;
+  TimerState.initial() : time = 0;
 
-  TimerState copyWith({
-    int? time,
-    bool? isRunning,
-  }) {
-    return TimerState(
-      time: time ?? this.time,
-      isRunning: isRunning ?? this.isRunning,
-    );
+  TimerState copyWith({int? time}) {
+    return TimerState(time: time ?? this.time);
   }
 }

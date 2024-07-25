@@ -18,7 +18,7 @@ class GameConfirmationDialog extends ConsumerWidget {
 
     String userName = selectedPatient.userName;
     String mode = config.isMode ? '콘 쌓기' : '다중 LED';
-    String trainOrTest = config.isTest ? '훈련 모드' : '평가 모드';
+    String trainOrTest = config.isTest ? '평가 모드' : '훈련 모드';
 
     return AlertDialog(
       title: const Text("게임 시작 확인"),
