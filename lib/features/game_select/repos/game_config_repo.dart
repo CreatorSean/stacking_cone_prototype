@@ -2,6 +2,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class GameConfigRepository {
   static const String _isTest = "isTest";
+  static const String _isMode = "isTest";
   final SharedPreferences _preferences;
 
   GameConfigRepository(this._preferences);
@@ -12,5 +13,9 @@ class GameConfigRepository {
 
   bool isTest() {
     return _preferences.getBool(_isTest) ?? false;
+  }
+
+  bool isMode() {
+    return _preferences.getBool(_isMode) ?? false;
   }
 }

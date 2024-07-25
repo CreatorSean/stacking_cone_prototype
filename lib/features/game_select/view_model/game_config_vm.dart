@@ -11,6 +11,14 @@ class GameConfigViewModel extends Notifier<GameConfigModel> {
     _repository.setTest(value);
     state = GameConfigModel(
       isTest: value,
+      isMode: state.isMode,
+    );
+  }
+
+  void setMode(bool isMode) {
+    state = GameConfigModel(
+      isTest: state.isTest,
+      isMode: isMode,
     );
   }
 
@@ -18,6 +26,7 @@ class GameConfigViewModel extends Notifier<GameConfigModel> {
   GameConfigModel build() {
     return GameConfigModel(
       isTest: _repository.isTest(),
+      isMode: _repository.isMode(),
     );
   }
 }

@@ -11,7 +11,7 @@ class GameReocrdViewModel extends AsyncNotifier<List<GameRecordModel>> {
   Future<void> getRecordList() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
-      // print("Get User List View Model");
+      // print("Get User List View Model");'
       recordList = await DatabaseService.getGameRecordsListDB();
       return recordList;
     });

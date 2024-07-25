@@ -16,6 +16,10 @@ import 'package:stacking_cone_prototype/services/database/models/game_record_mod
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 import '../../../../services/timer/timer_service.dart';
+import '../../widgets/negative_lottie.dart';
+import '../../widgets/positive_lottie.dart';
+import '../../widgets/countdown_lottie.dart';
+import '../../widgets/game_confirmation_dialog_widget.dart'; // 올바른 경로로 수정
 
 class MultipleLedGameScreen extends ConsumerStatefulWidget {
   static String routeURL = '/multiple';
@@ -35,7 +39,10 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   bool _isConeSuccess = true; //콘 꽂았을 때 효과
   int positiveNum = 0;
   int negativeNum = 0;
+  bool _isCountdownComplete = false; // 추가된 상태 변수
+  bool _isLottiePlaying = false; // Lottie 애니메이션 상태 추가
   late final AnimationController _lottieController;
+  late final AnimationController _countdownController; // 추가된 애니메이션 컨트롤러
 
   void showGameResult() {
     DateTime dateTime = DateTime.now();
@@ -81,15 +88,59 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     setState(() {});
   }
 
+  void _showConfirmationDialog() {
+    ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return GameConfirmationDialog(
+          onStartLottie: () {
+            setState(() {
+              _isLottiePlaying = true;
+            });
+            _startCountdown();
+          },
+        );
+      },
+    );
+  }
+
+  void _startCountdown() {
+    _countdownController.forward(from: 0);
+  }
+
   @override
   void initState() {
     super.initState();
     _lottieController = AnimationController(vsync: this);
+    _countdownController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3), // 카운트다운 애니메이션의 지속 시간 설정
+    ); // 초기화
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _showConfirmationDialog();
+    });
+    _countdownController.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
+        setState(() {
+          _isCountdownComplete = true; // 카운트다운 완료 상태로 변경
+          _isLottiePlaying = false; // Lottie 애니메이션 상태 변경
+        });
+        if (ref.read(gameConfigProvider).isTest) {
+          ref
+              .read(timerControllerProvider.notifier)
+              .startTestTimer(); // 평가 타이머 시작
+        } else {
+          ref.read(timerControllerProvider.notifier).startTimer(); // 일반 타이머 시작
+        }
+      }
+    });
   }
 
   @override
   void dispose() {
     _lottieController.dispose();
+    _countdownController.dispose(); // 카운트다운 컨트롤러 해제
     super.dispose();
   }
 
@@ -108,109 +159,122 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           isSelectScreen: false,
         ),
       ),
-      body: Stack(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              bottom: 40,
-            ),
-            child: Column(
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "이중 모드",
-                          style: Theme.of(context).textTheme.titleMedium,
-                        ),
-                      ],
+      body: _isLottiePlaying
+          ? CountdownLottie(
+              controller: _countdownController,
+              onAnimationComplete: () {
+                setState(() {
+                  _isCountdownComplete = true;
+                });
+              },
+            )
+          : _isCountdownComplete
+              ? Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        bottom: 40,
+                      ),
+                      child: Column(
+                        children: [
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "이중 모드",
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "LED MODE",
+                                    style:
+                                        Theme.of(context).textTheme.titleLarge,
+                                  ),
+                                ],
+                              ),
+                              Gaps.v28,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  showLottieAnimation
+                                      ? Text(
+                                          _isConeSuccess
+                                              ? "잘했어요!"
+                                              : "다시 한 번 해보세요!",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .titleMedium
+                                              ?.copyWith(color: Colors.pink),
+                                        )
+                                      : const Text(" "),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: MultiConContainerWidget(
+                              trueLottie: () => isTrue(),
+                              falseLottie: () => isFalse(),
+                            ),
+                          ),
+                          Gaps.v20,
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: 30,
+                              left: 30,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                StopButton(
+                                  showResult: () => showGameResult(),
+                                  screenName: const MultipleLedGameScreen(),
+                                ),
+                                TimerContainer(
+                                  isTimerShow:
+                                      ref.read(gameConfigProvider).isTest,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "LED MODE",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                      ],
-                    ),
-                    Gaps.v28,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        showLottieAnimation
-                            ? Text(
-                                _isConeSuccess ? "잘했어요!" : "다시 한 번 해보세요!",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
-                                    ?.copyWith(color: Colors.pink),
-                              )
-                            : const Text(" "),
-                      ],
-                    ),
+                    if (positiveNum != 0 && _isConeSuccess == true)
+                      PositiveLottie(
+                        controller: _lottieController,
+                        randomIndex: randomIndex,
+                        showLottieAnimation: showLottieAnimation,
+                        onAnimationComplete: () {
+                          setState(() {
+                            showLottieAnimation = false;
+                            randomIndex = Random().nextInt(2);
+                          });
+                        },
+                      ),
+                    if (negativeNum != 0 && _isConeSuccess == false)
+                      NegativeLottie(
+                        controller: _lottieController,
+                        randomIndex: randomIndex,
+                        showLottieAnimation: showLottieAnimation,
+                        onAnimationComplete: () {
+                          setState(() {
+                            showLottieAnimation = false;
+                            randomIndex = Random().nextInt(2);
+                          });
+                        },
+                      ),
                   ],
-                ),
-                Expanded(
-                  child: MultiConContainerWidget(
-                    trueLottie: () => isTrue(),
-                    falseLottie: () => isFalse(),
-                  ),
-                ),
-                Gaps.v20,
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: 30,
-                    left: 30,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      StopButton(
-                        showResult: () => showGameResult(),
-                        screenName: const MultipleLedGameScreen(),
-                      ),
-                      TimerContainer(
-                        isTimerShow: ref.read(gameConfigProvider).isTest,
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          //긍정 로띠
-          if (positiveNum != 0 && _isConeSuccess == true)
-            PositiveLottie(
-              controller: _lottieController,
-              randomIndex: randomIndex,
-              showLottieAnimation: showLottieAnimation,
-              onAnimationComplete: () {
-                setState(() {
-                  showLottieAnimation = false;
-                  randomIndex = Random().nextInt(2);
-                });
-              },
-            ),
-          //부정 로띠
-          if (negativeNum != 0 && _isConeSuccess == false)
-            NegativeLottie(
-              controller: _lottieController,
-              randomIndex: randomIndex,
-              showLottieAnimation: showLottieAnimation,
-              onAnimationComplete: () {
-                setState(() {
-                  showLottieAnimation = false;
-                  randomIndex = Random().nextInt(2);
-                });
-              },
-            ),
-        ],
-      ),
+                )
+              : Container(),
     );
   }
 }
