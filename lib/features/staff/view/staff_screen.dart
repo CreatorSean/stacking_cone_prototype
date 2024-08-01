@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
@@ -26,14 +27,17 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
     with TickerProviderStateMixin {
   int _selectedIdx = -1;
 
-  void _onPatientScreenTap() {
-    Navigator.push(
+  void _onPatientScreenTap() async {
+    final result = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => const PatientAddScreen(),
       ),
     );
-    //context.goNamed(PatientAddScreen.routeName);
+
+    if (result == true) {
+      _logCurrentPatientInfo();
+    }
   }
 
   Future<void> selectPatient(
@@ -47,6 +51,26 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
           .setSelectedPatient(selectedPatient);
     }
     setState(() {});
+  }
+
+  void _logCurrentPatientInfo() {
+    PatientModel selectedPatient = ref
+        .read(SelectedPatientViewModelProvider.notifier)
+        .getSelectedPatient();
+
+    Logger().i({
+      'id': selectedPatient.id,
+      'userName': selectedPatient.userName,
+      'gender': selectedPatient.gender,
+      'birth': selectedPatient.birth,
+      'age': selectedPatient.age,
+      'diagnosis': selectedPatient.diagnosis,
+      'diagnosisDate': selectedPatient.diagnosisDate,
+      'surgeryDate': selectedPatient.surgeryDate,
+      'medication': selectedPatient.medication,
+      'img': selectedPatient.img,
+      'memo': selectedPatient.memo,
+    });
   }
 
   void onDeleteTap(context, int index, List<PatientModel> patientList) {
@@ -70,7 +94,7 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
                 color: Colors.red,
               ),
               Text(
-                "  Delete User",
+                "Delete User",
                 style: TextStyle(
                   color: Colors.red,
                 ),
