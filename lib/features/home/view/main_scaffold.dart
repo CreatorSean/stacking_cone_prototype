@@ -4,7 +4,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stacking_cone_prototype/common/password_dialog.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
+import 'package:stacking_cone_prototype/features/game_select/view_model/password_config_vm.dart';
 import 'package:stacking_cone_prototype/features/result/view/result_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/user_screen.dart';
@@ -33,9 +35,30 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedPageIndex = index;
-    });
+    if (index == 2) {
+      // Show password dialog when Staff tab is clicked
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return PasswordDialog(
+            onPasswordSubmitted: (password) {
+              // Implement your password check logic here
+              if (password == 'your_password') {
+                setState(() {
+                  _selectedPageIndex = index;
+                });
+              } else {
+                // Show error message or handle wrong password
+              }
+            },
+          );
+        },
+      );
+    } else {
+      setState(() {
+        _selectedPageIndex = index;
+      });
+    }
   }
 
   Future<void> initUser() async {
@@ -58,11 +81,18 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     print('success');
   }
 
+  Future<void> initPassword() async {
+    await ref
+        .read(passwordConfigViewModelProvider.notifier)
+        .insertPassword(context);
+  }
+
   @override
   void initState() {
     super.initState();
     initUser();
     initPermission();
+    initPassword();
   }
 
   @override

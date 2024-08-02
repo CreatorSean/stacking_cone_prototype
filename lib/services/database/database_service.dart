@@ -25,6 +25,8 @@ class DatabaseService {
           "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, patientId INTEGER, date INTEGER, mode INTEGER, trainOrtest INTEGER, totalCone INTEGER, answerCone INTEGER, wrongCone INTEGER, totalTime INTEGER, FOREIGN KEY (patientId) REFERENCES Patients (patientId) )");
       await db.execute(
           "CREATE TABLE Patients(id INTEGER PRIMARY KEY AUTOINCREMENT,  userName TEXT, gender INTEGER, birth TEXT,  diagnosis TEXT, diagnosisDate TEXT, surgeryDate TEXT, medication TEXT, memo TEXT, img TEXT, age INT NOT NULL)");
+      await db.execute(
+          "CREATE TABLE Password(id INTEGER PRIMARY KEY AUTOINCREMENT,  password Text)");
     }, onUpgrade: (db, oldVersion, newVersion) {});
   }
 
