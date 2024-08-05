@@ -43,7 +43,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
           return PasswordDialog(
             onPasswordSubmitted: (password) {
               // Implement your password check logic here
-              if (password == 'your_password') {
+              if (password == '659371') {
                 setState(() {
                   _selectedPageIndex = index;
                 });
@@ -81,18 +81,11 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     print('success');
   }
 
-  Future<void> initPassword() async {
-    await ref
-        .read(passwordConfigViewModelProvider.notifier)
-        .insertPassword(context);
-  }
-
   @override
   void initState() {
     super.initState();
     initUser();
     initPermission();
-    initPassword();
   }
 
   @override

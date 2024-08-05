@@ -27,6 +27,8 @@ class DatabaseService {
           "CREATE TABLE Patients(id INTEGER PRIMARY KEY AUTOINCREMENT,  userName TEXT, gender INTEGER, birth TEXT,  diagnosis TEXT, diagnosisDate TEXT, surgeryDate TEXT, medication TEXT, memo TEXT, img TEXT, age INT NOT NULL)");
       await db.execute(
           "CREATE TABLE Password(id INTEGER PRIMARY KEY AUTOINCREMENT,  password Text)");
+
+      await db.insert('Password', {'id': 0, 'password': '659371'});
     }, onUpgrade: (db, oldVersion, newVersion) {});
   }
 
