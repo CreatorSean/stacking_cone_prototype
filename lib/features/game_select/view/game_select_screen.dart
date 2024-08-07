@@ -80,11 +80,11 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
                     screenName: MultipleLedGameScreen(),
                     buttonName: "다중 LED MODE",
                   ),
-                  Gaps.v32,
-                  CommonButton(
-                    screenName: DbSaveScreen(),
-                    buttonName: "DB 저장",
-                  ),
+                  // Gaps.v32,
+                  // CommonButton(
+                  //   screenName: DbSaveScreen(),
+                  //   buttonName: "DB 저장",
+                  // ),
                 ],
               ),
             ],

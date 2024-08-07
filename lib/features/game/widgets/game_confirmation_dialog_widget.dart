@@ -33,7 +33,10 @@ class GameConfirmationDialog extends ConsumerWidget {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
           child: const Text("취소"),
         ),
         ElevatedButton(

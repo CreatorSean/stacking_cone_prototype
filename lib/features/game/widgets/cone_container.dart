@@ -118,10 +118,19 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                   ? Colors.white
                   : const Color(0xfff0e5c8),
               border: Border.all(
-                color: const Color(0xFF332F23),
+                color: index == ref.watch(gameProvider).targetIndex
+                    ? Colors.red.withOpacity(0.5)
+                    : const Color(0xFF332F23),
                 width: 1.5,
               ),
             ),
+          ).animate(
+            target: index != ref.watch(gameProvider).targetIndex ? 1 : 0,
+            onComplete: (controller) {
+              if (index != ref.watch(gameProvider).targetIndex) {
+                controller.forward(from: 0);
+              }
+            },
           ),
           if (coneMatrix[index] > 0)
             Positioned.fill(

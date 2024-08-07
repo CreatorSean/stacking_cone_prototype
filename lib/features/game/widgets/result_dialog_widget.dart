@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
@@ -71,13 +72,15 @@ class ResultDialog extends ConsumerWidget {
       getTrainGameRecore(ref);
       ref.watch(gameRecordProvider.notifier).insertRecord(record);
     }
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (BuildContext context) => const MainScaffold(),
-      ),
-      (route) => true, // 현재 화면 닫기
-    );
+    // Navigator.pushAndRemoveUntil(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (BuildContext context) => const MainScaffold(),
+    //   ),
+    //   (route) => false,
+    // );
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   void onRestartPressed(BuildContext context, WidgetRef ref) {

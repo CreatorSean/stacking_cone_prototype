@@ -1,10 +1,9 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container_widget.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/multi_cone_container.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/negative_lottie.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/positive_lottie.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
@@ -14,10 +13,7 @@ import 'package:stacking_cone_prototype/features/game_select/view_model/game_con
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
-
 import '../../../../services/timer/timer_service.dart';
-import '../../widgets/negative_lottie.dart';
-import '../../widgets/positive_lottie.dart';
 import '../../widgets/countdown_lottie.dart';
 import '../../widgets/game_confirmation_dialog_widget.dart'; // 올바른 경로로 수정
 
@@ -78,31 +74,45 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     _isConeSuccess = true;
     showLottieAnimation = true;
     ++positiveNum;
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   void isFalse() {
     _isConeSuccess = false;
     showLottieAnimation = true;
     ++negativeNum;
-    setState(() {});
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        setState(() {});
+      }
+    });
   }
 
   void _showConfirmationDialog() {
     ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GameConfirmationDialog(
-          onStartLottie: () {
-            setState(() {
-              _isLottiePlaying = true;
-            });
-            _startCountdown();
-          },
-        );
-      },
-    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GameConfirmationDialog(
+            onStartLottie: () {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (mounted) {
+                  setState(() {
+                    _isLottiePlaying = true;
+                  });
+                }
+              });
+              _startCountdown();
+            },
+          );
+        },
+      );
+    });
   }
 
   void _startCountdown() {
@@ -122,9 +132,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     });
     _countdownController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        setState(() {
-          _isCountdownComplete = true; // 카운트다운 완료 상태로 변경
-          _isLottiePlaying = false; // Lottie 애니메이션 상태 변경
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              _isCountdownComplete = true; // 카운트다운 완료 상태로 변경
+              _isLottiePlaying = false; // Lottie 애니메이션 상태 변경
+            });
+          }
         });
         if (ref.read(gameConfigProvider).isTest) {
           ref
@@ -163,8 +177,12 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           ? CountdownLottie(
               controller: _countdownController,
               onAnimationComplete: () {
-                setState(() {
-                  _isCountdownComplete = true;
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (mounted) {
+                    setState(() {
+                      _isCountdownComplete = true;
+                    });
+                  }
                 });
               },
             )
@@ -220,7 +238,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                             ],
                           ),
                           Expanded(
-                            child: MultiConContainerWidget(
+                            child: MultiConContainer(
                               trueLottie: () => isTrue(),
                               falseLottie: () => isFalse(),
                             ),
@@ -254,9 +272,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                         randomIndex: randomIndex,
                         showLottieAnimation: showLottieAnimation,
                         onAnimationComplete: () {
-                          setState(() {
-                            showLottieAnimation = false;
-                            randomIndex = Random().nextInt(2);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              setState(() {
+                                showLottieAnimation = false;
+                                randomIndex = Random().nextInt(2);
+                              });
+                            }
                           });
                         },
                       ),
@@ -266,9 +288,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                         randomIndex: randomIndex,
                         showLottieAnimation: showLottieAnimation,
                         onAnimationComplete: () {
-                          setState(() {
-                            showLottieAnimation = false;
-                            randomIndex = Random().nextInt(2);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            if (mounted) {
+                              setState(() {
+                                showLottieAnimation = false;
+                                randomIndex = Random().nextInt(2);
+                              });
+                            }
                           });
                         },
                       ),
