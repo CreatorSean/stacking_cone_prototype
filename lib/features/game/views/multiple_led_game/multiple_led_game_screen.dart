@@ -51,13 +51,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         context: context,
         builder: (context) => ResultDialog(
           screenName: const MultipleLedGameScreen(),
-          answer: 8,
-          totalCone: 10,
+          answer: positiveNum,
+          totalCone: positiveNum + negativeNum,
           record: GameRecordModel(
             id: null,
-            totalCone: 10,
-            answerCone: 8,
-            wrongCong: 2,
+            totalCone: positiveNum + negativeNum,
+            answerCone: positiveNum,
+            wrongCong: negativeNum,
             totalTime: 60,
             patientId: selectedPatient.id!,
             date: dateTime.microsecondsSinceEpoch,

@@ -71,32 +71,6 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     }
   }
 
-  // void _notifyRightLocation() {
-  //   int delaySeconds = 1;
-  //   for (var index in randomIndexes) {
-  //     if (index != fixedRedConeIndex) {
-  //       Future.delayed(Duration(seconds: delaySeconds), () {
-  //         WidgetsBinding.instance.addPostFrameCallback((_) {
-  //           if (mounted) {
-  //             setState(() {
-  //               displayStartTimes[index] = DateTime.now();
-  //             });
-  //             Future.delayed(const Duration(seconds: 1), () {
-  //               WidgetsBinding.instance.addPostFrameCallback((_) {
-  //                 if (mounted) {
-  //                   setState(() {
-  //                     displayStartTimes.remove(index);
-  //                   });
-  //                 }
-  //               });
-  //             });
-  //           }
-  //         });
-  //       });
-  //     }
-  //   }
-  // }
-
   void _notifyRightLocation() {
     int delaySeconds = 1;
     for (var index in randomIndexes) {
@@ -142,7 +116,6 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
           } else {
             widget.falseLottie();
             incorrectIndexes.add(changedIndices[0]);
-
             Future.delayed(const Duration(seconds: 1), () {
               setState(() {
                 incorrectIndexes.remove(changedIndices[0]);
@@ -154,9 +127,19 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       }
     }
 
-    if (_listEquality.equals(btConeMatrix, initMatrix) &&
-        coneCount == 3 &&
-        coneCount == 3) {
+    // if (_listEquality.equals(btConeMatrix, initMatrix) &&
+    //     coneCount == 3 &&
+    //     coneCount == 3) {
+    //   randomIndexes.clear();
+    //   displayStartTimes.clear();
+    //   correctIndexes.clear();
+    //   incorrectIndexes.clear();
+    //   fixedRedConeIndex = null;
+    //   coneCount = 0;
+    //   _initRandomIndexes();
+    // }
+
+    if (coneCount == 3) {
       randomIndexes.clear();
       displayStartTimes.clear();
       correctIndexes.clear();
