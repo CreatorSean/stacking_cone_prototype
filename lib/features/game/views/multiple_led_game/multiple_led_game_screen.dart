@@ -55,6 +55,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           totalCone: positiveNum + negativeNum,
           record: GameRecordModel(
             id: null,
+            userName: selectedPatient.userName,
             totalCone: positiveNum + negativeNum,
             answerCone: positiveNum,
             wrongCong: negativeNum,
@@ -62,6 +63,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
             patientId: selectedPatient.id!,
             date: dateTime.microsecondsSinceEpoch,
             mode: 1,
+            level: 1, //이부분 수정해야함
             trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
           ),
           mode: 1,
@@ -92,44 +94,19 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     });
   }
 
-  void _showConfirmationDialog() {
-    ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return GameConfirmationDialog(
-            onStartLottie: () {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (mounted) {
-                  setState(() {
-                    _isLottiePlaying = true;
-                  });
-                }
-              });
-              _startCountdown();
-            },
-          );
-        },
-      );
-    });
-  }
-
-  void _startCountdown() {
-    _countdownController.forward(from: 0);
-  }
-
   @override
   void initState() {
     super.initState();
     _lottieController = AnimationController(vsync: this);
+
     _countdownController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 3), // 카운트다운 애니메이션의 지속 시간 설정
-    ); // 초기화
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showConfirmationDialog();
-    });
+    );
+
+    // 화면이 로드되면 카운트다운 시작
+    _startCountdown();
+
     _countdownController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -151,6 +128,13 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     });
   }
 
+  void _startCountdown() {
+    setState(() {
+      _isLottiePlaying = true; // 카운트다운 애니메이션 시작 시 표시
+    });
+    _countdownController.forward(from: 0); // 카운트다운 시작
+  }
+
   @override
   void dispose() {
     _lottieController.dispose();
@@ -162,7 +146,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   Widget build(BuildContext context) {
     final currentTime = ref.watch(timerControllerProvider).time;
     if (ref.read(gameConfigProvider).isTest) {
-      if (currentTime == 0 && !_isDialogShown) {
+      if (currentTime == 0 && _isDialogShown == true) {
         showGameResult();
       }
     }

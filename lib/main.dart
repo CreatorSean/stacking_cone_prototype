@@ -4,7 +4,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game_select/repos/game_config_repo.dart';
-import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/router.dart';
 

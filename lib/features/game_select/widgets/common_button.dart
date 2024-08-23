@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
+import 'package:stacking_cone_prototype/features/game/widgets/game_confirmation_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
@@ -21,47 +22,32 @@ class CommonButton extends ConsumerStatefulWidget {
 }
 
 class _CommonButtonState extends ConsumerState<CommonButton> {
-  void _onNextTap() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => widget.screenName,
-      ),
-    );
-  }
-
-  void _onStackingGameStartTap() {
-    ref.read(gameProvider.notifier).startStackingGame();
-    ref
-        .read(bluetoothServiceProvider.notifier)
-        .onSendData(ref.watch(gameProvider).gameRule);
-  }
-
-  void _onLEDGameStartTap() {
-    ref.read(gameProvider.notifier).startStackingGame();
-    ref
-        .read(bluetoothServiceProvider.notifier)
-        .onSendData(ref.watch(gameProvider).gameRule);
+  void _showConfirmationDialog() {
+    ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return GameConfirmationDialog(
+            screenName: widget.screenName,
+            gameName: widget.buttonName,
+          );
+        },
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (ref.read(gameConfigProvider).isTest) {
-          ref.read(timerControllerProvider.notifier).startTestTimer();
-        } else {
-          ref.read(timerControllerProvider.notifier).startTimer();
-        }
-        if (widget.screenName.toString() == "ConeStackingGameScreen") {
-          _onStackingGameStartTap();
-          ref.read(gameProvider.notifier).setGameMode("ConeStackingGame");
-        }
-        if (widget.screenName.toString() == "SingleLedGameScreen") {
-          _onLEDGameStartTap();
-          ref.read(gameProvider.notifier).setGameMode("SingleLedGame");
-        }
-        _onNextTap();
+        // if (ref.read(gameConfigProvider).isTest) {
+        //   ref.read(timerControllerProvider.notifier).startTestTimer();
+        // } else {
+        //   ref.read(timerControllerProvider.notifier).startTimer();
+        // }
+
+        _showConfirmationDialog();
       },
       child: FractionallySizedBox(
         widthFactor: 0.6,

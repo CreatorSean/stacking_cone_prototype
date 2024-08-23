@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:collection/collection.dart';
 
@@ -27,9 +28,11 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
   int convertScreen = 0;
   int correctScore = 0;
   int incorrectScore = 0;
+  int randomIndexesCounts = 0;
   List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   int coneCount = 0;
   List<int> initMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  int gameLevel = 0; // 0: easy | 1: normal | 2: hard
 
   final ListEquality _listEquality = const ListEquality();
 
@@ -37,6 +40,18 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
   void initState() {
     super.initState();
     _initRandomIndexes();
+    //_getGameLevel();
+  }
+
+  void _getGameLevel() {
+    if (ref.watch(gameProvider).gameMode == 'easy') {
+      gameLevel = 0;
+    } else if (ref.watch(gameProvider).gameMode == 'normal') {
+      gameLevel = 1;
+    } else {
+      gameLevel = 2;
+    }
+    print(gameLevel);
   }
 
   void _initRandomIndexes() {
@@ -126,18 +141,6 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
         }
       }
     }
-
-    // if (_listEquality.equals(btConeMatrix, initMatrix) &&
-    //     coneCount == 3 &&
-    //     coneCount == 3) {
-    //   randomIndexes.clear();
-    //   displayStartTimes.clear();
-    //   correctIndexes.clear();
-    //   incorrectIndexes.clear();
-    //   fixedRedConeIndex = null;
-    //   coneCount = 0;
-    //   _initRandomIndexes();
-    // }
 
     if (coneCount == 3) {
       randomIndexes.clear();
@@ -240,12 +243,12 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
           width: 1.5,
         ),
       ),
-      child: Center(
-        child: Text(
-          '$index',
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-      ),
+      // child: Center(
+      //   child: Text(
+      //     '$index',
+      //     style: Theme.of(context).textTheme.titleLarge,
+      //   ),
+      // ),
     );
   }
 

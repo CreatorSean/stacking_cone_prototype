@@ -22,7 +22,7 @@ class DatabaseService {
     //db가 존재하지 않으면 onCreate 함수 실행되어 table 생성
     return await openDatabase(path, version: 1, onCreate: (db, version) async {
       await db.execute(
-          "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, patientId INTEGER, date INTEGER, mode INTEGER, trainOrtest INTEGER, totalCone INTEGER, answerCone INTEGER, wrongCone INTEGER, totalTime INTEGER, FOREIGN KEY (patientId) REFERENCES Patients (patientId) )");
+          "CREATE TABLE GameRecords(id INTEGER PRIMARY KEY AUTOINCREMENT, patientId INTEGER, userName TEXT, date INTEGER, mode INTEGER, level INTEGER, trainOrtest INTEGER, totalCone INTEGER, answerCone INTEGER, wrongCone INTEGER, totalTime INTEGER, FOREIGN KEY (patientId) REFERENCES Patients (patientId) )");
       await db.execute(
           "CREATE TABLE Patients(id INTEGER PRIMARY KEY AUTOINCREMENT,  userName TEXT, gender INTEGER, birth TEXT,  diagnosis TEXT, diagnosisDate TEXT, surgeryDate TEXT, medication TEXT, memo TEXT, img TEXT, age INT NOT NULL)");
       await db.execute(
@@ -119,8 +119,10 @@ class DatabaseService {
       return GameRecordModel(
         id: maps[index]["id"],
         patientId: maps[index]["patientId"],
+        userName: maps[index]["userName"],
         date: maps[index]["date"],
         mode: maps[index]["mode"],
+        level: maps[index]["level"],
         totalCone: maps[index]["totalCone"],
         answerCone: maps[index]["answerCone"],
         wrongCong: maps[index]["wrongCone"],
@@ -205,8 +207,10 @@ class DatabaseService {
       return GameRecordModel(
         id: maps[index]["id"],
         patientId: maps[index]["patientId"],
+        userName: maps[index]["userName"],
         date: maps[index]["date"],
         mode: maps[index]["mode"],
+        level: maps[index]["level"],
         totalCone: maps[index]["totalCone"],
         answerCone: maps[index]["answerCone"],
         wrongCong: maps[index]["wrongCone"],

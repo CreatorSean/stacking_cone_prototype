@@ -7,13 +7,16 @@ class ConeStackingGameViewModel extends StateNotifier<ConeStackingGameState> {
 
   void startStackingGame() {
     List<int> list = [];
-    int newIndex = Random().nextInt(9);
-    list.add(newIndex);
-    list.add(1);
+    state.copyWith(gameRule: List.empty());
+    list.add(state.targetIndex);
     state = state.copyWith(
       gameRule: list,
-      targetIndex: newIndex,
+      targetIndex: state.targetIndex,
     );
+  }
+
+  void setTargetIndex(int newIndex) {
+    state = state.copyWith(targetIndex: newIndex);
   }
 
   void setGameMode(String gameMode) {

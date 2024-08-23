@@ -73,12 +73,12 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
                 children: [
                   CommonButton(
                     screenName: ConeStackingGameScreen(),
-                    buttonName: "콘 쌓기 MODE",
+                    buttonName: "운동 재활",
                   ),
                   Gaps.v32,
                   CommonButton(
                     screenName: MultipleLedGameScreen(),
-                    buttonName: "다중 LED MODE",
+                    buttonName: "인지 재활",
                   ),
                   // Gaps.v32,
                   // CommonButton(

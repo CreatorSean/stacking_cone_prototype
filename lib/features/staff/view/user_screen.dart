@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/common/my_scrolll_behavior.dart';
+import 'package:stacking_cone_prototype/features/db_save/views/db_save_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_view_model.dart';
@@ -235,6 +237,26 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                 fontSize: Sizes.size24,
               ),
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
+                child: IconButton(
+                  color: Colors.white,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const DbSaveScreen(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(
+                    FontAwesomeIcons.floppyDisk,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
           body: Column(
             children: [

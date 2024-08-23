@@ -10,12 +10,11 @@ import 'package:stacking_cone_prototype/features/game/widgets/timer_container.da
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
-import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
-import '../../../../services/timer/timer_service.dart';
+import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
+import '../../../../services/database/models/patient_model.dart';
 import '../../widgets/negative_lottie.dart';
 import '../../widgets/positive_lottie.dart';
 import '../../widgets/countdown_lottie.dart';
-import '../../widgets/game_confirmation_dialog_widget.dart';
 
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
   static String routeURL = '/stacking';
@@ -32,13 +31,13 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   int randomIndex = Random().nextInt(2);
   bool showLottieAnimation = false;
   bool _isDialogShown = false;
-  bool _isConeSuccess = true; // 콘 꽂았을 때 효과
+  bool _isConeSuccess = true;
   int positiveNum = 0;
   int negativeNum = 0;
-  bool _isCountdownComplete = false; // 추가된 상태 변수
-  bool _isLottiePlaying = false; // Lottie 애니메이션 상태 추가
+  bool _isCountdownComplete = false;
+  bool _isLottiePlaying = true; // Lottie 애니메이션 상태 변경
   late final AnimationController _lottieController;
-  late final AnimationController _countdownController; // 추가된 애니메이션 컨트롤러
+  late final AnimationController _countdownController;
 
   void isTrue() {
     _isConeSuccess = true;
@@ -73,7 +72,9 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
           totalCone: positiveNum + negativeNum,
           record: GameRecordModel(
             id: null,
+            userName: selectedPatient.userName,
             mode: 0,
+            level: 0, //이부분 수정해야함
             totalCone: positiveNum + negativeNum,
             answerCone: positiveNum,
             wrongCong: negativeNum,
@@ -88,43 +89,23 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     });
   }
 
-  void _showConfirmationDialog() {
-    ref.read(gameConfigProvider.notifier).setMode(true); // 콘 쌓기 모드 설정
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return GameConfirmationDialog(
-          onStartLottie: () {
-            setState(() {
-              _isLottiePlaying = true;
-            });
-            _startCountdown();
-          },
-        );
-      },
-    );
-  }
-
-  void _startCountdown() {
-    _countdownController.forward(from: 0);
-  }
-
   @override
   void initState() {
     super.initState();
     _lottieController = AnimationController(vsync: this);
     _countdownController = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 3), // 카운트다운 애니메이션의 지속 시간 설정
-    ); // 초기화
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _showConfirmationDialog();
-    });
+      duration: const Duration(seconds: 3), // 카운트다운 애니메이션의 지속 시간
+    ); // 카운트다운 컨트롤러 초기화
     _countdownController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        setState(() {
-          _isCountdownComplete = true; // 카운트다운 완료 상태로 변경
-          _isLottiePlaying = false; // Lottie 애니메이션 상태 변경
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              _isCountdownComplete = true; // 카운트다운 완료 상태로 변경
+              _isLottiePlaying = false; // Lottie 애니메이션 상태 변경
+            });
+          }
         });
         if (ref.read(gameConfigProvider).isTest) {
           ref
@@ -135,6 +116,8 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
         }
       }
     });
+
+    _countdownController.forward(); // 화면이 로드되면 카운트다운 시작
   }
 
   @override
@@ -148,10 +131,11 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   Widget build(BuildContext context) {
     final currentTime = ref.watch(timerControllerProvider).time;
     if (ref.read(gameConfigProvider).isTest) {
-      if (currentTime == 0 && !_isDialogShown) {
+      if (currentTime == 0 && _isDialogShown == true) {
         showGameResult();
       }
     }
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -214,12 +198,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                                               .titleMedium
                                               ?.copyWith(color: Colors.pink),
                                         )
-                                      : Text(
-                                          "",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .titleMedium,
-                                        ),
+                                      : const Text(""),
                                 ],
                               ),
                             ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
@@ -229,6 +230,19 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
             fontSize: Sizes.size24,
           ),
         ),
+        actions: [
+          Stack(
+            children: [
+              Container(
+                color: Colors.white,
+              ),
+              const Icon(
+                FontAwesomeIcons.floppyDisk,
+                color: Color(0xFF223A5E),
+              )
+            ],
+          ),
+        ],
       ),
       body: ref.watch(staffScreenViewModelProvider).when(
         data: (patientList) {

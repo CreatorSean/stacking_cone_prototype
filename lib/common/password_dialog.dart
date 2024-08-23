@@ -28,6 +28,7 @@ class PasswordDialog extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: TextField(
                 controller: passwordController,
+                keyboardType: TextInputType.number,
                 obscureText: true,
                 decoration: const InputDecoration(
                   border: InputBorder.none,

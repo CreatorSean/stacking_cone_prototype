@@ -37,11 +37,13 @@ class ResultDialog extends ConsumerWidget {
       id: null,
       totalCone: totalCone,
       patientId: selectedPatient.id!,
+      userName: selectedPatient.userName,
       answerCone: answer,
       wrongCong: totalCone - answer,
       totalTime: ref.watch(timerControllerProvider).time,
       date: dateTime.microsecondsSinceEpoch,
       mode: mode,
+      level: record.level,
       trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
     );
   }
@@ -54,12 +56,14 @@ class ResultDialog extends ConsumerWidget {
     record = GameRecordModel(
       id: null,
       totalCone: totalCone,
+      userName: selectedPatient.userName,
       patientId: selectedPatient.id!,
       answerCone: answer,
       wrongCong: totalCone - answer,
       totalTime: 60,
       date: dateTime.microsecondsSinceEpoch,
       mode: mode,
+      level: record.level,
       trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
     );
   }
@@ -85,9 +89,6 @@ class ResultDialog extends ConsumerWidget {
 
   void onRestartPressed(BuildContext context, WidgetRef ref) {
     if (ref.watch(gameProvider).gameMode == "ConeStackingGame") {
-      ref.read(gameProvider.notifier).startStackingGame();
-    }
-    if (ref.watch(gameProvider).gameMode == "SingleLedGame") {
       ref.read(gameProvider.notifier).startStackingGame();
     }
     ref

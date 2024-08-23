@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,6 +25,36 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
   List<int> changedIndices = [0];
 
   List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+  late AnimationController _borderAnimationController;
+  late Animation<Color?> _borderColorAnimation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // 테두리 애니메이션 컨트롤러 초기화
+    _borderAnimationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300), // 애니메이션 한 사이클의 지속 시간
+    );
+
+    // 색상 변화 애니메이션 생성
+    _borderColorAnimation = ColorTween(
+      begin: Colors.black,
+      end: Colors.red, // 테두리가 깜박일 때의 색상
+    ).animate(_borderAnimationController);
+
+    // 애니메이션을 계속 반복
+    _borderAnimationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _borderAnimationController.dispose();
+    super.dispose();
+  }
 
   void stackCone(int index) {
     setState(() {
@@ -104,34 +136,45 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
 
   Widget _buildGridItem(BuildContext context, int index) {
     return GestureDetector(
-      onTap: () {
-        stackCone(index);
-      },
-      onLongPress: () {
-        resetCone(index);
-      },
+      // onTap: () {
+      //   stackCone(index);
+      // },
+      // onLongPress: () {
+      //   resetCone(index);
+      // },
       child: Stack(
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: index == ref.watch(gameProvider).targetIndex
-                  ? Colors.white
-                  : const Color(0xfff0e5c8),
-              border: Border.all(
+          if (index != ref.watch(gameProvider).targetIndex)
+            Container(
+              decoration: BoxDecoration(
                 color: index == ref.watch(gameProvider).targetIndex
-                    ? Colors.red.withOpacity(0.5)
-                    : const Color(0xFF332F23),
-                width: 1.5,
+                    ? Colors.white
+                    : const Color(0xfff0e5c8),
+                border: Border.all(
+                  color: Colors.black,
+                  width: 1.5,
+                ),
               ),
             ),
-          ).animate(
-            target: index != ref.watch(gameProvider).targetIndex ? 1 : 0,
-            onComplete: (controller) {
-              if (index != ref.watch(gameProvider).targetIndex) {
-                controller.forward(from: 0);
-              }
-            },
-          ),
+          if (index == ref.watch(gameProvider).targetIndex)
+            AnimatedBuilder(
+              animation: _borderAnimationController,
+              builder: (context, child) {
+                return Container(
+                  decoration: BoxDecoration(
+                    color: index == ref.watch(gameProvider).targetIndex
+                        ? Colors.white
+                        : const Color(0xfff0e5c8),
+                    border: Border.all(
+                      color: index == ref.watch(gameProvider).targetIndex
+                          ? _borderColorAnimation.value ?? Colors.white
+                          : Colors.white,
+                      width: 3.0,
+                    ),
+                  ),
+                );
+              },
+            ),
           if (coneMatrix[index] > 0)
             Positioned.fill(
               child: Stack(
@@ -178,6 +221,18 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
             ),
         ],
       ),
+    );
+  }
+}
+
+class BorderTween extends Tween<Border?> {
+  BorderTween({Border? begin, Border? end}) : super(begin: begin, end: end);
+
+  @override
+  Border? lerp(double t) {
+    return Border.all(
+      color: Color.lerp(begin!.top.color, end!.top.color, t)!,
+      width: lerpDouble(begin!.top.width, end!.top.width, t)!,
     );
   }
 }
