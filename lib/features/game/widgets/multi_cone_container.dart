@@ -9,10 +9,14 @@ import 'package:collection/collection.dart';
 class MultiConContainer extends ConsumerStatefulWidget {
   final Function() trueLottie;
   final Function() falseLottie;
+  String level;
 
-  const MultiConContainer(
-      {Key? key, required this.trueLottie, required this.falseLottie})
-      : super(key: key);
+  MultiConContainer({
+    Key? key,
+    required this.trueLottie,
+    required this.falseLottie,
+    required this.level,
+  }) : super(key: key);
 
   @override
   ConsumerState<MultiConContainer> createState() => _MultiConContainerState();
@@ -40,28 +44,53 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
   void initState() {
     super.initState();
     _initRandomIndexes();
-    //_getGameLevel();
-  }
-
-  void _getGameLevel() {
-    if (ref.watch(gameProvider).gameMode == 'easy') {
-      gameLevel = 0;
-    } else if (ref.watch(gameProvider).gameMode == 'normal') {
-      gameLevel = 1;
-    } else {
-      gameLevel = 2;
-    }
-    print(gameLevel);
   }
 
   void _initRandomIndexes() {
-    while (randomIndexes.length < 3) {
-      randomIndexes.add(Random().nextInt(9));
+    if (widget.level == 'easy') {
+      while (randomIndexes.isEmpty) {
+        randomIndexes.add(Random().nextInt(9));
+      }
+      _easyWhiteLocationDisplayTime();
+    } else if (widget.level == 'normal') {
+      while (randomIndexes.length < 3) {
+        randomIndexes.add(Random().nextInt(9));
+      }
+      _normalWhiteLocationDisplayTime();
+    } else {
+      while (randomIndexes.length < 5) {
+        randomIndexes.add(Random().nextInt(9));
+      }
+      _hardWhiteLocationDisplayTime();
     }
-    _whiteLocationDisplayTime();
   }
 
-  void _whiteLocationDisplayTime() {
+  void _easyWhiteLocationDisplayTime() {
+    int delaySeconds = 1;
+    for (var index in randomIndexes) {
+      Future.delayed(Duration(seconds: delaySeconds), () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              displayStartTimes[index] = DateTime.now();
+            });
+          }
+        });
+      });
+      Future.delayed(const Duration(seconds: 3), () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              displayStartTimes.remove(index);
+            });
+          }
+        });
+      });
+      delaySeconds += 1;
+    }
+  }
+
+  void _normalWhiteLocationDisplayTime() {
     int delaySeconds = 1;
     for (var index in randomIndexes) {
       Future.delayed(Duration(seconds: delaySeconds), () {
@@ -83,6 +112,33 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
         });
       });
       delaySeconds += 1;
+    }
+  }
+
+  void _hardWhiteLocationDisplayTime() {
+    // 모든 인덱스를 동시에 시작하도록 지연 시간을 통일
+    for (var index in randomIndexes) {
+      // 동시에 1초 후에 모든 인덱스를 표시
+      Future.delayed(const Duration(seconds: 1), () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              displayStartTimes[index] = DateTime.now();
+            });
+          }
+        });
+      });
+
+      // 동시에 4초 후에 모든 인덱스를 숨김
+      Future.delayed(const Duration(seconds: 3), () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) {
+            setState(() {
+              displayStartTimes.remove(index);
+            });
+          }
+        });
+      });
     }
   }
 
@@ -109,6 +165,16 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       });
       delaySeconds += 1;
     }
+  }
+
+  void _resetGame() {
+    randomIndexes.clear();
+    displayStartTimes.clear();
+    correctIndexes.clear();
+    incorrectIndexes.clear();
+    fixedRedConeIndex = null;
+    coneCount = 0;
+    _initRandomIndexes();
   }
 
   void detectChangesAndReturnIndices(
@@ -142,14 +208,10 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       }
     }
 
-    if (coneCount == 3) {
-      randomIndexes.clear();
-      displayStartTimes.clear();
-      correctIndexes.clear();
-      incorrectIndexes.clear();
-      fixedRedConeIndex = null;
-      coneCount = 0;
-      _initRandomIndexes();
+    if ((coneCount == 3 && widget.level == 'normal') ||
+        (coneCount == 5 && widget.level == 'hard') ||
+        (coneCount == 1 && widget.level == 'easy')) {
+      _resetGame();
     }
   }
 

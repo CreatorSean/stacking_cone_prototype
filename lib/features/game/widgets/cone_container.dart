@@ -36,7 +36,7 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
     // 테두리 애니메이션 컨트롤러 초기화
     _borderAnimationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300), // 애니메이션 한 사이클의 지속 시간
+      duration: const Duration(seconds: 3), // 애니메이션 한 사이클의 지속 시간
     );
 
     // 색상 변화 애니메이션 생성
@@ -148,8 +148,8 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
             Container(
               decoration: BoxDecoration(
                 color: index == ref.watch(gameProvider).targetIndex
-                    ? Colors.white
-                    : const Color(0xfff0e5c8),
+                    ? const Color.fromARGB(255, 105, 221, 238)
+                    : const Color.fromARGB(255, 176, 233, 247),
                 border: Border.all(
                   color: Colors.black,
                   width: 1.5,
@@ -163,13 +163,13 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
                 return Container(
                   decoration: BoxDecoration(
                     color: index == ref.watch(gameProvider).targetIndex
-                        ? Colors.white
-                        : const Color(0xfff0e5c8),
+                        ? const Color.fromARGB(255, 13, 204, 233)
+                        : const Color.fromARGB(255, 81, 184, 231),
                     border: Border.all(
                       color: index == ref.watch(gameProvider).targetIndex
                           ? _borderColorAnimation.value ?? Colors.white
                           : Colors.white,
-                      width: 3.0,
+                      width: 7.0,
                     ),
                   ),
                 );

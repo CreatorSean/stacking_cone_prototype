@@ -62,6 +62,7 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
                 ref.read(timerControllerProvider.notifier).stopTimer();
               },
             ),

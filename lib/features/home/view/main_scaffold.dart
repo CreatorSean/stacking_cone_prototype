@@ -11,6 +11,7 @@ import 'package:stacking_cone_prototype/features/result/view/result_screen.dart'
 import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/user_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
+import 'package:stacking_cone_prototype/features/staff/widgets/showPasswordErrorSnack.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
@@ -43,12 +44,12 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
           return PasswordDialog(
             onPasswordSubmitted: (password) {
               // Implement your password check logic here
-              if (password == '659371') {
+              if (password == '1111') {
                 setState(() {
                   _selectedPageIndex = index;
                 });
               } else {
-                // Show error message or handle wrong password
+                showPasswordErrorSnack(context);
               }
             },
           );

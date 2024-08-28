@@ -20,7 +20,11 @@ import '../../widgets/game_confirmation_dialog_widget.dart'; // 올바른 경로
 class MultipleLedGameScreen extends ConsumerStatefulWidget {
   static String routeURL = '/multiple';
   static String routeName = 'multiple';
-  const MultipleLedGameScreen({super.key});
+  String level;
+  MultipleLedGameScreen({
+    super.key,
+    required this.level,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -50,7 +54,9 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
       showDialog(
         context: context,
         builder: (context) => ResultDialog(
-          screenName: const MultipleLedGameScreen(),
+          screenName: MultipleLedGameScreen(
+            level: widget.level,
+          ),
           answer: positiveNum,
           totalCone: positiveNum + negativeNum,
           record: GameRecordModel(
@@ -150,6 +156,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         showGameResult();
       }
     }
+
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
@@ -223,6 +230,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                           ),
                           Expanded(
                             child: MultiConContainer(
+                              level: widget.level,
                               trueLottie: () => isTrue(),
                               falseLottie: () => isFalse(),
                             ),
@@ -238,7 +246,9 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                               children: [
                                 StopButton(
                                   showResult: () => showGameResult(),
-                                  screenName: const MultipleLedGameScreen(),
+                                  screenName: MultipleLedGameScreen(
+                                    level: widget.level,
+                                  ),
                                 ),
                                 TimerContainer(
                                   isTimerShow:

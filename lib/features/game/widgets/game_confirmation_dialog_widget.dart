@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
+import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/level_select_button.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/showGameLevelErrorSnack.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/targetIndex_select_form.dart';
@@ -32,6 +33,7 @@ class _GameConfirmationDialogState
   bool _easySelected = false;
   bool _normalSelected = false;
   bool _hardSelected = false;
+  String level = 'easy';
   final String _easy = '쉬움';
   final String _normal = '보통';
   final String _hard = '어려움';
@@ -50,12 +52,23 @@ class _GameConfirmationDialogState
         builder: (context) => widget.screenName,
       ),
     );
+    if (widget.gameName == '인지 재활') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MultipleLedGameScreen(
+            level: level,
+          ),
+        ),
+      );
+    }
   }
 
   void _onEasySelectTap() {
     _easySelected = true;
     _normalSelected = false;
     _hardSelected = false;
+    level = 'easy';
     setState(() {});
   }
 
@@ -63,6 +76,7 @@ class _GameConfirmationDialogState
     _easySelected = false;
     _normalSelected = true;
     _hardSelected = false;
+    level = 'normal';
     setState(() {});
   }
 
@@ -70,6 +84,7 @@ class _GameConfirmationDialogState
     _easySelected = false;
     _normalSelected = false;
     _hardSelected = true;
+    level = 'hard';
     setState(() {});
   }
 

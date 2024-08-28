@@ -28,7 +28,7 @@ class DatabaseService {
       await db.execute(
           "CREATE TABLE Password(id INTEGER PRIMARY KEY AUTOINCREMENT,  password Text)");
 
-      await db.insert('Password', {'id': 0, 'password': '659371'});
+      await db.insert('Password', {'id': 0, 'password': '1111'});
     }, onUpgrade: (db, oldVersion, newVersion) {});
   }
 

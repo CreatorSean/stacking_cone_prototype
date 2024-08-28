@@ -22,15 +22,15 @@ class LevelSelectButton extends ConsumerStatefulWidget {
 }
 
 class _LevelSelectButtonState extends ConsumerState<LevelSelectButton> {
-  void _onGameLevelSelectTap() {
-    if (widget.buttonName == '쉬움') {
-      ref.watch(gameProvider).gameMode = '쉬움';
-    } else if (widget.buttonName == '보통') {
-      ref.watch(gameProvider).gameMode = '보통';
-    } else {
-      ref.watch(gameProvider).gameMode = '어려움';
-    }
-  }
+  // void _onGameLevelSelectTap() {
+  //   if (widget.buttonName == '쉬움') {
+  //     ref.watch(gameProvider).gameMode = '쉬움';
+  //   } else if (widget.buttonName == '보통') {
+  //     ref.watch(gameProvider).gameMode = '보통';
+  //   } else {
+  //     ref.watch(gameProvider).gameMode = '어려움';
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
