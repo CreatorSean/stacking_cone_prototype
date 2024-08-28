@@ -22,14 +22,35 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
   late double currentTime;
   late double time;
 
+  // timeInSeconds로 실행 시간 받아와서 60초 넘으면 형식 변경
+  String formatTime(int totalSeconds) {
+    final minutes = totalSeconds ~/ 60;
+    final seconds = totalSeconds % 60;
+
+    if (minutes > 0) {
+      return '$minutes분 $seconds초';
+    } else {
+      return '$seconds초';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final int timeInSeconds = ref.watch(timerControllerProvider).time;
+
+    // 화면 크기에 따른 폰트 크기 조절
+    final screenWidth = MediaQuery.of(context).size.width;
+    final FontSize = screenWidth * 0.06;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           ref.read(gameConfigProvider).isTest ? "남은 시간: " : "훈련 시간: ",
-          style: Theme.of(context).textTheme.labelSmall,
+          style: TextStyle(
+            fontSize: FontSize,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         Stack(
           alignment: Alignment.center,
@@ -39,9 +60,9 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
               height: 90,
               child: Center(
                 child: Text(
-                  ref.watch(timerControllerProvider).time.toString(),
-                  style: const TextStyle(
-                    fontSize: 30,
+                  formatTime(timeInSeconds),
+                  style: TextStyle(
+                    fontSize: FontSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

@@ -168,7 +168,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "단일 모드",
+                                    "운동 재활",
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),

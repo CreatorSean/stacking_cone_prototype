@@ -193,7 +193,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "이중 모드",
+                                    "인지 재활",
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),
