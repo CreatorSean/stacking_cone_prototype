@@ -115,6 +115,9 @@ class _GameConfirmationDialogState
     final length = MediaQuery.of(context).size.width * 0.15;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    final titleFontSize = length * 0.55;
+    final FontSize = length * 0.4;
+
     PatientModel selectedPatient = ref
         .read(SelectedPatientViewModelProvider.notifier)
         .getSelectedPatient();
@@ -125,10 +128,15 @@ class _GameConfirmationDialogState
     String trainOrTest = config.isTest ? '평가 모드' : '훈련 모드';
     config.isMode = widget.gameName == '운동 재활' ? true : false;
     return AlertDialog(
-      title: const Text("게임 시작 확인"),
+      title: Text(
+        "게임 시작 확인",
+        style: TextStyle(
+          fontSize: titleFontSize,
+        ),
+      ),
       content: Container(
         width: width * 0.5,
-        height: config.isMode ? height * 0.4 : height * 0.2,
+        height: config.isMode ? height * 0.45 : height * 0.22,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -136,10 +144,25 @@ class _GameConfirmationDialogState
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("이름: $userName"),
-            Text("종류: $mode"),
-            Text("모드: $trainOrTest"),
-            Gaps.v10,
+            Text(
+              "이름: $userName",
+              style: TextStyle(
+                fontSize: FontSize,
+              ),
+            ),
+            Text(
+              "종류: $mode",
+              style: TextStyle(
+                fontSize: FontSize,
+              ),
+            ),
+            Text(
+              "모드: $trainOrTest",
+              style: TextStyle(
+                fontSize: FontSize,
+              ),
+            ),
+            Gaps.v14,
             config.isMode
                 ? const TargetindexSelectForm()
                 : Row(
@@ -151,7 +174,7 @@ class _GameConfirmationDialogState
                         },
                         child: LevelSelectButton(
                           buttonName: _easy,
-                          width: length,
+                          width: length * 1.2,
                           height: length,
                           isSelected: _easySelected,
                         ),
@@ -163,7 +186,7 @@ class _GameConfirmationDialogState
                         },
                         child: LevelSelectButton(
                           buttonName: _normal,
-                          width: length,
+                          width: length * 1.2,
                           height: length,
                           isSelected: _normalSelected,
                         ),
@@ -175,7 +198,7 @@ class _GameConfirmationDialogState
                         },
                         child: LevelSelectButton(
                           buttonName: _hard,
-                          width: length,
+                          width: length * 1.2,
                           height: length,
                           isSelected: _hardSelected,
                         ),

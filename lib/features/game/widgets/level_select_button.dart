@@ -34,6 +34,9 @@ class _LevelSelectButtonState extends ConsumerState<LevelSelectButton> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final fontSize = screenWidth * 0.04;
+
     return AnimatedContainer(
       width: widget.width,
       height: widget.height,
@@ -61,11 +64,14 @@ class _LevelSelectButtonState extends ConsumerState<LevelSelectButton> {
           widget.buttonName,
           textAlign: TextAlign.center,
           style: widget.isSelected
-              ? Theme.of(context).textTheme.labelMedium
+              ? Theme.of(context)
+                  .textTheme
+                  .labelMedium
+                  ?.copyWith(fontSize: fontSize)
               : Theme.of(context)
                   .textTheme
                   .labelMedium
-                  ?.copyWith(color: Colors.black54),
+                  ?.copyWith(fontSize: fontSize, color: Colors.black54),
         ),
       ),
     );

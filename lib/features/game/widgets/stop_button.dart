@@ -10,6 +10,7 @@ class StopButton extends ConsumerWidget {
   final Widget screenName;
   final int answer = 9;
   final int totalCone = 10;
+
   const StopButton({
     Key? key,
     required this.showResult,
@@ -18,6 +19,10 @@ class StopButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // 화면 크기에 따른 폰트 크기 조절
+    final screenWidth = MediaQuery.of(context).size.width;
+    final fontSize = screenWidth * 0.05;
+
     return Visibility(
       visible: !ref.read(gameConfigProvider).isTest,
       child: ElevatedButton(
@@ -31,18 +36,19 @@ class StopButton extends ConsumerWidget {
             ),
             shape: WidgetStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), // 버튼의 모서리를 둥글게 만듦
+                borderRadius: BorderRadius.circular(10),
                 side: const BorderSide(
-                  color: Color(0xFF332F23), // 테두리 색상
-                  width: 1.5, // 테두리 두께
+                  color: Color(0xFF332F23),
+                  width: 1.5,
                 ),
               ),
             ),
             minimumSize: WidgetStateProperty.all(const Size(100, 40))),
-        child: const Text(
+        child: Text(
           '그만하기',
           style: TextStyle(
             color: Color(0xFF332F23),
+            fontSize: fontSize,
           ),
         ),
       ),
