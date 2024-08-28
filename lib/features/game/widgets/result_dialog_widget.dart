@@ -85,7 +85,6 @@ class ResultDialog extends ConsumerWidget {
     // );
     Navigator.pop(context);
     Navigator.pop(context);
-    Navigator.pop(context);
   }
 
   void onRestartPressed(BuildContext context, WidgetRef ref) {
