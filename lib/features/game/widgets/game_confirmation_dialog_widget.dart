@@ -174,7 +174,7 @@ class _GameConfirmationDialogState
                         },
                         child: LevelSelectButton(
                           buttonName: _easy,
-                          width: length * 1.2,
+                          width: length,
                           height: length,
                           isSelected: _easySelected,
                         ),
@@ -186,7 +186,7 @@ class _GameConfirmationDialogState
                         },
                         child: LevelSelectButton(
                           buttonName: _normal,
-                          width: length * 1.2,
+                          width: length,
                           height: length,
                           isSelected: _normalSelected,
                         ),
@@ -198,7 +198,7 @@ class _GameConfirmationDialogState
                         },
                         child: LevelSelectButton(
                           buttonName: _hard,
-                          width: length * 1.2,
+                          width: length,
                           height: length,
                           isSelected: _hardSelected,
                         ),
