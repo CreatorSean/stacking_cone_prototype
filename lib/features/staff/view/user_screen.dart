@@ -58,6 +58,9 @@ class _SettingScreenState extends ConsumerState<UserScreen>
   // }
 
   void onDeleteTap(context, int index, List<PatientModel> patientList) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final fontSize = screenWidth * 0.07;
+
     if (patientList.length != 1) {
       showDialog(
         context: context,
@@ -71,24 +74,31 @@ class _SettingScreenState extends ConsumerState<UserScreen>
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           titlePadding: const EdgeInsets.only(top: 20, left: 20, right: 20),
 
-          title: const Row(
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(
                 Icons.dangerous,
                 color: Colors.red,
               ),
-              Text(
-                "  Delete User",
-                style: TextStyle(
-                  color: Colors.red,
+              const SizedBox(width: 8),
+              Flexible(
+                child: Text(
+                  "Delete User",
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: fontSize,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                 ),
               ),
             ],
           ),
           content: SizedBox(
-              height: 70,
-              child: Center(
-                  child: Column(
+            height: 70,
+            child: Center(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -104,7 +114,9 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                         ),
                   ),
                 ],
-              ))),
+              ),
+            ),
+          ),
           actions: <Widget>[
             GestureDetector(
                 onTap: () {

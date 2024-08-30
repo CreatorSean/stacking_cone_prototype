@@ -40,7 +40,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
 
     // 화면 크기에 따른 폰트 크기 조절
     final screenWidth = MediaQuery.of(context).size.width;
-    final FontSize = screenWidth * 0.06;
+    final fontSize = screenWidth * 0.06;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -48,7 +48,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
         Text(
           ref.read(gameConfigProvider).isTest ? "남은 시간: " : "훈련 시간: ",
           style: TextStyle(
-            fontSize: FontSize,
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -62,7 +62,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
                 child: Text(
                   formatTime(timeInSeconds),
                   style: TextStyle(
-                    fontSize: FontSize,
+                    fontSize: fontSize,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

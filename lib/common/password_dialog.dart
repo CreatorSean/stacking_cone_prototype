@@ -8,10 +8,20 @@ class PasswordDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final titleFontSize = screenWidth * 0.07;
+    final mediumFontSize = screenWidth * 0.06;
     final TextEditingController passwordController = TextEditingController();
 
     return AlertDialog(
-      title: const Text('비밀번호 입력'),
+      title: Center(
+        child: Text(
+          '비밀번호 입력',
+          style: TextStyle(
+            fontSize: titleFontSize,
+          ),
+        ),
+      ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -30,9 +40,13 @@ class PasswordDialog extends StatelessWidget {
                 controller: passwordController,
                 keyboardType: TextInputType.number,
                 obscureText: true,
-                decoration: const InputDecoration(
+                textAlign: TextAlign.center,
+                decoration: InputDecoration(
                   border: InputBorder.none,
                   hintText: '비밀번호 입력',
+                  hintStyle: TextStyle(
+                    fontSize: mediumFontSize,
+                  ),
                 ),
               ),
             ),
