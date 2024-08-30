@@ -318,52 +318,62 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                     scrollDirection: Axis.vertical,
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
-                      return Slidable(
-                        endActionPane: ActionPane(
-                          extentRatio: 1,
-                          motion: const ScrollMotion(),
-                          children: [
-                            // SlidableAction(
-                            //   onPressed: (context) =>
-                            //       onModifyPressed(userList[index]),
-                            //   backgroundColor: Colors.blue,
-                            //   foregroundColor: Colors.white,
-                            //   icon: Icons.edit,
-                            // ),
-                            SlidableAction(
-                              onPressed: (context) =>
-                                  onDeleteTap(context, index, userList),
-                              // onPressed: (context) =>
-                              // onDeletePressed(context, index, userList),
-                              backgroundColor: const Color(0xFFFE4A49),
-                              foregroundColor: Colors.white,
-                              icon: Icons.delete,
+                      return Column(
+                        children: [
+                          Slidable(
+                            endActionPane: ActionPane(
+                              extentRatio: 1,
+                              motion: const ScrollMotion(),
+                              children: [
+                                // SlidableAction(
+                                //   onPressed: (context) =>
+                                //       onModifyPressed(userList[index]),
+                                //   backgroundColor: Colors.blue,
+                                //   foregroundColor: Colors.white,
+                                //   icon: Icons.edit,
+                                // ),
+                                SlidableAction(
+                                  onPressed: (context) =>
+                                      onDeleteTap(context, index, userList),
+                                  // onPressed: (context) =>
+                                  // onDeletePressed(context, index, userList),
+                                  backgroundColor: const Color(0xFFFE4A49),
+                                  foregroundColor: Colors.white,
+                                  icon: Icons.delete,
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        child: PatientContainer(
-                          index: index,
-                          selected: _selectedIdx == index,
-                          selectFunc: selectPatient,
-                          context: context,
-                          patient: userList[index],
-                        )
-                            .animate()
-                            .fadeIn(
-                              begin: 0,
-                              duration: 500.ms,
-                            )
-                            .slideX(
-                              begin: -1,
-                              end: 0,
-                              duration: 300.ms,
-                              curve: Curves.easeInOut,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 8, left: 8, right: 8),
+                              child: PatientContainer(
+                                index: index,
+                                selected: _selectedIdx == index,
+                                selectFunc: selectPatient,
+                                context: context,
+                                patient: userList[index],
+                              )
+                                  .animate()
+                                  .fadeIn(
+                                    begin: 0,
+                                    duration: 500.ms,
+                                  )
+                                  .slideX(
+                                    begin: -1,
+                                    end: 0,
+                                    duration: 300.ms,
+                                    curve: Curves.easeInOut,
+                                  ),
                             ),
+                          ),
+                          // if (index != userList.length - 1)
+                          //   const SizedBox(height: 8.0),
+                        ],
                       );
                     },
                   ),
                 ),
-              )
+              ),
             ],
           ),
         );
