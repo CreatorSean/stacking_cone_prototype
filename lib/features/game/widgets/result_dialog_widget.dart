@@ -104,6 +104,10 @@ class ResultDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final titleFontSize = screenWidth * 0.07;
+    final mediumFontSize = screenWidth * 0.05;
+
     int score = 0;
     if (record.answerCone != 0 && record.totalCone != 0) {
       score = (record.answerCone / record.totalCone * 100).toInt();
@@ -117,13 +121,13 @@ class ResultDialog extends ConsumerWidget {
         borderRadius: BorderRadius.circular(15),
         side: const BorderSide(color: Color(0xff332F23), width: 5.0),
       ),
-      title: const Text(
+      title: Text(
         '게임 결과',
         textAlign: TextAlign.center,
         style: TextStyle(
           color: Color(0xff332F23),
           fontWeight: FontWeight.w300,
-          fontSize: 28,
+          fontSize: titleFontSize,
         ),
       ),
       contentPadding:
@@ -135,22 +139,43 @@ class ResultDialog extends ConsumerWidget {
           Text(
             '전체 점수 : $score점',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               color: Color(0xff332F23),
               fontWeight: FontWeight.bold,
-              fontSize: 24,
+              fontSize: mediumFontSize,
             ),
           ),
           const SizedBox(height: 5),
           Text(
-            '${record.answerCone} / ${record.totalCone}',
+            '맞은 콘 개수 : ${record.answerCone}개',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               color: Color(0xff332F23),
               fontWeight: FontWeight.bold,
-              fontSize: 24,
+              fontSize: mediumFontSize,
             ),
           ),
+          const SizedBox(height: 5),
+          Text(
+            '틀린 콘 개수 : ${record.wrongCong}개',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xff332F23),
+              fontWeight: FontWeight.bold,
+              fontSize: mediumFontSize,
+            ),
+          ),
+          const SizedBox(height: 5),
+          if (record.mode == 1)
+            Text(
+              '난이도 : ${record.level == 0 ? '쉬움' : record.level == 1 ? '보통' : '어려움'}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Color(0xff332F23),
+                fontWeight: FontWeight.bold,
+                fontSize: mediumFontSize,
+              ),
+            ),
         ],
       ),
       actions: <Widget>[
