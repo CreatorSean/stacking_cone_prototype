@@ -31,8 +31,8 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+
     // 테두리 애니메이션 컨트롤러 초기화
     _borderAnimationController = AnimationController(
       vsync: this,
@@ -40,9 +40,17 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
     );
 
     // 색상 변화 애니메이션 생성
-    _borderColorAnimation = ColorTween(
-      begin: Colors.black,
-      end: Colors.red, // 테두리가 깜박일 때의 색상
+    _borderColorAnimation = TweenSequence<Color?>(
+      [
+        TweenSequenceItem(
+          tween: ConstantTween<Color>(Colors.red),
+          weight: 2.0,
+        ),
+        TweenSequenceItem(
+          tween: ConstantTween<Color>(Colors.black),
+          weight: 1.0,
+        ),
+      ],
     ).animate(_borderAnimationController);
 
     // 애니메이션을 계속 반복

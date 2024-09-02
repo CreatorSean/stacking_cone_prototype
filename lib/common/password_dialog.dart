@@ -48,6 +48,12 @@ class PasswordDialog extends StatelessWidget {
                     fontSize: mediumFontSize,
                   ),
                 ),
+
+                // enter 누르면 입력한 비밀번호 사라지는 에러 해결
+                onSubmitted: (value) {
+                  onPasswordSubmitted(value);
+                  Navigator.of(context).pop();
+                },
               ),
             ),
           ),
