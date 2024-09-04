@@ -11,7 +11,7 @@ import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 final routerProvier = Provider(
   (ref) {
     return GoRouter(
-      initialLocation: "/home",
+      initialLocation: MainScaffold.routeURL,
       routes: [
         // GoRoute(
         //   path: HomeScreen.routeURL,
@@ -34,27 +34,27 @@ final routerProvier = Provider(
             child: StaffScreen(),
           ),
         ),
-        GoRoute(
-          path: PatientAddScreen.routeURL,
-          name: PatientAddScreen.routeName,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: PatientAddScreen(),
-          ),
-        ),
-        GoRoute(
-          path: ConeStackingGameScreen.routeURL,
-          name: ConeStackingGameScreen.routeName,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: PatientAddScreen(),
-          ),
-        ),
-        GoRoute(
-          path: MultipleLedGameScreen.routeURL,
-          name: MultipleLedGameScreen.routeName,
-          pageBuilder: (context, state) => const MaterialPage(
-            child: PatientAddScreen(),
-          ),
-        ),
+        // GoRoute(
+        //   path: PatientAddScreen.routeURL,
+        //   name: PatientAddScreen.routeName,
+        //   pageBuilder: (context, state) => const MaterialPage(
+        //     child: PatientAddScreen(),
+        //   ),
+        // ),
+        // GoRoute(
+        //   path: ConeStackingGameScreen.routeURL,
+        //   name: ConeStackingGameScreen.routeName,
+        //   pageBuilder: (context, state) => const MaterialPage(
+        //     child: ConeStackingGameScreen(),
+        //   ),
+        // ),
+        // GoRoute(
+        //   path: MultipleLedGameScreen.routeURL,
+        //   name: MultipleLedGameScreen.routeName,
+        //   pageBuilder: (context, state) =>  MaterialPage(
+        //     child: MultipleLedGameScreen(),
+        //   ),
+        // ),
         GoRoute(
           path: ResultScreen.routeURL,
           name: ResultScreen.routeName,

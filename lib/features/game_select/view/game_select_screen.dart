@@ -24,9 +24,8 @@ class GameSelectScreen extends ConsumerStatefulWidget {
 class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
   @override
   Widget build(BuildContext context) {
-    PatientModel selectedPatient = ref
-        .read(SelectedPatientViewModelProvider.notifier)
-        .getSelectedPatient();
+    final selectedPatientState = ref.watch(SelectedPatientViewModelProvider);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: const PreferredSize(
@@ -35,9 +34,9 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
           isSelectScreen: true,
         ),
       ),
-      body: Column(
-        children: [
-          Column(
+      body: selectedPatientState.when(
+        data: (PatientModel selectedPatient) {
+          return Column(
             children: [
               Divider(
                 height: 2,
@@ -54,52 +53,40 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
                 thickness: 1,
                 color: Theme.of(context).primaryColor,
               ),
-            ],
-          ),
-
-          Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Select Game",
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ],
-              ),
-              Gaps.v72,
               Column(
                 children: [
-                  const CommonButton(
-                    screenName: ConeStackingGameScreen(),
-                    buttonName: "운동 재활",
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Select Game",
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                    ],
                   ),
-                  Gaps.v32,
-                  CommonButton(
-                    screenName: MultipleLedGameScreen(
-                      level: '',
-                    ),
-                    buttonName: "인지 재활",
+                  Gaps.v72,
+                  Column(
+                    children: [
+                      const CommonButton(
+                        screenName: ConeStackingGameScreen(),
+                        buttonName: "운동 재활",
+                      ),
+                      Gaps.v32,
+                      CommonButton(
+                        screenName: MultipleLedGameScreen(
+                          level: '',
+                        ),
+                        buttonName: "인지 재활",
+                      ),
+                    ],
                   ),
-                  // Gaps.v32,
-                  // CommonButton(
-                  //   screenName: DbSaveScreen(),
-                  //   buttonName: "DB 저장",
-                  // ),
                 ],
               ),
             ],
-          ),
-
-          // Gaps.v32,
-          // const CommonButton(
-          //   screenName: MultipleLedGameScreen(),
-          //   buttonName: "이중 LED MODE",
-          // ),
-          // Gaps.v32,
-          // const DifficultSelectButton(),
-        ],
+          );
+        },
+        loading: () => const Center(child: CircularProgressIndicator()),
+        error: (error, stack) => Center(child: Text('오류 발생: $error')),
       ),
     );
   }

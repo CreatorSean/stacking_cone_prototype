@@ -77,7 +77,7 @@ class _SettingScreenState extends ConsumerState<UserScreen>
           title: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.dangerous,
                 color: Colors.red,
               ),
@@ -210,11 +210,13 @@ class _SettingScreenState extends ConsumerState<UserScreen>
     setState(() {});
   }
 
-  void onAddPressed() {
+  void onAddPressed(List<PatientModel> patientsList) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const PatientAddScreen(),
+        builder: (context) => PatientAddScreen(
+          patientsList: patientsList,
+        ),
       ),
     );
     //context.goNamed(PatientAddScreen.routeName);
@@ -296,7 +298,9 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                           .copyWith(fontSize: screenHeight * 0.035),
                     ),
                     IconButton(
-                      onPressed: onAddPressed,
+                      onPressed: () {
+                        onAddPressed(userList);
+                      },
                       icon: Icon(
                         Icons.add,
                         size: screenWidth * 0.08,

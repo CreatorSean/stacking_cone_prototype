@@ -29,16 +29,16 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
   int _selectedIdx = -1;
 
   void _onPatientScreenTap() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const PatientAddScreen(),
-      ),
-    );
+    // final result = await Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => const PatientAddScreen(),
+    //   ),
+    // );
 
-    if (result == true) {
-      _logCurrentPatientInfo();
-    }
+    // if (result == true) {
+    //   _logCurrentPatientInfo();
+    // }
   }
 
   Future<void> selectPatient(
@@ -269,8 +269,10 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
                   onTap: () {
                     _onPatientScreenTap();
                   },
-                  child: const PatientButton(
-                    screenName: PatientAddScreen(),
+                  child: PatientButton(
+                    screenName: PatientAddScreen(
+                      patientsList: patientList,
+                    ),
                     isAddScreen: false,
                   ),
                 ),
@@ -344,26 +346,26 @@ class _StaffScreenState extends ConsumerState<StaffScreen>
           );
         },
         error: (error, stackTrace) {
-          return Scaffold(
+          return const Scaffold(
             resizeToAvoidBottomInset: false,
             body: Center(
               child: Padding(
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: 50,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center, // 수직 가운데 정렬
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        _onPatientScreenTap();
-                      },
-                      child: const PatientButton(
-                        screenName: PatientAddScreen(),
-                        isAddScreen: false,
-                      ),
-                    ),
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     _onPatientScreenTap();
+                    //   },
+                    //   child: const PatientButton(
+                    //     screenName: PatientAddScreen(),
+                    //     isAddScreen: false,
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

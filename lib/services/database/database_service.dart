@@ -219,4 +219,31 @@ class DatabaseService {
       );
     });
   }
+
+  static Future<List<PatientModel>> getPatientByPatientName(
+      String patientName) async {
+    final db = await database;
+    Logger().i('Get Patient DB for patientId: $patientName');
+
+    final List<Map<String, dynamic>> maps = await db!.query(
+      'Patients',
+      where: 'userName = ?',
+      whereArgs: [patientName],
+    );
+
+    return List.generate(maps.length, (index) {
+      return PatientModel(
+        id: maps[index]["id"],
+        userName: maps[index]["userName"],
+        gender: maps[index]["gender"],
+        birth: maps[index]["birth"],
+        memo: maps[index]["memo"],
+        diagnosis: maps[index]["diagnosis"],
+        diagnosisDate: maps[index]["diagnosisDate"],
+        surgeryDate: maps[index]["surgeryDate"],
+        medication: maps[index]["medication"],
+        age: maps[index]["age"],
+      );
+    });
+  }
 }

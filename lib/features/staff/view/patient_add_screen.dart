@@ -11,11 +11,19 @@ import 'package:stacking_cone_prototype/features/staff/widgets/date_textField.da
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_button.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_textField.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
+import 'package:stacking_cone_prototype/services/database/database_service.dart';
+
+import '../../../services/database/models/patient_model.dart';
 
 class PatientAddScreen extends ConsumerStatefulWidget {
   static String routeURL = '/add';
   static String routeName = 'add';
-  const PatientAddScreen({super.key});
+
+  List<PatientModel> patientsList;
+  PatientAddScreen({
+    super.key,
+    required this.patientsList,
+  });
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -90,6 +98,11 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
       'medication': _medication,
     });
 
+    if (widget.patientsList.length == 1 &&
+        widget.patientsList[0].userName == "Add Patient") {
+      DatabaseService.deletePatientDB(widget.patientsList[0]);
+    }
+
     ref.read(staffScreenViewModelProvider.notifier).insertPatient(context);
 
     // 환자 정보 추가 후 staff_screen.dart 이동
@@ -127,11 +140,11 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext builder) {
-        return Container(
+        return SizedBox(
           height: MediaQuery.of(context).copyWith().size.height / 3,
           child: Column(
             children: <Widget>[
-              Container(
+              const SizedBox(
                 height: 50,
                 child: Center(
                   child: Text(
@@ -143,7 +156,7 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
                   ),
                 ),
               ),
-              Divider(
+              const Divider(
                 height: 1,
                 thickness: 1,
               ),
@@ -165,7 +178,7 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Done'),
+                child: const Text('Done'),
               ),
             ],
           ),
