@@ -159,7 +159,7 @@ class _ResultScreenState extends ConsumerState<ResultScreen> {
                                     borderRadius: BorderRadius.circular(7.0),
                                   ),
                                   child: Text(
-                                    '${record.mode == 0 ? '단일 LED' : '다중 LED'} (${record.trainOrtest == 0 ? '훈련' : '평가'})',
+                                    '${record.mode == 0 ? '운동 재활' : '인지 재활'} (${record.trainOrtest == 0 ? '훈련' : '평가'})',
                                     style: TextStyle(
                                       fontSize:
                                           MediaQuery.of(context).size.width *
