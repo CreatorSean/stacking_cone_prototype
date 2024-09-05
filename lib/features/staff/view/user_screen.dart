@@ -58,9 +58,6 @@ class _SettingScreenState extends ConsumerState<UserScreen>
   // }
 
   void onDeleteTap(context, int index, List<PatientModel> patientList) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final fontSize = screenWidth * 0.07;
-
     if (patientList.length != 1) {
       showDialog(
         context: context,
@@ -74,31 +71,24 @@ class _SettingScreenState extends ConsumerState<UserScreen>
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           titlePadding: const EdgeInsets.only(top: 20, left: 20, right: 20),
 
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+          title: const Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.dangerous,
                 color: Colors.red,
               ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  "Delete User",
-                  style: TextStyle(
-                    color: Colors.red,
-                    fontSize: fontSize,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
+              Text(
+                "  Delete User",
+                style: TextStyle(
+                  color: Colors.red,
                 ),
               ),
             ],
           ),
           content: SizedBox(
-            height: 70,
-            child: Center(
-              child: Column(
+              height: 70,
+              child: Center(
+                  child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
@@ -114,9 +104,7 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                         ),
                   ),
                 ],
-              ),
-            ),
-          ),
+              ))),
           actions: <Widget>[
             GestureDetector(
                 onTap: () {
@@ -210,13 +198,11 @@ class _SettingScreenState extends ConsumerState<UserScreen>
     setState(() {});
   }
 
-  void onAddPressed(List<PatientModel> patientsList) {
+  void onAddPressed() {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => PatientAddScreen(
-          patientsList: patientsList,
-        ),
+        builder: (context) => const PatientAddScreen(),
       ),
     );
     //context.goNamed(PatientAddScreen.routeName);
@@ -298,9 +284,7 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                           .copyWith(fontSize: screenHeight * 0.035),
                     ),
                     IconButton(
-                      onPressed: () {
-                        onAddPressed(userList);
-                      },
+                      onPressed: onAddPressed,
                       icon: Icon(
                         Icons.add,
                         size: screenWidth * 0.08,
@@ -322,62 +306,52 @@ class _SettingScreenState extends ConsumerState<UserScreen>
                     scrollDirection: Axis.vertical,
                     itemCount: userList.length,
                     itemBuilder: (context, index) {
-                      return Column(
-                        children: [
-                          Slidable(
-                            endActionPane: ActionPane(
-                              extentRatio: 1,
-                              motion: const ScrollMotion(),
-                              children: [
-                                // SlidableAction(
-                                //   onPressed: (context) =>
-                                //       onModifyPressed(userList[index]),
-                                //   backgroundColor: Colors.blue,
-                                //   foregroundColor: Colors.white,
-                                //   icon: Icons.edit,
-                                // ),
-                                SlidableAction(
-                                  onPressed: (context) =>
-                                      onDeleteTap(context, index, userList),
-                                  // onPressed: (context) =>
-                                  // onDeletePressed(context, index, userList),
-                                  backgroundColor: const Color(0xFFFE4A49),
-                                  foregroundColor: Colors.white,
-                                  icon: Icons.delete,
-                                ),
-                              ],
+                      return Slidable(
+                        endActionPane: ActionPane(
+                          extentRatio: 1,
+                          motion: const ScrollMotion(),
+                          children: [
+                            // SlidableAction(
+                            //   onPressed: (context) =>
+                            //       onModifyPressed(userList[index]),
+                            //   backgroundColor: Colors.blue,
+                            //   foregroundColor: Colors.white,
+                            //   icon: Icons.edit,
+                            // ),
+                            SlidableAction(
+                              onPressed: (context) =>
+                                  onDeleteTap(context, index, userList),
+                              // onPressed: (context) =>
+                              // onDeletePressed(context, index, userList),
+                              backgroundColor: const Color(0xFFFE4A49),
+                              foregroundColor: Colors.white,
+                              icon: Icons.delete,
                             ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 8, right: 8),
-                              child: PatientContainer(
-                                index: index,
-                                selected: _selectedIdx == index,
-                                selectFunc: selectPatient,
-                                context: context,
-                                patient: userList[index],
-                              )
-                                  .animate()
-                                  .fadeIn(
-                                    begin: 0,
-                                    duration: 500.ms,
-                                  )
-                                  .slideX(
-                                    begin: -1,
-                                    end: 0,
-                                    duration: 300.ms,
-                                    curve: Curves.easeInOut,
-                                  ),
+                          ],
+                        ),
+                        child: PatientContainer(
+                          index: index,
+                          selected: _selectedIdx == index,
+                          selectFunc: selectPatient,
+                          context: context,
+                          patient: userList[index],
+                        )
+                            .animate()
+                            .fadeIn(
+                              begin: 0,
+                              duration: 500.ms,
+                            )
+                            .slideX(
+                              begin: -1,
+                              end: 0,
+                              duration: 300.ms,
+                              curve: Curves.easeInOut,
                             ),
-                          ),
-                          // if (index != userList.length - 1)
-                          //   const SizedBox(height: 8.0),
-                        ],
                       );
                     },
                   ),
                 ),
-              ),
+              )
             ],
           ),
         );

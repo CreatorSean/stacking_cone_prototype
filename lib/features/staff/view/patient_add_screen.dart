@@ -11,19 +11,11 @@ import 'package:stacking_cone_prototype/features/staff/widgets/date_textField.da
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_button.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_textField.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
-import 'package:stacking_cone_prototype/services/database/database_service.dart';
-
-import '../../../services/database/models/patient_model.dart';
 
 class PatientAddScreen extends ConsumerStatefulWidget {
   static String routeURL = '/add';
   static String routeName = 'add';
-
-  List<PatientModel> patientsList;
-  PatientAddScreen({
-    super.key,
-    required this.patientsList,
-  });
+  const PatientAddScreen({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
@@ -97,11 +89,6 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
       'surgeryDate': _surgeryDate,
       'medication': _medication,
     });
-
-    if (widget.patientsList.length == 1 &&
-        widget.patientsList[0].userName == "Add Patient") {
-      DatabaseService.deletePatientDB(widget.patientsList[0]);
-    }
 
     ref.read(staffScreenViewModelProvider.notifier).insertPatient(context);
 
