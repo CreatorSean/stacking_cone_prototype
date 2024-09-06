@@ -37,6 +37,9 @@ class _DateTextFieldState extends State<DateTextField> {
         decoration: InputDecoration(
           counterText: '',
           hintText: widget.birthHintText,
+          hintStyle: TextStyle(
+            color: Colors.grey.shade400,
+          ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10.0), // 모서리 둥글게 설정
             borderSide: BorderSide(

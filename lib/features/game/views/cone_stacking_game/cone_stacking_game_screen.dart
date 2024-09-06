@@ -38,6 +38,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   bool _isLottiePlaying = true; // Lottie 애니메이션 상태 변경
   late final AnimationController _lottieController;
   late final AnimationController _countdownController;
+  final String gameName = '운동 재활';
 
   void isTrue() {
     _isConeSuccess = true;
@@ -70,6 +71,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
           screenName: const ConeStackingGameScreen(),
           answer: positiveNum,
           totalCone: positiveNum + negativeNum,
+          gameName: gameName,
           record: GameRecordModel(
             id: null,
             userName: selectedPatient.userName,
@@ -168,7 +170,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "운동 재활",
+                                    gameName,
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),

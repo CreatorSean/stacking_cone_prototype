@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/game_record_vm.dart';
-import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
-import 'package:stacking_cone_prototype/features/home/view/main_scaffold.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
@@ -17,6 +14,7 @@ class ResultDialog extends ConsumerWidget {
   final int totalCone;
   final int answer;
   final int mode;
+  final String gameName;
   GameRecordModel record;
 
   ResultDialog({
@@ -26,6 +24,7 @@ class ResultDialog extends ConsumerWidget {
     required this.screenName,
     required this.record,
     required this.mode,
+    required this.gameName,
   }) : super(key: key);
 
   void getTrainGameRecore(WidgetRef ref) {
@@ -125,7 +124,7 @@ class ResultDialog extends ConsumerWidget {
         '게임 결과',
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: Color(0xff332F23),
+          color: const Color(0xff332F23),
           fontWeight: FontWeight.w300,
           fontSize: titleFontSize,
         ),
@@ -140,7 +139,7 @@ class ResultDialog extends ConsumerWidget {
             '전체 점수 : $score점',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xff332F23),
+              color: const Color(0xff332F23),
               fontWeight: FontWeight.bold,
               fontSize: mediumFontSize,
             ),
@@ -150,7 +149,7 @@ class ResultDialog extends ConsumerWidget {
             '맞은 콘 개수 : ${record.answerCone}개',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xff332F23),
+              color: const Color(0xff332F23),
               fontWeight: FontWeight.bold,
               fontSize: mediumFontSize,
             ),
@@ -160,7 +159,7 @@ class ResultDialog extends ConsumerWidget {
             '틀린 콘 개수 : ${record.wrongCong}개',
             textAlign: TextAlign.center,
             style: TextStyle(
-              color: Color(0xff332F23),
+              color: const Color(0xff332F23),
               fontWeight: FontWeight.bold,
               fontSize: mediumFontSize,
             ),
@@ -171,7 +170,7 @@ class ResultDialog extends ConsumerWidget {
               '난이도 : ${record.level == 0 ? '쉬움' : record.level == 1 ? '보통' : '어려움'}',
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Color(0xff332F23),
+                color: const Color(0xff332F23),
                 fontWeight: FontWeight.bold,
                 fontSize: mediumFontSize,
               ),

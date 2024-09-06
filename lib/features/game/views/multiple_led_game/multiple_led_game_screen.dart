@@ -43,6 +43,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   bool _isLottiePlaying = false; // Lottie 애니메이션 상태 추가
   late final AnimationController _lottieController;
   late final AnimationController _countdownController; // 추가된 애니메이션 컨트롤러
+  final String gameName = '인지재활';
 
   void showGameResult() {
     DateTime dateTime = DateTime.now();
@@ -59,6 +60,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           ),
           answer: positiveNum,
           totalCone: positiveNum + negativeNum,
+          gameName: widget.level,
           record: GameRecordModel(
             id: null,
             userName: selectedPatient.userName,
@@ -193,7 +195,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    "인지 재활",
+                                    gameName,
                                     style:
                                         Theme.of(context).textTheme.titleMedium,
                                   ),

@@ -37,6 +37,7 @@ class PasswordDialog extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 12.0),
               child: TextField(
+                autofocus: true,
                 controller: passwordController,
                 keyboardType: TextInputType.number,
                 obscureText: true,
@@ -48,7 +49,6 @@ class PasswordDialog extends StatelessWidget {
                     fontSize: mediumFontSize,
                   ),
                 ),
-
                 // enter 누르면 입력한 비밀번호 사라지는 에러 해결
                 onSubmitted: (value) {
                   onPasswordSubmitted(value);

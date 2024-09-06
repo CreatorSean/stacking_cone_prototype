@@ -48,10 +48,7 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
     _diagnosisDate = _diagnosisDateController.text;
     _surgeryDate = _surgeryDateController.text;
 
-    if (_userNameController.text.isEmpty ||
-        _birth.isEmpty ||
-        _diagnosis.isEmpty ||
-        _diagnosisDate.isEmpty) {
+    if (_userNameController.text.isEmpty || _birth.isEmpty) {
       ScaffoldMessenger.of(context).clearSnackBars();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -298,14 +295,36 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
                     ),
                   ],
                 ),
-                Gaps.v52,
-                const Text(
-                  "진단 정보",
-                  style: TextStyle(
-                    color: Color(0xFF223A5E),
-                    fontSize: Sizes.size32,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Gaps.v24,
+                Divider(
+                  thickness: 0.3,
+                  color: Theme.of(context).primaryColor,
+                ),
+                Gaps.v24,
+                const Row(
+                  children: [
+                    Text(
+                      "진단 정보",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 34, 35, 36),
+                        fontSize: Sizes.size32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "(선택 사항)",
+                          style: TextStyle(
+                            color: Color(0xFF223A5E),
+                            fontSize: Sizes.size16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 Gaps.v36,
                 const Text(
