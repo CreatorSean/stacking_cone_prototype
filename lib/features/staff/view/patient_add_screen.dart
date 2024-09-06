@@ -186,13 +186,30 @@ class _PatientAddScreenState extends ConsumerState<PatientAddScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "개인 정보",
-                  style: TextStyle(
-                    color: Color(0xFF223A5E),
-                    fontSize: Sizes.size32,
-                    fontWeight: FontWeight.bold,
-                  ),
+                const Row(
+                  children: [
+                    Text(
+                      "개인 정보",
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 34, 35, 36),
+                        fontSize: Sizes.size32,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "(필수 사항)",
+                          style: TextStyle(
+                            color: Color(0xFF223A5E),
+                            fontSize: Sizes.size16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
                 Gaps.v36,
                 const Text(
