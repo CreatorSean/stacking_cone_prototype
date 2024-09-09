@@ -140,7 +140,7 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                             borderRadius: BorderRadius.circular(7.0),
                           ),
                           child: Text(
-                            '${widget.record.mode == 0 ? '단일 LED' : '다중 LED'} (${widget.record.trainOrtest == 0 ? '훈련' : '평가'})',
+                            '${widget.record.mode == 0 ? '운동 재활' : '인지 재활'} (${widget.record.trainOrtest == 0 ? '훈련' : '평가'})',
                             style: TextStyle(
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.05,
@@ -170,7 +170,7 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
                             percent: percentage,
                             center: Text(
                               '${(percentage * 100).toStringAsFixed(1)}%',
-                              style: TextStyle(
+                              style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20.0),
                             ),
                             circularStrokeCap: CircularStrokeCap.round,
