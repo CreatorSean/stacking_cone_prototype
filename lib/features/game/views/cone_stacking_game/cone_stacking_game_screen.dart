@@ -170,22 +170,22 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Text(
-                                    gameName,
+                                    "운동 재활",
+                                    style:
+                                        Theme.of(context).textTheme.titleMedium,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "콘 쌓기 MODE",
                                     style:
                                         Theme.of(context).textTheme.titleLarge,
                                   ),
                                 ],
                               ),
-                              // Row(
-                              //   mainAxisAlignment: MainAxisAlignment.center,
-                              //   children: [
-                              //     Text(
-                              //       "콘 쌓기 MODE",
-                              //       style:
-                              //           Theme.of(context).textTheme.titleLarge,
-                              //     ),
-                              //   ],
-                              // ),
                               Gaps.v28,
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
