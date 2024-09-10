@@ -55,6 +55,7 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
               ),
               Column(
                 children: [
+                  Gaps.v72,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

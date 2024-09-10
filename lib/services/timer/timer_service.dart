@@ -21,7 +21,7 @@ class TimerController extends StateNotifier<TimerState> {
 
   void startTestTimer() {
     _timer?.cancel(); // 기존 타이머가 있으면 취소
-    state = TimerState(time: 10); // 타이머 상태 초기화
+    state = TimerState(time: state.time); // 타이머 상태 초기화
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (state.time == 0) {
         stopTimer();
@@ -29,6 +29,10 @@ class TimerController extends StateNotifier<TimerState> {
         state = state.copyWith(time: state.time - 1);
       }
     });
+  }
+
+  void setTimerTime(int time) {
+    state = TimerState(time: time);
   }
 
   void stopTimer() {

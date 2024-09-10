@@ -29,6 +29,7 @@ class _ToggleButtonState extends ConsumerState<ToggleButton> {
         Gaps.h10,
         CupertinoSwitch(
           //active가 true이고 track이 false임
+          //훈련형이 true이고 평가형이 false임
           trackColor: const Color(0xff4079E8),
           activeColor: const Color(0xff7DDD5C),
           value: ref.read(gameConfigProvider).isTest,

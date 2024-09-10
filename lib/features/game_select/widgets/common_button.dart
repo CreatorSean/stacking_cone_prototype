@@ -23,6 +23,9 @@ class CommonButton extends ConsumerStatefulWidget {
 
 class _CommonButtonState extends ConsumerState<CommonButton> {
   void _showConfirmationDialog() {
+    if (ref.watch(gameConfigProvider).isTest == true) {
+      ref.watch(timerControllerProvider.notifier).setTimerTime(10);
+    }
     ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog(

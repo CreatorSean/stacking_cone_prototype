@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 
 class LevelSelectButton extends ConsumerStatefulWidget {
   final String buttonName;

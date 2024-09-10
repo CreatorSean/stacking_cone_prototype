@@ -8,8 +8,6 @@ import 'package:stacking_cone_prototype/features/game/widgets/showGameLevelError
 import 'package:stacking_cone_prototype/features/game/widgets/targetIndex_select_form.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
-import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
-import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 class GameConfirmationDialog extends ConsumerStatefulWidget {

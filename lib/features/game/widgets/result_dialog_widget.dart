@@ -95,6 +95,7 @@ class ResultDialog extends ConsumerWidget {
         .onSendData(ref.watch(gameProvider).gameRule);
     Navigator.pop(context);
     if (ref.watch(gameConfigProvider).isTest) {
+      ref.watch(timerControllerProvider.notifier).setTimerTime(10);
       ref.read(timerControllerProvider.notifier).startTestTimer();
     } else {
       ref.read(timerControllerProvider.notifier).startTimer();

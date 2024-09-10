@@ -133,7 +133,10 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   Widget build(BuildContext context) {
     final currentTime = ref.watch(timerControllerProvider).time;
     if (ref.read(gameConfigProvider).isTest) {
-      if (currentTime == 0 && _isDialogShown == true) {
+      // if (currentTime == 0 && _isDialogShown == true) {
+      //   showGameResult();
+      // }
+      if (currentTime == 0) {
         showGameResult();
       }
     }

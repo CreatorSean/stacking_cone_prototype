@@ -45,7 +45,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
+        const SizedBox(
           width: 20,
         ),
         Text(
