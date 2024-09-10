@@ -11,10 +11,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/db_save/widgets/showDbErrorSnack.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
-import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
-import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
-import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class DbButton extends ConsumerStatefulWidget {
   final String buttonName;
@@ -40,7 +36,6 @@ class _DbButtonState extends ConsumerState<DbButton> {
 
   Future<void> shareDatabase(String? patientName, BuildContext context) async {
     final databasePath = await getDatabasePath();
-    final File databaseFile = File(databasePath);
     late List<Map> results;
     String date = '';
 
