@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'dart:math';
+
+import 'package:flutter/material.dart';
 
 class ConContainerWidget extends StatefulWidget {
   const ConContainerWidget({Key? key}) : super(key: key);
@@ -12,7 +13,6 @@ class _ConContainerWidgetState extends State<ConContainerWidget> {
   late int _randomIndex;
   int? _selectedGridIndex;
   int _coneCount = 0; // 카운트 변수 추가
-  final int _normalConeCount = 0;
   @override
   void initState() {
     super.initState();

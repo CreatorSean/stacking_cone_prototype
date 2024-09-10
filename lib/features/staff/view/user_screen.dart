@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -14,7 +13,6 @@ import 'package:stacking_cone_prototype/features/staff/view_model/selected_patie
 import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_container.dart';
-import 'package:stacking_cone_prototype/features/staff/widgets/user_card.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 class UserScreen extends ConsumerStatefulWidget {

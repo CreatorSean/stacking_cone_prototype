@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 import 'package:logger/logger.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
@@ -23,7 +23,6 @@ class DetailResultScreen extends StatefulWidget {
 
 class _DetailResultScreenState extends State<DetailResultScreen> {
   PatientModel? _selectedPatient;
-  List<GameRecordModel> _gameRecords = [];
   bool _isLoading = true;
 
   @override
@@ -64,7 +63,6 @@ class _DetailResultScreenState extends State<DetailResultScreen> {
             'ID: ${record.id}, Patient ID: ${record.patientId}, Date: ${record.date}, Mode: ${record.mode}, Train/Test: ${record.trainOrtest}, Total Cone: ${record.totalCone}, Answer Cone: ${record.answerCone}, Wrong Cone: ${record.wrongCong}, Total Time: ${record.totalTime}');
       }
       setState(() {
-        _gameRecords = filteredRecords;
         _isLoading = false;
       });
     } catch (e) {

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/result_dialog_widget.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
-import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 class StopButton extends ConsumerWidget {
@@ -47,7 +45,7 @@ class StopButton extends ConsumerWidget {
         child: Text(
           '그만하기',
           style: TextStyle(
-            color: Color(0xFF332F23),
+            color: const Color(0xFF332F23),
             fontSize: fontSize,
           ),
         ),

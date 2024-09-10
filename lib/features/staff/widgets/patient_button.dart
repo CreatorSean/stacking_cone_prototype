@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
-import 'package:stacking_cone_prototype/features/staff/view/patient_add_screen.dart';
 
 class PatientButton extends ConsumerStatefulWidget {
   final Widget screenName;

@@ -1,17 +1,17 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
-import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
+
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
 class MultiConContainer extends ConsumerStatefulWidget {
   final Function() trueLottie;
   final Function() falseLottie;
-  String level;
+  final String level;
 
-  MultiConContainer({
+  const MultiConContainer({
     Key? key,
     required this.trueLottie,
     required this.falseLottie,

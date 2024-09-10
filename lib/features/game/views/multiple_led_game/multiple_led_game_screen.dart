@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
@@ -13,10 +14,11 @@ import 'package:stacking_cone_prototype/features/game_select/view_model/game_con
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
+
 import '../../../../services/timer/timer_service.dart';
 import '../../widgets/countdown_lottie.dart';
-import '../../widgets/game_confirmation_dialog_widget.dart'; // 올바른 경로로 수정
 
+// ignore: must_be_immutable
 class MultipleLedGameScreen extends ConsumerStatefulWidget {
   static String routeURL = '/multiple';
   static String routeName = 'multiple';

@@ -5,8 +5,6 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
-import '../view_model/cone_stacking_game_vm.dart';
-
 class SingleConeContainer extends ConsumerStatefulWidget {
   final Function() trueLottie;
   final Function() falseLottie;

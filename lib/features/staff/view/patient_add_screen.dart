@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:logger/logger.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/common/constants/sizes.dart';
@@ -10,7 +10,6 @@ import 'package:stacking_cone_prototype/features/staff/view_model/staff_screen_v
 import 'package:stacking_cone_prototype/features/staff/widgets/date_textField.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_button.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/patient_textField.dart';
-import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
 
 class PatientAddScreen extends ConsumerStatefulWidget {
   static String routeURL = '/add';

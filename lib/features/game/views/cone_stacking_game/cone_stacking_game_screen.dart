@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
@@ -11,10 +12,11 @@ import 'package:stacking_cone_prototype/features/game_select/view_model/game_con
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
+
 import '../../../../services/database/models/patient_model.dart';
+import '../../widgets/countdown_lottie.dart';
 import '../../widgets/negative_lottie.dart';
 import '../../widgets/positive_lottie.dart';
-import '../../widgets/countdown_lottie.dart';
 
 class ConeStackingGameScreen extends ConsumerStatefulWidget {
   static String routeURL = '/stacking';
@@ -133,10 +135,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
   Widget build(BuildContext context) {
     final currentTime = ref.watch(timerControllerProvider).time;
     if (ref.read(gameConfigProvider).isTest) {
-      // if (currentTime == 0 && _isDialogShown == true) {
-      //   showGameResult();
-      // }
-      if (currentTime == 0) {
+      if (currentTime == 0 && !_isDialogShown) {
         showGameResult();
       }
     }

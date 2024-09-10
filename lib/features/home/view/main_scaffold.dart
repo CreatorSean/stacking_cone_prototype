@@ -6,9 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stacking_cone_prototype/common/password_dialog.dart';
 import 'package:stacking_cone_prototype/features/game_select/view/game_select_screen.dart';
-import 'package:stacking_cone_prototype/features/game_select/view_model/password_config_vm.dart';
 import 'package:stacking_cone_prototype/features/result/view/result_screen.dart';
-import 'package:stacking_cone_prototype/features/staff/view/staff_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/user_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/showPasswordErrorSnack.dart';
@@ -91,12 +89,6 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> titleList = <String>[
-      "Game",
-      "Result",
-      "Staff",
-    ];
-
     return Scaffold(
       body: _pageScreen[_selectedPageIndex],
       bottomNavigationBar: BottomNavigationBar(

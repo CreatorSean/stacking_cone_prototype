@@ -9,6 +9,7 @@ import 'package:stacking_cone_prototype/services/database/models/game_record_mod
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 import '../../../services/timer/timer_service.dart';
 
+// ignore: must_be_immutable
 class ResultDialog extends ConsumerWidget {
   final Widget screenName;
   final int totalCone;
