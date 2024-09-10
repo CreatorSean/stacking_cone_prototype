@@ -197,20 +197,20 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
                                   Text(
                                     gameName,
                                     style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "LED MODE",
-                                    style:
                                         Theme.of(context).textTheme.titleLarge,
                                   ),
                                 ],
                               ),
+                              // Row(
+                              //   mainAxisAlignment: MainAxisAlignment.center,
+                              //   children: [
+                              //     Text(
+                              //       "LED MODE",
+                              //       style:
+                              //           Theme.of(context).textTheme.titleLarge,
+                              //     ),
+                              //   ],
+                              // ),
                               Gaps.v28,
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
