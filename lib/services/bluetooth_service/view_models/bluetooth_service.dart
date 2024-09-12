@@ -62,6 +62,16 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     }
   }
 
+  Future<void> doCalibration(List<dynamic> calibrationList) async {
+    if (connection != null && connection!.isConnected) {
+      connection!.output.add(Uint8List.fromList(utf8.encode('c')));
+      await connection!.output.allSent;
+      print('Calibration Success');
+    } else {
+      print("Can't do Calibration");
+    }
+  }
+
   void connectToDevice({required BluetoothDevice device}) {
     selectedAddress = device.address;
     BluetoothConnection.toAddress(device.address).then((connection) {
