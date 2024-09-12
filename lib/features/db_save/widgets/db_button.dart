@@ -67,7 +67,7 @@ class _DbButtonState extends ConsumerState<DbButton> {
       'date': '날짜',
       'mode': '모드',
       'level': '난이도',
-      'trainOrtest': '훈련/테스트',
+      'trainOrtest': '훈련/평가',
       'totalCone': '총 콘 수',
       'answerCone': '정답 콘 수',
       'wrongCone': '오답 콘 수',
@@ -149,7 +149,7 @@ class _DbButtonState extends ConsumerState<DbButton> {
               value = '훈련 모드';
               break;
             case 1:
-              value = '재활 모드';
+              value = '평가 모드';
               break;
             default:
               value = '알 수 없음';
