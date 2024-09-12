@@ -21,21 +21,30 @@ class CommonButton extends ConsumerStatefulWidget {
 
 class _CommonButtonState extends ConsumerState<CommonButton> {
   void _showConfirmationDialog() {
-    if (ref.watch(gameConfigProvider).isTest == true) {
-      ref.watch(timerControllerProvider.notifier).setTimerTime(10);
-    }
-    ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return GameConfirmationDialog(
-            screenName: widget.screenName,
-            gameName: widget.buttonName,
-          );
-        },
+    if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+      if (ref.watch(gameConfigProvider).isTest == true) {
+        ref.watch(timerControllerProvider.notifier).setTimerTime(10);
+      }
+      ref.read(gameConfigProvider.notifier).setMode(false); // 다중 LED 모드 설정
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return GameConfirmationDialog(
+              screenName: widget.screenName,
+              gameName: widget.buttonName,
+            );
+          },
+        );
+      });
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => widget.screenName,
+        ),
       );
-    });
+    }
   }
 
   @override

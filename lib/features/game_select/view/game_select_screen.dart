@@ -26,7 +26,7 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
     final selectedPatientState = ref.watch(SelectedPatientViewModelProvider);
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(60),
         child: MainAppBar(

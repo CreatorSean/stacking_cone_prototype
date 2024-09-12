@@ -1,25 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
-class TargetindexSelectForm extends ConsumerStatefulWidget {
-  const TargetindexSelectForm({
-    super.key,
-  });
+class Calibrationcone extends ConsumerStatefulWidget {
+  const Calibrationcone({super.key});
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() =>
-      _TargetindexSelectFormState();
+      _CalibrationconeState();
 }
 
-class _TargetindexSelectFormState extends ConsumerState<TargetindexSelectForm>
-    with TickerProviderStateMixin {
+class _CalibrationconeState extends ConsumerState<Calibrationcone> {
   List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   void _setIndex(int index) {
-    coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-    coneMatrix[index]++;
-    ref.watch(gameProvider.notifier).setTargetIndex(index);
+    // coneMatrix 배열에서 해당 index 값이 1을 넘으면 아무 작업도 하지 않음
+    if (coneMatrix[index] > 1) {
+      return;
+    }
+    coneMatrix[index]++; // 해당 index의 값을 증가
+    final calibrationCommand = 'C,$index';
+    ref
+        .read(bluetoothServiceProvider.notifier)
+        .doCalibration(calibrationCommand);
     setState(() {});
   }
 
@@ -62,10 +66,14 @@ class _TargetindexSelectFormState extends ConsumerState<TargetindexSelectForm>
                     decoration: const BoxDecoration(color: Colors.transparent),
                   ),
                   if (coneMatrix[index] > 0)
-                    Image.asset(
-                      'assets/images/redcone.png', // 이미지 경로를 설정하세요.
-                      width: 180,
-                      height: 180,
+                    Container(
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 105, 221, 238),
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.5,
+                        ),
+                      ),
                     ),
                 ],
               ),

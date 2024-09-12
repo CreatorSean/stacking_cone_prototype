@@ -250,7 +250,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
                                   ? _greenLocation(context, index)
                                   : _redLocation(context, index),
                               if (displayStartTimes.containsKey(index))
-                                _whiteLocation(context)
+                                _targetLocation(context)
                               else if (!correctIndexes.contains(index) &&
                                   !incorrectIndexes.contains(index))
                                 _normalLocation(context, index),
@@ -284,10 +284,10 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     );
   }
 
-  Widget _whiteLocation(BuildContext context) {
+  Widget _targetLocation(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color.fromARGB(255, 105, 221, 238),
         border: Border.all(
           color: const Color(0xFF332F23),
           width: 1.5,
@@ -299,7 +299,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
   Widget _normalLocation(BuildContext context, int index) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xfff0e5c8),
+        color: const Color.fromARGB(255, 176, 233, 247),
         border: Border.all(
           color: const Color(0xFF332F23),
           width: 1.5,

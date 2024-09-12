@@ -62,13 +62,20 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     }
   }
 
-  Future<void> doCalibration(List<dynamic> calibrationList) async {
-    if (connection != null && connection!.isConnected) {
-      connection!.output.add(Uint8List.fromList(utf8.encode('c')));
-      await connection!.output.allSent;
-      print('Calibration Success');
-    } else {
-      print("Can't do Calibration");
+  Future<void> doCalibration(String calibrationCommand) async {
+    try {
+      if (connection != null && connection!.isConnected) {
+        // 문자열을 UTF-8로 인코딩한 후 바이트 배열로 변환하여 전송
+        connection!.output
+            .add(Uint8List.fromList(utf8.encode(calibrationCommand)));
+        await connection!.output.allSent; // 전송 완료 대기
+        print('Calibration Success');
+        print(calibrationCommand);
+      } else {
+        print("Can't do Calibration: No active connection.");
+      }
+    } catch (e) {
+      print("Calibration failed: $e");
     }
   }
 
