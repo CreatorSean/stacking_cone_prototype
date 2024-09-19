@@ -44,12 +44,6 @@ class _GameConfirmationDialogState
   // }
 
   void _onNextTap() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => widget.screenName,
-      ),
-    );
     if (widget.gameName == '인지 재활') {
       Navigator.push(
         context,
@@ -57,6 +51,13 @@ class _GameConfirmationDialogState
           builder: (context) => MultipleLedGameScreen(
             level: level,
           ),
+        ),
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => widget.screenName,
         ),
       );
     }
