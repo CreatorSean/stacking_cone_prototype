@@ -135,7 +135,7 @@ class _GameConfirmationDialogState
       ),
       content: Container(
         width: width * 0.5,
-        height: config.isMode ? height * 0.45 : height * 0.22,
+        height: config.isMode ? height * 0.55 : height * 0.3,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
