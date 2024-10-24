@@ -16,6 +16,7 @@ import 'package:stacking_cone_prototype/services/database/models/game_record_mod
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 import '../../../../services/timer/timer_service.dart';
+import '../../view_model/cone_stacking_game_vm.dart';
 import '../../widgets/countdown_lottie.dart';
 
 // ignore: must_be_immutable
@@ -36,6 +37,7 @@ class MultipleLedGameScreen extends ConsumerStatefulWidget {
 class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
     with TickerProviderStateMixin {
   int randomIndex = Random().nextInt(2);
+  int gameLevel = 1;
   bool _isDialogShown = false;
   bool showLottieAnimation = false;
   bool _isConeSuccess = true; //콘 꽂았을 때 효과
@@ -47,11 +49,17 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
   late final AnimationController _countdownController; // 추가된 애니메이션 컨트롤러
   final String gameName = '인지재활';
 
+  void getGameLevel() {
+    final gameMode = ref.watch(gameProvider).gameMode;
+    gameLevel = {'easy': 0, 'normal': 1, 'hard': 2}[gameMode] ?? 2;
+  }
+
   void showGameResult() {
     DateTime dateTime = DateTime.now();
     PatientModel selectedPatient = ref
         .read(SelectedPatientViewModelProvider.notifier)
         .getSelectedPatient();
+    getGameLevel();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isDialogShown = true;
       showDialog(
@@ -73,7 +81,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
             patientId: selectedPatient.id!,
             date: dateTime.microsecondsSinceEpoch,
             mode: 1,
-            level: 1, //이부분 수정해야함
+            level: gameLevel, //이부분 수정해야함
             trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
           ),
           mode: 1,

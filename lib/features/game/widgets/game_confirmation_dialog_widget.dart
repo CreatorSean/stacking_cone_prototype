@@ -114,8 +114,8 @@ class _GameConfirmationDialogState
     final length = MediaQuery.of(context).size.width * 0.15;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-    final titleFontSize = length * 0.55;
-    final FontSize = length * 0.4;
+    final titleFontSize = width * 0.05;
+    final FontSize = width * 0.03;
 
     PatientModel selectedPatient = ref
         .read(SelectedPatientViewModelProvider.notifier)
@@ -135,7 +135,7 @@ class _GameConfirmationDialogState
       ),
       content: Container(
         width: width * 0.5,
-        height: config.isMode ? height * 0.55 : height * 0.3,
+        height: config.isMode ? height * 0.5 : height * 0.2,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
