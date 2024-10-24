@@ -15,6 +15,7 @@ class BluetoothDialog extends ConsumerStatefulWidget {
 class _BluetoothDialogState extends ConsumerState<BluetoothDialog> {
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.015;
     return ref.watch(bluetoothServiceProvider).when(
           data: (btModel) {
             final results = btModel.results;
@@ -43,6 +44,7 @@ class _BluetoothDialogState extends ConsumerState<BluetoothDialog> {
                         final rssi = result.rssi;
                         final address = device.address;
                         return BluetoothDeviceListEntry(
+                          width: width,
                           context: context,
                           device: device,
                           rssi: rssi,

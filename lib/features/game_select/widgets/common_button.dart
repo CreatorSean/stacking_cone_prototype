@@ -5,6 +5,8 @@ import 'package:stacking_cone_prototype/features/game/widgets/game_confirmation_
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
+import '../../../services/bluetooth_service/view_models/bluetooth_service.dart';
+
 class CommonButton extends ConsumerStatefulWidget {
   final Widget screenName;
   final String buttonName;
@@ -38,12 +40,8 @@ class _CommonButtonState extends ConsumerState<CommonButton> {
         );
       });
     } else {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => widget.screenName,
-        ),
-      );
+      ref.read(bluetoothServiceProvider.notifier).doCalibration('C');
+      setState(() {});
     }
   }
 

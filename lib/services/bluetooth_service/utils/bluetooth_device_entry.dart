@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 
 class BluetoothDeviceListEntry extends ListTile {
@@ -6,6 +7,7 @@ class BluetoothDeviceListEntry extends ListTile {
     super.key,
     required BluetoothDevice device,
     required BuildContext context,
+    required double width,
     int? rssi,
     GestureTapCallback? onTap,
     GestureLongPressCallback? onLongPress,
@@ -28,9 +30,9 @@ class BluetoothDeviceListEntry extends ListTile {
                   ? Container(
                       margin: const EdgeInsets.all(8.0),
                       child: DefaultTextStyle(
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleSmall!
+                        style: TextStyle(
+                                fontFamily: 'NotosansKR-Regular',
+                                fontSize: width)
                             .merge(_computeTextStyle(rssi)),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
