@@ -48,14 +48,15 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     }
   }
 
-  Future<void> onSendData(List<int> gameRuleList) async {
+  Future<void> onSendData(List<String> gameRuleList) async {
     if (connection != null && connection!.isConnected) {
       // List<int>를 "1,2" 형태의 문자열로 변환
       String message = gameRuleList.join(",");
-      String messages = '[$message]';
+      String messages = message;
       // 문자열을 UTF-8 바이트로 인코딩하여 전송
       connection!.output.add(Uint8List.fromList(utf8.encode(messages)));
       await connection!.output.allSent;
+      print(messages);
       print('Success');
     } else {
       print('Cannot send message, no connection established');
@@ -85,6 +86,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
       this.connection = connection;
 
       connection.input!.listen(_onDataReceived);
+      isConnecting = true;
     });
   }
 
@@ -92,6 +94,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     _streamSubscription?.cancel();
     connection?.dispose();
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
+    isConnecting = false;
   }
 
   void startDiscovery() {

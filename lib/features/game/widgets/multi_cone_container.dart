@@ -36,6 +36,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
   List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
   int coneCount = 0;
   List<int> initMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  List<String> gameRule = [];
   int gameLevel = 0; // 0: easy | 1: normal | 2: hard
 
   final ListEquality _listEquality = const ListEquality();
@@ -71,9 +72,13 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(Duration(seconds: delaySeconds), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            setState(() {
-              displayStartTimes[index] = DateTime.now();
-            });
+            gameRule.add('L');
+            gameRule.add(index.toString());
+            gameRule.add('G');
+            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            displayStartTimes[index] = DateTime.now();
+            gameRule.clear();
+            setState(() {});
           }
         });
       });
@@ -96,9 +101,13 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(Duration(seconds: delaySeconds), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            setState(() {
-              displayStartTimes[index] = DateTime.now();
-            });
+            gameRule.add('L');
+            gameRule.add(index.toString());
+            gameRule.add('G');
+            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            displayStartTimes[index] = DateTime.now();
+            gameRule.clear();
+            setState(() {});
           }
         });
       });
@@ -122,9 +131,13 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(const Duration(seconds: 1), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            setState(() {
-              displayStartTimes[index] = DateTime.now();
-            });
+            gameRule.add('L');
+            gameRule.add(index.toString());
+            gameRule.add('G');
+            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            displayStartTimes[index] = DateTime.now();
+            gameRule.clear();
+            setState(() {});
           }
         });
       });
@@ -148,9 +161,13 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(Duration(seconds: delaySeconds), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            setState(() {
-              displayStartTimes[index] = DateTime.now();
-            });
+            gameRule.add('L');
+            gameRule.add(index.toString());
+            gameRule.add('G');
+            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            displayStartTimes[index] = DateTime.now();
+            gameRule.clear();
+            setState(() {});
           }
         });
       });

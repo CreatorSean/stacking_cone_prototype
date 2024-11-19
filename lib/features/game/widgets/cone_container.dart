@@ -25,13 +25,23 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
   List<int> changedIndices = [0];
 
   List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
-
+  List<String> gameRule = [];
   late AnimationController _borderAnimationController;
   late Animation<Color?> _borderColorAnimation;
+
+  void sendGameRule() {
+    gameRule.add('L');
+    gameRule.add(ref.watch(gameProvider).targetIndex.toString());
+    gameRule.add('G');
+    ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);
+  }
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      sendGameRule();
+    });
 
     // 테두리 애니메이션 컨트롤러 초기화
     _borderAnimationController = AnimationController(
