@@ -74,7 +74,7 @@ class StaffScreenViewModel extends AsyncNotifier<List<PatientModel>> {
     });
     await getPatientList();
     if (state.hasError) {
-      showErrorSnack(context);
+      showErrorSnack(context, "모든 항목을 입력해주세요!.");
     } else {
       //Navigator.pop(context);
       //context.goNamed(MainScaffold.routeName);

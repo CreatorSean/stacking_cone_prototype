@@ -4,11 +4,12 @@ import 'package:stacking_cone_prototype/common/constants/gaps.dart';
 import 'package:stacking_cone_prototype/features/game/view_model/cone_stacking_game_vm.dart';
 import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/level_select_button.dart';
-import 'package:stacking_cone_prototype/features/game/widgets/showGameLevelErrorSnack.dart';
 import 'package:stacking_cone_prototype/features/game/widgets/targetIndex_select_form.dart';
 import 'package:stacking_cone_prototype/features/game_select/view_model/game_config_vm.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
+
+import '../../staff/widgets/showErrorSnack.dart';
 
 class GameConfirmationDialog extends ConsumerStatefulWidget {
   //final VoidCallback onStartLottie;
@@ -35,13 +36,6 @@ class _GameConfirmationDialogState
   final String _easy = '쉬움';
   final String _normal = '보통';
   final String _hard = '어려움';
-
-  // void _onStackingGameStartTap() {
-  //   ref.read(gameProvider.notifier).startStackingGame();
-  //   ref
-  //       .read(bluetoothServiceProvider.notifier)
-  //       .onSendData(ref.watch(gameProvider).gameRule);
-  // }
 
   void _onNextTap() {
     if (widget.gameName == '인지 재활') {
@@ -105,7 +99,7 @@ class _GameConfirmationDialogState
       Navigator.pop(context);
       _onNextTap();
     } else {
-      showGameLevelErrorSnack(context);
+      showErrorSnack(context, "게임 레벨을 선택해주세요!.");
     }
   }
 
