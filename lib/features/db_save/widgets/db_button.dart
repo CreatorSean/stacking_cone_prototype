@@ -99,8 +99,9 @@ class _DbButtonState extends ConsumerState<DbButton> {
           if (rawDate != null) {
             DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(rawDate);
 
-            // dateTime을 사용하여 날짜 포맷 변환
-            value = DateFormat('yyyy-MM-dd').format(dateTime);
+            // dateTime을 사용하여 날짜 및 시간 포맷 변환
+            value = DateFormat('yyyy-MM-dd HH:mm:ss')
+                .format(dateTime); // 형식을 yyyy-MM-dd HH:mm:ss로 변경
           } else {
             // rawDate가 null일 경우 빈 문자열 또는 적절한 기본값 사용
             value = '';

@@ -20,7 +20,7 @@ class PasswordConfigViewModel extends AsyncNotifier<PasswordModel> {
     });
 
     if (state.hasError) {
-      showErrorSnack(context);
+      showErrorSnack(context, "비밀번호를 다시 입력해주세요!.");
     } else {
       //Navigator.pop(context);
       //context.goNamed(MainScaffold.routeName);

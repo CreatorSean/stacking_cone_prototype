@@ -43,9 +43,12 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
                 onPressed: () {
                   onBluetooth(context);
                 },
-                icon: const Icon(
+                icon: Icon(
                   FontAwesomeIcons.bluetooth,
-                  color: Colors.blue,
+                  color:
+                      ref.read(bluetoothServiceProvider.notifier).isConnecting
+                          ? Colors.blue
+                          : Colors.grey,
                   size: Sizes.size36,
                 ),
               ),
