@@ -9,8 +9,9 @@ import 'package:stacking_cone_prototype/features/game_select/view/game_select_sc
 import 'package:stacking_cone_prototype/features/result/view/result_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view/user_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
-import 'package:stacking_cone_prototype/features/staff/widgets/showPasswordErrorSnack.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
+
+import '../../staff/widgets/showErrorSnack.dart';
 
 class MainScaffold extends ConsumerStatefulWidget {
   static const routeName = 'home';
@@ -47,7 +48,7 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
                   _selectedPageIndex = index;
                 });
               } else {
-                showPasswordErrorSnack(context);
+                showErrorSnack(context, "비밀번호를 다시 입력해주세요!.");
               }
             },
           );

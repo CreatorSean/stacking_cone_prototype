@@ -23,7 +23,7 @@ class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
     with TickerProviderStateMixin {
   List<int> changedIndices = [0];
   int randomIndex = 0;
-  List<int> gameRule = [];
+  List<String> gameRule = [];
   List<int> coneMatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
   void stackCone(int index) {
@@ -90,8 +90,8 @@ class _SingleConeContainerState extends ConsumerState<SingleConeContainer>
                   widget.trueLottie();
                   Future.delayed(const Duration(seconds: 1), () {
                     updateRandomIndex(randomIndex);
-                    gameRule.add(randomIndex);
-                    gameRule.add(1);
+                    gameRule.add(randomIndex.toString());
+                    gameRule.add('1');
                     ref
                         .read(bluetoothServiceProvider.notifier)
                         .onSendData(gameRule);
