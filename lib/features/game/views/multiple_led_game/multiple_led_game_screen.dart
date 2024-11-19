@@ -60,6 +60,21 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
         .read(SelectedPatientViewModelProvider.notifier)
         .getSelectedPatient();
     getGameLevel();
+
+    GameRecordModel gamemodel = GameRecordModel(
+      id: null,
+      userName: selectedPatient.userName,
+      totalCone: positiveNum + negativeNum,
+      answerCone: positiveNum,
+      wrongCong: negativeNum,
+      totalTime: 60,
+      patientId: selectedPatient.id!,
+      date: dateTime.microsecondsSinceEpoch,
+      mode: 1,
+      level: gameLevel,
+      trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isDialogShown = true;
       showDialog(
@@ -71,19 +86,7 @@ class _MultipleLedGameScreenState extends ConsumerState<MultipleLedGameScreen>
           answer: positiveNum,
           totalCone: positiveNum + negativeNum,
           gameName: widget.level,
-          record: GameRecordModel(
-            id: null,
-            userName: selectedPatient.userName,
-            totalCone: positiveNum + negativeNum,
-            answerCone: positiveNum,
-            wrongCong: negativeNum,
-            totalTime: 60,
-            patientId: selectedPatient.id!,
-            date: dateTime.microsecondsSinceEpoch,
-            mode: 1,
-            level: gameLevel, //이부분 수정해야함
-            trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
-          ),
+          record: gamemodel,
           mode: 1,
         ),
       ).then((value) => _isDialogShown = false);

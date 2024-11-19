@@ -65,6 +65,21 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
     PatientModel selectedPatient = ref
         .read(SelectedPatientViewModelProvider.notifier)
         .getSelectedPatient();
+
+    GameRecordModel gameModel = GameRecordModel(
+      id: null,
+      userName: selectedPatient.userName,
+      mode: 0,
+      level: 0, //이부분 수정해야함
+      totalCone: positiveNum + negativeNum,
+      answerCone: positiveNum,
+      wrongCong: negativeNum,
+      totalTime: 60,
+      patientId: selectedPatient.id!,
+      date: dateTime.microsecondsSinceEpoch,
+      trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _isDialogShown = true;
       showDialog(
@@ -74,19 +89,7 @@ class _ConeStackingGameScreenState extends ConsumerState<ConeStackingGameScreen>
           answer: positiveNum,
           totalCone: positiveNum + negativeNum,
           gameName: gameName,
-          record: GameRecordModel(
-            id: null,
-            userName: selectedPatient.userName,
-            mode: 0,
-            level: 0, //이부분 수정해야함
-            totalCone: positiveNum + negativeNum,
-            answerCone: positiveNum,
-            wrongCong: negativeNum,
-            totalTime: 60,
-            patientId: selectedPatient.id!,
-            date: dateTime.microsecondsSinceEpoch,
-            trainOrtest: ref.read(gameConfigProvider).isTest ? 1 : 0,
-          ),
+          record: gameModel,
           mode: 0,
         ),
       ).then((value) => _isDialogShown = false);
