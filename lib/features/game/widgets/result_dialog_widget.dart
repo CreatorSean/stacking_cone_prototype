@@ -6,6 +6,8 @@ import 'package:stacking_cone_prototype/features/staff/view_model/selected_patie
 import 'package:stacking_cone_prototype/services/database/models/game_record_model.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 import '../../../services/timer/timer_service.dart';
+import '../../staff/widgets/showErrorSnack.dart';
+import 'game_confirmation_dialog_widget.dart';
 
 // ignore: must_be_immutable
 class ResultDialog extends ConsumerWidget {
@@ -66,6 +68,29 @@ class ResultDialog extends ConsumerWidget {
     );
   }
 
+  void _showConfirmationDialog(BuildContext context, WidgetRef ref) {
+    final name = record.mode == 0 ? '운동 재활' : '인지 재활';
+    if (record.mode == 0 || record.mode == 1) {
+      if (ref.watch(gameConfigProvider).isTest == true) {
+        ref.watch(timerControllerProvider.notifier).setTimerTime(10);
+      }
+      ref.read(gameConfigProvider.notifier).setMode(false);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return GameConfirmationDialog(
+              screenName: screenName,
+              gameName: name,
+            );
+          },
+        );
+      });
+    } else {
+      showErrorSnack(context, '오류가 발생했습니다!');
+    }
+  }
+
   void onHomePressed(BuildContext context, WidgetRef ref) {
     if (ref.read(gameConfigProvider).isTest) {
       getTestGameRecore(ref);
@@ -74,31 +99,27 @@ class ResultDialog extends ConsumerWidget {
       getTrainGameRecore(ref);
       ref.watch(gameRecordProvider.notifier).insertRecord(record);
     }
-    // Navigator.pushAndRemoveUntil(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (BuildContext context) => const MainScaffold(),
-    //   ),
-    //   (route) => false,
-    // );
     Navigator.pop(context);
     Navigator.pop(context);
   }
 
   void onRestartPressed(BuildContext context, WidgetRef ref) {
-    // if (ref.watch(gameProvider).gameMode == "ConeStackingGame") {
-    //   ref.read(gameProvider.notifier).startStackingGame();
-    // }
-    // ref
-    //     .read(bluetoothServiceProvider.notifier)
-    //     .onSendData(ref.watch(gameProvider).gameRule);
-    Navigator.pop(context);
-    if (ref.watch(gameConfigProvider).isTest) {
-      ref.watch(timerControllerProvider.notifier).setTimerTime(10);
-      ref.read(timerControllerProvider.notifier).startTestTimer();
+    if (ref.read(gameConfigProvider).isTest) {
+      getTestGameRecore(ref);
+      ref.watch(gameRecordProvider.notifier).insertRecord(record);
     } else {
-      ref.read(timerControllerProvider.notifier).startTimer();
+      getTrainGameRecore(ref);
+      ref.watch(gameRecordProvider.notifier).insertRecord(record);
     }
+    _showConfirmationDialog(context, ref);
+    Navigator.pop(context);
+    Navigator.pop(context);
+    // if (ref.watch(gameConfigProvider).isTest) {
+    //   ref.watch(timerControllerProvider.notifier).setTimerTime(10);
+    //   ref.read(timerControllerProvider.notifier).startTestTimer();
+    // } else {
+    //   ref.read(timerControllerProvider.notifier).startTimer();
+    // }
   }
 
   @override
