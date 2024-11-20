@@ -23,12 +23,24 @@ class CommonButton extends ConsumerStatefulWidget {
 }
 
 class _CommonButtonState extends ConsumerState<CommonButton> {
-  void _showConfirmationDialog(bool isConnecting) {
+  Color btnColor = Colors.grey;
+  void _showConfirmationDialog(bool isConnecting, bool isCalibrating) {
+    if (!isConnecting) {
+      showErrorSnack(context, '블루투스 연결이 필요합니다!');
+      return;
+    }
+    if (!isCalibrating) {
+      if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+        showErrorSnack(context, '캘리브레이션을 진행해주세요!');
+        return;
+      }
+    }
     if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
       if (ref.watch(gameConfigProvider).isTest == true) {
         ref.watch(timerControllerProvider.notifier).setTimerTime(10);
       }
       ref.read(gameConfigProvider.notifier).setMode(false);
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
@@ -40,59 +52,80 @@ class _CommonButtonState extends ConsumerState<CommonButton> {
           },
         );
       });
+      return;
+    }
+    ref.read(bluetoothServiceProvider.notifier).doCalibration('C');
+    setState(() {});
+  }
+
+  void getColor(bool isConnecting, bool isCalibrating) {
+    if (!isConnecting) {
+      btnColor = Colors.grey;
     } else {
-      if (isConnecting) {
-        ref.read(bluetoothServiceProvider.notifier).doCalibration('C');
+      if (!isCalibrating) {
+        if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+          btnColor = Colors.grey;
+        } else if (widget.buttonName == 'Calibration') {
+          btnColor = Theme.of(context).primaryColor;
+        } else {
+          btnColor = Colors.grey;
+        }
       } else {
-        showErrorSnack(context, '블루투스 연결이 필요합니다!');
+        if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+          btnColor = Theme.of(context).primaryColor;
+        } else if (widget.buttonName == 'Calibration') {
+          btnColor = Theme.of(context).primaryColor;
+        }
       }
-      setState(() {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final isConnecting =
-        ref.watch(bluetoothServiceProvider.notifier).isConnecting;
-
-    // 버튼 색상을 조건에 따라 설정
-    final buttonColor =
-        (isConnecting == false) ? Colors.grey : Theme.of(context).primaryColor;
-
-    return GestureDetector(
-      onTap: () {
-        _showConfirmationDialog(isConnecting);
-      },
-      child: FractionallySizedBox(
-        widthFactor: 0.6,
-        child: AnimatedContainer(
-          height: 70,
-          padding: const EdgeInsets.symmetric(
-            vertical: Sizes.size16,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(Sizes.size20),
-            color: buttonColor,
-          ),
-          duration: const Duration(
-            milliseconds: 300,
-          ),
-          child: AnimatedDefaultTextStyle(
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w600,
-            ),
-            duration: const Duration(
-              milliseconds: 300,
-            ),
-            child: Text(
-              widget.buttonName,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
-          ),
-        ),
-      ),
-    );
+    return ref.watch(bluetoothServiceProvider).when(
+          data: (data) {
+            print(
+                'connection : ${data.isConnecting}, calibration : ${data.isCalibrating}');
+            getColor(data.isConnecting!, data.isCalibrating!);
+            return GestureDetector(
+              onTap: () {
+                _showConfirmationDialog(
+                    data.isConnecting!, data.isCalibrating!);
+              },
+              child: FractionallySizedBox(
+                widthFactor: 0.6,
+                child: AnimatedContainer(
+                  height: 70,
+                  padding: const EdgeInsets.symmetric(
+                    vertical: Sizes.size16,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(Sizes.size20),
+                    color: btnColor,
+                  ),
+                  duration: const Duration(
+                    milliseconds: 300,
+                  ),
+                  child: AnimatedDefaultTextStyle(
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
+                    child: Text(
+                      widget.buttonName,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.labelMedium,
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+          error: (err, stack) => Text("Error: $err"),
+          loading: () => const CircularProgressIndicator(),
+        );
   }
 }

@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/models/bluetooth_model.dart';
 
 class BluetoothService extends AsyncNotifier<BluetoothModel> {
@@ -13,6 +15,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
       List<BluetoothDiscoveryResult>.empty(growable: true);
   bool isDiscovering = false;
   bool isConnecting = false;
+  bool isCalibrating = false;
   BluetoothConnection? connection;
   String rawMsg = '';
   String refinedMsg = '';
@@ -40,8 +43,12 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
 
         print(coneMatrixMsg);
 
-        btModel =
-            BluetoothModel(results: results, coneMatrixMsg: coneMatrixMsg);
+        btModel = BluetoothModel(
+          results: results,
+          coneMatrixMsg: coneMatrixMsg,
+          isConnecting: isConnecting,
+          isCalibrating: isCalibrating,
+        );
         state = AsyncValue.data(btModel);
         rawMsg = '';
       }
@@ -49,17 +56,21 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
   }
 
   Future<void> onSendData(List<String> gameRuleList) async {
-    if (connection != null && connection!.isConnected) {
-      // List<int>를 "1,2" 형태의 문자열로 변환
-      String message = gameRuleList.join(",");
-      String messages = message;
-      // 문자열을 UTF-8 바이트로 인코딩하여 전송
-      connection!.output.add(Uint8List.fromList(utf8.encode(messages)));
-      await connection!.output.allSent;
-      print(messages);
-      print('Success');
-    } else {
-      print('Cannot send message, no connection established');
+    try {
+      if (connection != null && connection!.isConnected) {
+        // List<int>를 "1,2" 형태의 문자열로 변환
+        String message = gameRuleList.join(",");
+        String messages = message;
+        // 문자열을 UTF-8 바이트로 인코딩하여 전송
+        connection!.output.add(Uint8List.fromList(utf8.encode(messages)));
+        await connection!.output.allSent;
+        print(messages);
+        print('Success');
+      } else {
+        print('Cannot send message, no connection established');
+      }
+    } catch (e) {
+      print("Data send failed: $e");
     }
   }
 
@@ -70,6 +81,13 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
         connection!.output
             .add(Uint8List.fromList(utf8.encode(calibrationCommand)));
         await connection!.output.allSent; // 전송 완료 대기
+        isCalibrating = true;
+        state = AsyncValue.data(
+          btModel.copyWith(
+            isConnecting: isConnecting,
+            isCalibrating: isCalibrating,
+          ),
+        );
         print('Calibration Success');
         print(calibrationCommand);
       } else {
@@ -84,9 +102,14 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     selectedAddress = device.address;
     BluetoothConnection.toAddress(device.address).then((connection) {
       this.connection = connection;
-
       connection.input!.listen(_onDataReceived);
       isConnecting = true;
+      state = AsyncValue.data(
+        btModel.copyWith(
+          isConnecting: isConnecting,
+          isCalibrating: isCalibrating,
+        ),
+      );
     });
   }
 
@@ -95,6 +118,13 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     connection?.dispose();
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
     isConnecting = false;
+    isCalibrating = false;
+    state = AsyncValue.data(
+      btModel.copyWith(
+        isConnecting: false,
+        isCalibrating: false,
+      ),
+    );
   }
 
   void startDiscovery() {
@@ -110,27 +140,35 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
         results[existingIndex] = r;
       } else {
         results.add(r);
-        btModel = BluetoothModel(
-            results: results, coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0]);
+        // btModel = BluetoothModel(
+        //   results: results,
+        //   coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+        // );
 
-        state = AsyncValue.data(btModel);
+        // state = AsyncValue.data(btModel);
       }
     });
 
     _streamSubscription!.onDone(() {
       isDiscovering = false;
-      btModel = BluetoothModel(
-          results: results, coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0]);
-      state = AsyncValue.data(btModel);
+      // btModel = BluetoothModel(
+      //   results: results,
+      //   coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      // );
+      // state = AsyncValue.data(btModel);
     });
   }
 
   @override
   FutureOr<BluetoothModel> build() {
     btModel = BluetoothModel(
-        results: results, coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      results: results,
+      coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0],
+      isConnecting: isConnecting,
+      isCalibrating: isCalibrating,
+    );
+    state = AsyncValue.data(btModel);
     startDiscovery();
-
     return btModel;
   }
 }
