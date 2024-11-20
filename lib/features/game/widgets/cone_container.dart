@@ -30,7 +30,7 @@ class _ConeContainerState extends ConsumerState<ConeContainer>
   late Animation<Color?> _borderColorAnimation;
 
   void sendGameRule() {
-    gameRule.add('L');
+    gameRule.add('l');
     gameRule.add(ref.watch(gameProvider).targetIndex.toString());
     gameRule.add('G');
     ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);

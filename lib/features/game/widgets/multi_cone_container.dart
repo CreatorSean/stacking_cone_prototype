@@ -72,7 +72,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(Duration(seconds: delaySeconds), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            gameRule.add('L');
+            gameRule.add('l');
             gameRule.add(index.toString());
             gameRule.add('G');
             ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
@@ -101,7 +101,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(Duration(seconds: delaySeconds), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            gameRule.add('L');
+            gameRule.add('l');
             gameRule.add(index.toString());
             gameRule.add('G');
             ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
@@ -131,7 +131,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
       Future.delayed(const Duration(seconds: 1), () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
-            gameRule.add('L');
+            gameRule.add('l');
             gameRule.add(index.toString());
             gameRule.add('G');
             ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
