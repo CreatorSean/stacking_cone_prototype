@@ -39,7 +39,7 @@ class _TimerContainerState extends ConsumerState<TimerContainer>
 
     // 화면 크기에 따른 폰트 크기 조절
     final screenWidth = MediaQuery.of(context).size.width;
-    final fontSize = screenWidth * 0.055;
+    final fontSize = screenWidth * 0.04;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
