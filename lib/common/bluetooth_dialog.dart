@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/utils/bluetooth_device_entry.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 
@@ -53,6 +54,7 @@ class _BluetoothDialogState extends ConsumerState<BluetoothDialog> {
                                 .read(bluetoothServiceProvider.notifier)
                                 .connectToDevice(device: device);
                             Navigator.of(context).pop();
+                            showErrorSnack(context, '블루투스에 연결되었습니다!');
                           },
                           onLongPress: () async {
                             try {

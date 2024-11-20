@@ -78,7 +78,6 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     await Permission.bluetoothConnect.request();
     await Permission.bluetoothScan.request();
     await Permission.location.request();
-    print('success');
   }
 
   @override
