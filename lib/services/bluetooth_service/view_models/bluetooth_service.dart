@@ -1,11 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stacking_cone_prototype/features/staff/widgets/showErrorSnack.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/models/bluetooth_model.dart';
 
 class BluetoothService extends AsyncNotifier<BluetoothModel> {

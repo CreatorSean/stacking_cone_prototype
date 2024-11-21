@@ -10,7 +10,7 @@ class DisposeConnectionDialog extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final titleFontSize = screenWidth * 0.07;
+
     final mediumFontSize = screenWidth * 0.03;
     return AlertDialog(
       title: Center(
