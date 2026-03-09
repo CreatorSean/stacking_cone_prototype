@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/common/constants/gaps.dart';
+import 'package:stacking_cone_prototype/common/constants/sizes.dart';
 import 'package:stacking_cone_prototype/common/main_appbar.dart';
 import 'package:stacking_cone_prototype/features/calibration/view/calibraion_screen.dart';
 import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
@@ -8,6 +9,7 @@ import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/mu
 import 'package:stacking_cone_prototype/features/game_select/widgets/common_button.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
+import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
 import 'package:stacking_cone_prototype/services/database/models/patient_model.dart';
 
 class GameSelectScreen extends ConsumerStatefulWidget {
@@ -82,6 +84,44 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
                       const CommonButton(
                         screenName: CalibraionScreen(),
                         buttonName: "Calibration",
+                      ),
+                      Gaps.v32,
+                      // GestureDetector(
+                      //   onTap: () {
+                      //     ref
+                      //         .read(bluetoothServiceProvider.notifier)
+                      //         .doOffest('Z');
+                      //   },
+                      //   child: FractionallySizedBox(
+                      //     widthFactor: 0.6,
+                      //     child: Container(
+                      //       height: 70,
+                      //       padding: const EdgeInsets.symmetric(
+                      //         vertical: Sizes.size16,
+                      //       ),
+                      //       decoration: BoxDecoration(
+                      //         borderRadius: BorderRadius.circular(Sizes.size20),
+                      //         color: Colors.blue,
+                      //       ),
+                      //       child: const Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.center,
+                      //         children: [
+                      //           Text(
+                      //             'offset',
+                      //             style: TextStyle(
+                      //               color: Colors.white,
+                      //               fontWeight: FontWeight.w600,
+                      //               fontSize: Sizes.size24,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
+                      const CommonButton(
+                        screenName: CalibraionScreen(),
+                        buttonName: "Offset",
                       ),
                     ],
                   ),

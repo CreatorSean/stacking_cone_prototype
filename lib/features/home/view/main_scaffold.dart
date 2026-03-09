@@ -80,11 +80,36 @@ class _MainScaffoldState extends ConsumerState<MainScaffold> {
     await Permission.location.request();
   }
 
+  bool _askedOnce = false;
+  bool _isRequesting = false;
+
+  Future<void> _requestBluetoothPermissions() async {
+    if (_isRequesting || _askedOnce) return; // 중복 요청 방지
+    _isRequesting = true;
+
+    try {
+      final status = await [
+        Permission.bluetooth,
+        Permission.bluetoothScan,
+        Permission.bluetoothConnect,
+        Permission.location,
+      ].request(); // 딱 한 번 request
+
+      _askedOnce = true; // 두 번 다시 실행되지 않음
+    } finally {
+      _isRequesting = false;
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     initUser();
-    initPermission();
+    //initPermission();
+    // 위젯이 완전히 그려진 뒤 권한 요청
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _requestBluetoothPermissions();
+    });
   }
 
   @override

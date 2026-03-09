@@ -66,6 +66,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     }
   }
 
+//level이 쉬움일 때 쌓아야하는 위치를 보여줌
   void _easyWhiteLocationDisplayTime() {
     int delaySeconds = 1;
     for (var index in randomIndexes) {
@@ -95,6 +96,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     }
   }
 
+//level이 보통일 때 쌓아야하는 위치를 보여줌
   void _normalWhiteLocationDisplayTime() {
     int delaySeconds = 1;
     for (var index in randomIndexes) {
@@ -124,6 +126,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     }
   }
 
+//level이 어려움일 때 쌓아야하는 위치를 보여줌
   void _hardWhiteLocationDisplayTime() {
     // 모든 인덱스를 동시에 시작하도록 지연 시간을 통일
     for (var index in randomIndexes) {
@@ -155,6 +158,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     }
   }
 
+//level이 쉬움, 보통일 때 맞는 위치를 보여줌
   void _notifyRightLocation() {
     int delaySeconds = 1;
     for (var index in randomIndexes) {
@@ -184,6 +188,37 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     }
   }
 
+//level이 어려움일 때 맞는 위치를 보여줌
+  void _hardNotifyRightLocation() {
+    Future.delayed(const Duration(seconds: 1), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          for (var index in randomIndexes) {
+            gameRule.add('L');
+            gameRule.add(index.toString());
+            gameRule.add('G');
+            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            displayStartTimes[index] = DateTime.now();
+            gameRule.clear();
+          }
+          setState(() {});
+        }
+      });
+    });
+
+    Future.delayed(const Duration(seconds: 5), () {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          setState(() {
+            for (var index in randomIndexes) {
+              displayStartTimes.remove(index);
+            }
+          });
+        }
+      });
+    });
+  }
+
   void _resetGame() {
     randomIndexes.clear();
     displayStartTimes.clear();
@@ -206,7 +241,9 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
     if (!_listEquality.equals(btConeMatrix, [0, 0, 0, 0, 0, 0, 0, 0, 0])) {
       if (randomIndexes.isNotEmpty) {
         if (changedIndices.isNotEmpty) {
-          if (changedIndices[0] == randomIndexes.first) {
+          if (widget.level == 'hard'
+              ? randomIndexes.contains(changedIndices[0])
+              : changedIndices[0] == randomIndexes.first) {
             widget.trueLottie();
             ++coneCount;
             randomIndexes.remove(randomIndexes.first);
@@ -216,8 +253,13 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
             incorrectIndexes.add(changedIndices[0]);
             Future.delayed(const Duration(seconds: 1), () {
               setState(() {
-                incorrectIndexes.remove(changedIndices[0]);
-                _notifyRightLocation();
+                if (widget.level == 'hard') {
+                  incorrectIndexes.remove(changedIndices[0]);
+                  _hardNotifyRightLocation();
+                } else {
+                  incorrectIndexes.remove(changedIndices[0]);
+                  _notifyRightLocation();
+                }
               });
             });
           }

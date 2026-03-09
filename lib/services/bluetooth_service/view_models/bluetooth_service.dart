@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/models/bluetooth_model.dart';
@@ -13,6 +14,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
   bool isDiscovering = false;
   bool isConnecting = false;
   bool isCalibrating = false;
+  bool isOffsetting = false;
   BluetoothConnection? connection;
   String rawMsg = '';
   String refinedMsg = '';
@@ -45,6 +47,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
           coneMatrixMsg: coneMatrixMsg,
           isConnecting: isConnecting,
           isCalibrating: isCalibrating,
+          isOffsetting: isOffsetting,
         );
         state = AsyncValue.data(btModel);
         rawMsg = '';
@@ -83,15 +86,40 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
           btModel.copyWith(
             isConnecting: isConnecting,
             isCalibrating: isCalibrating,
+            isOffsetting: isOffsetting,
           ),
         );
-        print('Calibration Success');
-        print(calibrationCommand);
+        debugPrint('Calibration Success');
+        debugPrint(calibrationCommand);
       } else {
-        print("Can't do Calibration: No active connection.");
+        debugPrint("Can't do Calibration: No active connection.");
       }
     } catch (e) {
-      print("Calibration failed: $e");
+      debugPrint("Calibration failed: $e");
+    }
+  }
+
+  Future<void> doOffset(String offSetcommand) async {
+    try {
+      if (connection != null && connection!.isConnected) {
+        // 문자열을 UTF-8로 인코딩한 후 바이트 배열로 변환하여 전송
+        connection!.output.add(Uint8List.fromList(utf8.encode(offSetcommand)));
+        await connection!.output.allSent; // 전송 완료 대기
+        isOffsetting = true;
+        state = AsyncValue.data(
+          btModel.copyWith(
+            isConnecting: isConnecting,
+            isCalibrating: isCalibrating,
+            isOffsetting: isOffsetting,
+          ),
+        );
+        debugPrint('Offest Success');
+        debugPrint(offSetcommand);
+      } else {
+        debugPrint("Can't do Offest: No active connection.");
+      }
+    } catch (e) {
+      debugPrint("Offest failed: $e");
     }
   }
 
@@ -105,6 +133,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
         btModel.copyWith(
           isConnecting: isConnecting,
           isCalibrating: isCalibrating,
+          isOffsetting: isOffsetting,
         ),
       );
     });
@@ -116,10 +145,12 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     FlutterBluetoothSerial.instance.setPairingRequestHandler(null);
     isConnecting = false;
     isCalibrating = false;
+    isOffsetting = false;
     state = AsyncValue.data(
       btModel.copyWith(
         isConnecting: false,
         isCalibrating: false,
+        isOffsetting: false,
       ),
     );
   }
@@ -163,6 +194,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
       coneMatrixMsg: [0, 0, 0, 0, 0, 0, 0, 0, 0],
       isConnecting: isConnecting,
       isCalibrating: isCalibrating,
+      isOffsetting: isOffsetting,
     );
     state = AsyncValue.data(btModel);
     startDiscovery();

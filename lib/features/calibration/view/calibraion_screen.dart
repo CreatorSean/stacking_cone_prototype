@@ -17,26 +17,27 @@ class _CalibraionScreenState extends ConsumerState<CalibraionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(60),
-          child: MainAppBar(
-            isSelectScreen: false,
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(60),
+        child: MainAppBar(
+          isSelectScreen: false,
+        ),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Text(
+                "Calibration",
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Gaps.v40,
+              const Calibrationcone(),
+            ],
           ),
         ),
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                Text(
-                  "Calibration",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Gaps.v40,
-                const Calibrationcone(),
-              ],
-            ),
-          ),
-        ));
+      ),
+    );
   }
 }

@@ -58,9 +58,9 @@ class _MainAppBarState extends ConsumerState<MainAppBar> {
                         },
                         icon: Icon(
                           FontAwesomeIcons.bluetooth,
-                          color: (data.isConnecting == false)
-                              ? Colors.grey
-                              : Colors.blue,
+                          color: (data.isConnecting == true)
+                              ? Colors.blue
+                              : Colors.grey,
                           size: Sizes.size36,
                         ),
                       ),

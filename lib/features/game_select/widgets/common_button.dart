@@ -8,7 +8,180 @@ import 'package:stacking_cone_prototype/services/timer/timer_service.dart';
 
 import '../../../services/bluetooth_service/view_models/bluetooth_service.dart';
 
-class CommonButton extends ConsumerStatefulWidget {
+// class CommonButton extends ConsumerStatefulWidget {
+//   final Widget screenName;
+//   final String buttonName;
+
+//   const CommonButton({
+//     super.key,
+//     required this.screenName,
+//     required this.buttonName,
+//   });
+
+//   @override
+//   ConsumerState<CommonButton> createState() => _CommonButtonState();
+// }
+
+// class _CommonButtonState extends ConsumerState<CommonButton> {
+//   Color btnColor = Colors.grey;
+//   void _showConfirmationDialog(
+//       bool isConnecting, bool isCalibrating, bool isOffsetting) {
+//     if (!isConnecting) {
+//       showErrorSnack(context, '블루투스 연결이 필요합니다!');
+//       return;
+//     }
+//     if (!isOffsetting) {
+//       if (widget.buttonName == '운동 재활' ||
+//           widget.buttonName == '인지 재활' ||
+//           widget.buttonName == 'Calibration') {
+//         showErrorSnack(context, '오프셋을 진행해주세요!');
+//         return;
+//       }
+//     }
+//     if (!isCalibrating) {
+//       if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+//         showErrorSnack(context, '캘리브레이션을 진행해주세요!');
+//         return;
+//       }
+//     }
+//     if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+//       if (ref.watch(gameConfigProvider).isTest == true) {
+//         ref.watch(timerControllerProvider.notifier).setTimerTime(10);
+//       }
+//       ref.read(gameConfigProvider.notifier).setMode(false);
+
+//       WidgetsBinding.instance.addPostFrameCallback((_) {
+//         showDialog(
+//           context: context,
+//           builder: (BuildContext context) {
+//             return GameConfirmationDialog(
+//               screenName: widget.screenName,
+//               gameName: widget.buttonName,
+//             );
+//           },
+//         );
+//       });
+//       return;
+//     }
+//     if (widget.buttonName == 'Offset') {
+//       ref.read(bluetoothServiceProvider.notifier).doOffset('Z');
+//       return;
+//     }
+//     if (widget.buttonName == 'Calibration') {
+//       ref.read(bluetoothServiceProvider.notifier).doCalibration('C');
+//       return;
+//     }
+//     setState(() {});
+//   }
+
+//   void getColor(bool isConnecting, bool isCalibrating, bool isOffsetting) {
+//     final primary = Theme.of(context).primaryColor;
+
+//     // 1단계: 연결 안 됨 → 전부 비활성
+//     if (!isConnecting) {
+//       btnColor = Colors.grey;
+//       return;
+//     }
+
+//     // 2단계: Offset 아직 안 했음
+//     if (!isOffsetting) {
+//       btnColor = widget.buttonName == 'Offset' ? primary : Colors.grey;
+//       return;
+//     }
+
+//     // 3단계: Calibration 아직 안 했음
+//     if (!isCalibrating) {
+//       btnColor = widget.buttonName == 'Calibration' ? primary : Colors.grey;
+//       return;
+//     }
+
+//     // 4단계: 다 끝남 → 재활 버튼 활성화
+//     if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
+//       btnColor = primary;
+//     } else {
+//       btnColor = Colors.grey;
+//     }
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ref.watch(bluetoothServiceProvider).when(
+//           data: (data) {
+//             print(
+//                 'connection : ${data.isConnecting}, calibration : ${data.isCalibrating}');
+//             getColor(
+//               data.isConnecting!,
+//               data.isCalibrating!,
+//               data.isOffsetting!,
+//             );
+//             // getColor(
+//             //   true,
+//             //   true,
+//             // );
+//             return GestureDetector(
+//               onTap: () {
+//                 _showConfirmationDialog(
+//                   data.isConnecting!,
+//                   data.isCalibrating!,
+//                   data.isOffsetting!,
+//                 );
+//                 // _showConfirmationDialog(
+//                 //   true,
+//                 //   true,
+//                 // );
+//               },
+//               child: FractionallySizedBox(
+//                 widthFactor: 0.6,
+//                 child: AnimatedContainer(
+//                   height: 70,
+//                   padding: const EdgeInsets.symmetric(
+//                     vertical: Sizes.size16,
+//                   ),
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(Sizes.size20),
+//                     color: btnColor,
+//                   ),
+//                   duration: const Duration(
+//                     milliseconds: 300,
+//                   ),
+//                   child: AnimatedDefaultTextStyle(
+//                     style: const TextStyle(
+//                       color: Colors.white,
+//                       fontWeight: FontWeight.w600,
+//                     ),
+//                     duration: const Duration(
+//                       milliseconds: 300,
+//                     ),
+//                     child: Text(
+//                       widget.buttonName,
+//                       textAlign: TextAlign.center,
+//                       style: Theme.of(context).textTheme.labelMedium,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             );
+//           },
+//           error: (err, stack) => Text("Error: $err"),
+//           loading: () => const CircularProgressIndicator(),
+//         );
+//   }
+// } 
+enum RehabPhase {
+  disconnected,
+  needOffset,
+  needCalibration,
+  ready,
+}
+
+enum ButtonType {
+  offset,
+  calibration,
+  motorRehab,
+  cognitiveRehab,
+}
+
+class CommonButton extends ConsumerWidget {
   final Widget screenName;
   final String buttonName;
 
@@ -18,106 +191,180 @@ class CommonButton extends ConsumerStatefulWidget {
     required this.buttonName,
   });
 
-  @override
-  ConsumerState<CommonButton> createState() => _CommonButtonState();
-}
-
-class _CommonButtonState extends ConsumerState<CommonButton> {
-  Color btnColor = Colors.grey;
-  void _showConfirmationDialog(bool isConnecting, bool isCalibrating) {
-    if (!isConnecting) {
-      showErrorSnack(context, '블루투스 연결이 필요합니다!');
-      return;
+  // 문자열 -> ButtonType 변환 (현재 구조 유지용)
+  ButtonType _parseButtonType(String name) {
+    switch (name) {
+      case 'Offset':
+        return ButtonType.offset;
+      case 'Calibration':
+        return ButtonType.calibration;
+      case '운동 재활':
+        return ButtonType.motorRehab;
+      case '인지 재활':
+        return ButtonType.cognitiveRehab;
+      default:
+        // 알 수 없는 버튼은 안전하게 비활성(여기서는 calibration로 두지 말고 별도 처리 권장)
+        return ButtonType.calibration;
     }
-    if (!isCalibrating) {
-      if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
-        showErrorSnack(context, '캘리브레이션을 진행해주세요!');
-        return;
+  }
+
+  RehabPhase _getPhase({
+    required bool isConnecting,
+    required bool isOffsetting,
+    required bool isCalibrating,
+  }) {
+    if (!isConnecting) return RehabPhase.disconnected;
+    if (!isOffsetting) return RehabPhase.needOffset;
+    if (!isCalibrating) return RehabPhase.needCalibration;
+    return RehabPhase.ready;
+  }
+
+  Color _getButtonColor({
+    required BuildContext context,
+    required RehabPhase phase,
+    required ButtonType buttonType,
+  }) {
+    final primary = Theme.of(context).primaryColor;
+
+    switch (phase) {
+      case RehabPhase.disconnected:
+        return Colors.grey;
+
+      case RehabPhase.needOffset:
+        return buttonType == ButtonType.offset ? primary : Colors.grey;
+
+      case RehabPhase.needCalibration:
+        return buttonType == ButtonType.calibration ? primary : Colors.grey;
+
+      case RehabPhase.ready:
+        if (buttonType == ButtonType.motorRehab ||
+            buttonType == ButtonType.cognitiveRehab) {
+          return primary;
+        }
+        return Colors.grey;
+    }
+  }
+
+  // 탭 허용 여부 (단계에 맞는 버튼만 true)
+  bool _canTap(RehabPhase phase, ButtonType type) {
+    switch (phase) {
+      case RehabPhase.disconnected:
+        return false;
+      case RehabPhase.needOffset:
+        return type == ButtonType.offset;
+      case RehabPhase.needCalibration:
+        return type == ButtonType.calibration;
+      case RehabPhase.ready:
+        return type == ButtonType.motorRehab ||
+            type == ButtonType.cognitiveRehab;
+    }
+  }
+
+  void _handleTap({
+    required BuildContext context,
+    required WidgetRef ref,
+    required RehabPhase phase,
+    required ButtonType type,
+  }) {
+    // 공통 안내(스낵바) - 지금 단계에서 허용되지 않는 버튼을 눌렀을 때 메시지
+    if (!_canTap(phase, type)) {
+      switch (phase) {
+        case RehabPhase.disconnected:
+          showErrorSnack(context, '블루투스 연결이 필요합니다!');
+          return;
+
+        case RehabPhase.needOffset:
+          // offset만 허용
+          showErrorSnack(context, '오프셋을 진행해주세요!');
+          return;
+
+        case RehabPhase.needCalibration:
+          // calibration만 허용
+          showErrorSnack(context, '캘리브레이션을 진행해주세요!');
+          return;
+
+        case RehabPhase.ready:
+          // ready에서는 재활만 허용이므로, 그 외 버튼이면 그냥 막음
+          return;
       }
     }
-    if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
-      if (ref.watch(gameConfigProvider).isTest == true) {
-        ref.watch(timerControllerProvider.notifier).setTimerTime(10);
+
+    // 여기부터는 "허용된 버튼"만 들어옴
+    if (type == ButtonType.offset) {
+      ref.read(bluetoothServiceProvider.notifier).doOffset('Z');
+      return;
+    }
+
+    if (type == ButtonType.calibration) {
+      ref.read(bluetoothServiceProvider.notifier).doCalibration('C');
+      return;
+    }
+
+    // 재활 버튼(ready 상태에서만 도달)
+    if (type == ButtonType.motorRehab || type == ButtonType.cognitiveRehab) {
+      if (ref.read(gameConfigProvider).isTest == true) {
+        ref.read(timerControllerProvider.notifier).setTimerTime(10);
       }
       ref.read(gameConfigProvider.notifier).setMode(false);
 
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showDialog(
           context: context,
-          builder: (BuildContext context) {
-            return GameConfirmationDialog(
-              screenName: widget.screenName,
-              gameName: widget.buttonName,
-            );
-          },
+          builder: (_) => GameConfirmationDialog(
+            screenName: screenName,
+            gameName: buttonName,
+          ),
         );
       });
-      return;
-    }
-    ref.read(bluetoothServiceProvider.notifier).doCalibration('C');
-    setState(() {});
-  }
-
-  void getColor(bool isConnecting, bool isCalibrating) {
-    if (!isConnecting) {
-      btnColor = Colors.grey;
-    } else {
-      if (!isCalibrating) {
-        if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
-          btnColor = Colors.grey;
-        } else if (widget.buttonName == 'Calibration') {
-          btnColor = Theme.of(context).primaryColor;
-        } else {
-          btnColor = Colors.grey;
-        }
-      } else {
-        if (widget.buttonName == '운동 재활' || widget.buttonName == '인지 재활') {
-          btnColor = Theme.of(context).primaryColor;
-        } else if (widget.buttonName == 'Calibration') {
-          btnColor = Theme.of(context).primaryColor;
-        }
-      }
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(bluetoothServiceProvider).when(
           data: (data) {
-            print(
-                'connection : ${data.isConnecting}, calibration : ${data.isCalibrating}');
-            getColor(data.isConnecting!, data.isCalibrating!);
+            final isConnecting = data.isConnecting ?? false;
+            final isOffsetting = data.isOffsetting ?? false;
+            final isCalibrating = data.isCalibrating ?? false;
+
+            final type = _parseButtonType(buttonName);
+            final phase = _getPhase(
+              isConnecting: isConnecting,
+              isOffsetting: isOffsetting,
+              isCalibrating: isCalibrating,
+            );
+
+            final color = _getButtonColor(
+              context: context,
+              phase: phase,
+              buttonType: type,
+            );
+
             return GestureDetector(
-              onTap: () {
-                _showConfirmationDialog(
-                    data.isConnecting!, data.isCalibrating!);
-              },
+              onTap: () => _handleTap(
+                context: context,
+                ref: ref,
+                phase: phase,
+                type: type,
+              ),
               child: FractionallySizedBox(
                 widthFactor: 0.6,
                 child: AnimatedContainer(
                   height: 70,
-                  padding: const EdgeInsets.symmetric(
-                    vertical: Sizes.size16,
-                  ),
+                  padding: const EdgeInsets.symmetric(vertical: Sizes.size16),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(Sizes.size20),
-                    color: btnColor,
+                    color: color,
                   ),
-                  duration: const Duration(
-                    milliseconds: 300,
-                  ),
-                  child: AnimatedDefaultTextStyle(
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    duration: const Duration(
-                      milliseconds: 300,
-                    ),
+                  duration: const Duration(milliseconds: 300),
+                  child: Center(
                     child: Text(
-                      widget.buttonName,
+                      buttonName,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.labelMedium,
+                      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
                     ),
                   ),
                 ),

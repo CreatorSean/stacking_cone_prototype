@@ -3,5 +3,13 @@
          the Flutter tool needs it to communicate with the running application
          to allow setting breakpoints, to provide hot reload, etc.
     -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+
+    <!-- (옵션) Android 10~11 스캔 호환 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission
+    android:name="android.permission.BLUETOOTH_SCAN"
+    android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
