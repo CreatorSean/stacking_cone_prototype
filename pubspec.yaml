@@ -32,9 +32,9 @@ dependencies:
     sdk: flutter
 
   percent_indicator: ^4.2.2
-  flex_color_scheme: ^7.2.0
+  flex_color_scheme: ^8.0.1
   flutter_riverpod: ^2.4.4
-  shared_preferences: ^2.2.0
+  shared_preferences: ^2.5.3
   lottie: ^3.1.0
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -43,19 +43,21 @@ dependencies:
   device_preview: ^1.1.0
   flutter_blue_plus: 1.3.0
   font_awesome_flutter: ^10.3.0
-  sqflite: ^2.3.0
+  sqflite: ^2.4.2
   logger: ^2.0.2+1
   path: ^1.8.3
-  path_provider: ^2.0.14
-  permission_handler: ^11.3.1
+  path_provider: ^2.1.5
+  permission_handler: ^11.4.0
   flutter_bluetooth_serial: 0.4.0
-  share_plus: 6.2.0
-  go_router: 6.0.2
-  flutter_slidable: ^3.0.1
+  share_plus: ^10.1.4
+  go_router: 14.8.1
+  flutter_slidable: ^3.1.2
   excel: ^4.0.3
-  intl: ^0.19.0
+  intl: ^0.20.2
   collection: ^1.16.0
   dropdown_search: ^5.0.6
+  win32: ^5.5.4
+  archive: ^3.6.1
   
 dev_dependencies:
   flutter_test:

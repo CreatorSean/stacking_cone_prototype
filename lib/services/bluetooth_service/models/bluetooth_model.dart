@@ -6,14 +6,15 @@ class BluetoothModel {
   bool? isConnecting;
   bool? isCalibrating;
   bool? isOffsetting;
+  bool? isGraming;
 
-  BluetoothModel({
-    required this.results,
-    required this.coneMatrixMsg,
-    this.isConnecting,
-    this.isCalibrating,
-    this.isOffsetting,
-  });
+  BluetoothModel(
+      {required this.results,
+      required this.coneMatrixMsg,
+      this.isConnecting,
+      this.isCalibrating,
+      this.isOffsetting,
+      this.isGraming});
 
   BluetoothModel copyWith({
     List<BluetoothDiscoveryResult>? results,
@@ -21,13 +22,14 @@ class BluetoothModel {
     bool? isConnecting,
     bool? isCalibrating,
     bool? isOffsetting,
+    bool? isGraming,
   }) {
     return BluetoothModel(
-      results: results ?? this.results,
-      coneMatrixMsg: coneMatrixMsg ?? this.coneMatrixMsg,
-      isConnecting: isConnecting ?? this.isConnecting,
-      isCalibrating: isCalibrating ?? this.isCalibrating,
-      isOffsetting: isOffsetting ?? this.isOffsetting,
-    );
+        results: results ?? this.results,
+        coneMatrixMsg: coneMatrixMsg ?? this.coneMatrixMsg,
+        isConnecting: isConnecting ?? this.isConnecting,
+        isCalibrating: isCalibrating ?? this.isCalibrating,
+        isOffsetting: isOffsetting ?? this.isOffsetting,
+        isGraming: isGraming ?? this.isGraming);
   }
 }

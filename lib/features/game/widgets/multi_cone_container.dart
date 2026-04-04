@@ -76,7 +76,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
             gameRule.add('l');
             gameRule.add(index.toString());
             gameRule.add('G');
-            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);
             displayStartTimes[index] = DateTime.now();
             gameRule.clear();
             setState(() {});
@@ -106,7 +106,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
             gameRule.add('l');
             gameRule.add(index.toString());
             gameRule.add('G');
-            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);
             displayStartTimes[index] = DateTime.now();
             gameRule.clear();
             setState(() {});
@@ -137,7 +137,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
             gameRule.add('l');
             gameRule.add(index.toString());
             gameRule.add('G');
-            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);
             displayStartTimes[index] = DateTime.now();
             gameRule.clear();
             setState(() {});
@@ -168,7 +168,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
             gameRule.add('L');
             gameRule.add(index.toString());
             gameRule.add('G');
-            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);
             displayStartTimes[index] = DateTime.now();
             gameRule.clear();
             setState(() {});
@@ -197,7 +197,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
             gameRule.add('L');
             gameRule.add(index.toString());
             gameRule.add('G');
-            ref.watch(bluetoothServiceProvider.notifier).onSendData(gameRule);
+            ref.read(bluetoothServiceProvider.notifier).onSendData(gameRule);
             displayStartTimes[index] = DateTime.now();
             gameRule.clear();
           }
@@ -246,7 +246,7 @@ class _MultiConContainerState extends ConsumerState<MultiConContainer> {
               : changedIndices[0] == randomIndexes.first) {
             widget.trueLottie();
             ++coneCount;
-            randomIndexes.remove(randomIndexes.first);
+            randomIndexes.remove(changedIndices[0]);
             correctIndexes.add(changedIndices[0]);
           } else {
             widget.falseLottie();

@@ -15,6 +15,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
   bool isConnecting = false;
   bool isCalibrating = false;
   bool isOffsetting = false;
+  bool isGraming = false;
   BluetoothConnection? connection;
   String rawMsg = '';
   String refinedMsg = '';
@@ -48,6 +49,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
           isConnecting: isConnecting,
           isCalibrating: isCalibrating,
           isOffsetting: isOffsetting,
+          isGraming: isGraming,
         );
         state = AsyncValue.data(btModel);
         rawMsg = '';
@@ -87,6 +89,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
             isConnecting: isConnecting,
             isCalibrating: isCalibrating,
             isOffsetting: isOffsetting,
+            isGraming: isGraming,
           ),
         );
         debugPrint('Calibration Success');
@@ -111,6 +114,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
             isConnecting: isConnecting,
             isCalibrating: isCalibrating,
             isOffsetting: isOffsetting,
+            isGraming: isGraming,
           ),
         );
         debugPrint('Offest Success');
@@ -120,6 +124,33 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
       }
     } catch (e) {
       debugPrint("Offest failed: $e");
+    }
+  }
+
+  Future<void> doGram(String gramSetcommand) async {
+    try {
+      if (connection != null && connection!.isConnected) {
+        connection!.output.add(Uint8List.fromList(utf8.encode(gramSetcommand)));
+        await connection!.output.allSent;
+
+        isGraming = true;
+
+        state = AsyncValue.data(
+          btModel.copyWith(
+            isConnecting: isConnecting,
+            isCalibrating: isCalibrating,
+            isOffsetting: isOffsetting,
+            isGraming: isGraming,
+          ),
+        );
+
+        debugPrint('gram Success');
+        debugPrint(gramSetcommand);
+      } else {
+        debugPrint("Can't do gram: No active connection.");
+      }
+    } catch (e) {
+      debugPrint("Gram failed: $e");
     }
   }
 
@@ -134,6 +165,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
           isConnecting: isConnecting,
           isCalibrating: isCalibrating,
           isOffsetting: isOffsetting,
+          isGraming: isGraming,
         ),
       );
     });
@@ -146,11 +178,13 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
     isConnecting = false;
     isCalibrating = false;
     isOffsetting = false;
+    isGraming = false;
     state = AsyncValue.data(
       btModel.copyWith(
         isConnecting: false,
         isCalibrating: false,
         isOffsetting: false,
+        isGraming: false,
       ),
     );
   }
@@ -195,6 +229,7 @@ class BluetoothService extends AsyncNotifier<BluetoothModel> {
       isConnecting: isConnecting,
       isCalibrating: isCalibrating,
       isOffsetting: isOffsetting,
+      isGraming: isGraming,
     );
     state = AsyncValue.data(btModel);
     startDiscovery();

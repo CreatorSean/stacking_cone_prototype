@@ -7,6 +7,7 @@ import 'package:stacking_cone_prototype/features/calibration/view/calibraion_scr
 import 'package:stacking_cone_prototype/features/game/views/cone_stacking_game/cone_stacking_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game/views/multiple_led_game/multiple_led_game_screen.dart';
 import 'package:stacking_cone_prototype/features/game_select/widgets/common_button.dart';
+import 'package:stacking_cone_prototype/features/gram/view/gram_screen.dart';
 import 'package:stacking_cone_prototype/features/staff/view_model/selected_patient_view_model.dart';
 import 'package:stacking_cone_prototype/features/staff/widgets/info_container.dart';
 import 'package:stacking_cone_prototype/services/bluetooth_service/view_models/bluetooth_service.dart';
@@ -79,6 +80,11 @@ class _GameSelectScreenState extends ConsumerState<GameSelectScreen> {
                           level: '',
                         ),
                         buttonName: "인지 재활",
+                      ),
+                      Gaps.v32,
+                      const CommonButton(
+                        screenName: GramScreen(),
+                        buttonName: "Gram",
                       ),
                       Gaps.v32,
                       const CommonButton(

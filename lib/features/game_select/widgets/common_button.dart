@@ -166,17 +166,19 @@ import '../../../services/bluetooth_service/view_models/bluetooth_service.dart';
 //           loading: () => const CircularProgressIndicator(),
 //         );
 //   }
-// } 
+// }
 enum RehabPhase {
   disconnected,
   needOffset,
   needCalibration,
+  needGram,
   ready,
 }
 
 enum ButtonType {
   offset,
   calibration,
+  gram,
   motorRehab,
   cognitiveRehab,
 }
@@ -191,19 +193,19 @@ class CommonButton extends ConsumerWidget {
     required this.buttonName,
   });
 
-  // 문자열 -> ButtonType 변환 (현재 구조 유지용)
   ButtonType _parseButtonType(String name) {
     switch (name) {
       case 'Offset':
         return ButtonType.offset;
       case 'Calibration':
         return ButtonType.calibration;
+      case 'Gram':
+        return ButtonType.gram;
       case '운동 재활':
         return ButtonType.motorRehab;
       case '인지 재활':
         return ButtonType.cognitiveRehab;
       default:
-        // 알 수 없는 버튼은 안전하게 비활성(여기서는 calibration로 두지 말고 별도 처리 권장)
         return ButtonType.calibration;
     }
   }
@@ -212,10 +214,12 @@ class CommonButton extends ConsumerWidget {
     required bool isConnecting,
     required bool isOffsetting,
     required bool isCalibrating,
+    required bool isGraming,
   }) {
     if (!isConnecting) return RehabPhase.disconnected;
     if (!isOffsetting) return RehabPhase.needOffset;
     if (!isCalibrating) return RehabPhase.needCalibration;
+    if (!isGraming) return RehabPhase.needGram;
     return RehabPhase.ready;
   }
 
@@ -236,6 +240,9 @@ class CommonButton extends ConsumerWidget {
       case RehabPhase.needCalibration:
         return buttonType == ButtonType.calibration ? primary : Colors.grey;
 
+      case RehabPhase.needGram:
+        return buttonType == ButtonType.gram ? primary : Colors.grey;
+
       case RehabPhase.ready:
         if (buttonType == ButtonType.motorRehab ||
             buttonType == ButtonType.cognitiveRehab) {
@@ -245,15 +252,20 @@ class CommonButton extends ConsumerWidget {
     }
   }
 
-  // 탭 허용 여부 (단계에 맞는 버튼만 true)
   bool _canTap(RehabPhase phase, ButtonType type) {
     switch (phase) {
       case RehabPhase.disconnected:
         return false;
+
       case RehabPhase.needOffset:
         return type == ButtonType.offset;
+
       case RehabPhase.needCalibration:
         return type == ButtonType.calibration;
+
+      case RehabPhase.needGram:
+        return type == ButtonType.gram;
+
       case RehabPhase.ready:
         return type == ButtonType.motorRehab ||
             type == ButtonType.cognitiveRehab;
@@ -266,7 +278,6 @@ class CommonButton extends ConsumerWidget {
     required RehabPhase phase,
     required ButtonType type,
   }) {
-    // 공통 안내(스낵바) - 지금 단계에서 허용되지 않는 버튼을 눌렀을 때 메시지
     if (!_canTap(phase, type)) {
       switch (phase) {
         case RehabPhase.disconnected:
@@ -274,22 +285,22 @@ class CommonButton extends ConsumerWidget {
           return;
 
         case RehabPhase.needOffset:
-          // offset만 허용
           showErrorSnack(context, '오프셋을 진행해주세요!');
           return;
 
         case RehabPhase.needCalibration:
-          // calibration만 허용
           showErrorSnack(context, '캘리브레이션을 진행해주세요!');
           return;
 
+        case RehabPhase.needGram:
+          showErrorSnack(context, 'Gram을 먼저 진행해주세요!');
+          return;
+
         case RehabPhase.ready:
-          // ready에서는 재활만 허용이므로, 그 외 버튼이면 그냥 막음
           return;
       }
     }
 
-    // 여기부터는 "허용된 버튼"만 들어옴
     if (type == ButtonType.offset) {
       ref.read(bluetoothServiceProvider.notifier).doOffset('Z');
       return;
@@ -300,7 +311,11 @@ class CommonButton extends ConsumerWidget {
       return;
     }
 
-    // 재활 버튼(ready 상태에서만 도달)
+    if (type == ButtonType.gram) {
+      ref.read(bluetoothServiceProvider.notifier).doGram('G');
+      return;
+    }
+
     if (type == ButtonType.motorRehab || type == ButtonType.cognitiveRehab) {
       if (ref.read(gameConfigProvider).isTest == true) {
         ref.read(timerControllerProvider.notifier).setTimerTime(10);
@@ -326,12 +341,14 @@ class CommonButton extends ConsumerWidget {
             final isConnecting = data.isConnecting ?? false;
             final isOffsetting = data.isOffsetting ?? false;
             final isCalibrating = data.isCalibrating ?? false;
+            final isGraming = data.isGraming ?? false;
 
             final type = _parseButtonType(buttonName);
             final phase = _getPhase(
               isConnecting: isConnecting,
               isOffsetting: isOffsetting,
               isCalibrating: isCalibrating,
+              isGraming: isGraming,
             );
 
             final color = _getButtonColor(
